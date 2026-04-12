@@ -34,61 +34,26 @@
       text-shadow: 0 0 10px #00eaff;
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
       background: linear-gradient(135deg, #0b0f1a, #001f3f);
-      padding: 100px 20px;
+      padding: 120px 20px;
       text-align: center;
     }
 
     .hero h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
+      font-size: 45px;
       color: #00eaff;
-      text-shadow: 0 0 15px #00eaff;
+      text-shadow: 0 0 20px #00eaff;
     }
 
     .hero p {
       font-size: 20px;
       color: #ccc;
+      margin: 15px 0;
     }
 
-    /* About Section */
-    .about-section {
-      padding: 70px 20px;
-      text-align: center;
-    }
-
-    .about-section h2 {
-      font-size: 32px;
-      color: #00eaff;
-      margin-bottom: 20px;
-    }
-
-    .about-section p {
-      max-width: 900px;
-      margin: auto;
-      font-size: 18px;
-      color: #bbb;
-      line-height: 1.8;
-    }
-
-    /* Contact Section */
-    .contact {
-      text-align: center;
-      padding: 60px;
-      background: #0f172a;
-    }
-
-    .contact h2 {
-      color: #00eaff;
-    }
-
-    .contact p {
-      color: #ccc;
-    }
-
-    .contact a {
+    .hero a {
       display: inline-block;
       margin-top: 20px;
       padding: 12px 30px;
@@ -100,9 +65,78 @@
       transition: 0.3s;
     }
 
-    .contact a:hover {
+    .hero a:hover {
       background: #00bcd4;
       box-shadow: 0 0 15px #00eaff;
+    }
+
+    /* Services */
+    .services {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .services h2 {
+      color: #00eaff;
+      margin-bottom: 30px;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .service-card {
+      background: #111827;
+      padding: 25px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,255,255,0.1);
+      transition: 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+    }
+
+    /* Why Choose Us */
+    .why {
+      padding: 60px 20px;
+      background: #0f172a;
+      text-align: center;
+    }
+
+    .why h2 {
+      color: #00eaff;
+      margin-bottom: 25px;
+    }
+
+    .why p {
+      max-width: 800px;
+      margin: auto;
+      color: #bbb;
+      line-height: 1.8;
+    }
+
+    /* Contact */
+    .contact {
+      text-align: center;
+      padding: 60px;
+    }
+
+    .contact h2 {
+      color: #00eaff;
+    }
+
+    .contact a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 30px;
+      background: #00eaff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 25px;
     }
 
     /* Footer */
@@ -112,7 +146,6 @@
       background: #000;
       color: #888;
       font-size: 14px;
-      border-top: 1px solid rgba(0,255,255,0.2);
     }
   </style>
 </head>
@@ -126,26 +159,39 @@
     <a href="#contact">Contact</a>
   </div>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <div class="hero">
-    <h1>Bytenex Innovation</h1>
-    <p>Precision Automation for Every Industry</p>
+    <h1>Smart Automation. Secure Future.</h1>
+    <p>Delivering Advanced ELV & Automation Solutions Across Industries</p>
+    <a href="about.html">Explore More</a>
   </div>
 
-  <!-- About Section -->
-  <section class="about-section">
-    <h2>About Bytenex Innovation</h2>
-    <p>
-      <strong>Bytenex Innovation</strong> is a leading provider of sales and services in Electronic Automation, Safety, and Security solutions. We specialize in the design and implementation of turnkey ELV automation systems, helping businesses across diverse industries achieve optimal performance, enhanced productivity, and operational efficiency.
-    </p>
-  </section>
+  <!-- Services Preview -->
+  <div class="services">
+    <h2>Our Core Services</h2>
 
-  <!-- Contact Section -->
+    <div class="service-grid">
+      <div class="service-card">Building Management Systems</div>
+      <div class="service-card">Industrial Automation</div>
+      <div class="service-card">Video Surveillance</div>
+      <div class="service-card">Fire Alarm Systems</div>
+      <div class="service-card">Access Control</div>
+      <div class="service-card">Networking Solutions</div>
+    </div>
+  </div>
+
+  <!-- Why Choose Us -->
+  <div class="why">
+    <h2>Why Choose Bytenex?</h2>
+    <p>
+      With a strong team of experienced professionals, Bytenex Innovation delivers reliable, scalable, and customized automation solutions. We focus on quality, innovation, and long-term client relationships, ensuring every project meets the highest industry standards.
+    </p>
+  </div>
+
+  <!-- Contact -->
   <div id="contact" class="contact">
     <h2>Contact Us</h2>
-    <p>Phone: +91-8200031345</p>
-    <p>Email: info@bytenexinnovation.in</p>
-
+    <p>+91-8200031345 | info@bytenexinnovation.in</p>
     <a href="tel:+918200031345">Call Now</a>
   </div>
 
