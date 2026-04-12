@@ -8,49 +8,60 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+      background-color: #0b0f1a;
+      color: #fff;
     }
 
     /* Navbar */
     .navbar {
-      background-color: #222;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
       padding: 15px;
       text-align: center;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
     }
 
     .navbar a {
-      color: white;
+      color: #00eaff;
       margin: 0 15px;
       text-decoration: none;
       font-size: 18px;
+      transition: 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #00eaff;
     }
 
     /* Hero Section */
     .hero {
-      background-color: #007BFF;
-      color: white;
-      padding: 80px 20px;
+      background: linear-gradient(135deg, #0b0f1a, #001f3f);
+      padding: 100px 20px;
       text-align: center;
     }
 
     .hero h1 {
-      font-size: 40px;
+      font-size: 42px;
       margin-bottom: 10px;
+      color: #00eaff;
+      text-shadow: 0 0 15px #00eaff;
     }
 
     .hero p {
       font-size: 20px;
+      color: #ccc;
     }
 
     /* About Section */
     .about-section {
-      padding: 60px 20px;
-      background-color: #f9f9f9;
+      padding: 70px 20px;
       text-align: center;
     }
 
     .about-section h2 {
       font-size: 32px;
-      color: #222;
+      color: #00eaff;
       margin-bottom: 20px;
     }
 
@@ -58,25 +69,50 @@
       max-width: 900px;
       margin: auto;
       font-size: 18px;
-      color: #555;
+      color: #bbb;
       line-height: 1.8;
     }
 
     /* Contact Section */
     .contact {
       text-align: center;
-      padding: 50px;
-      background-color: #eee;
+      padding: 60px;
+      background: #0f172a;
+    }
+
+    .contact h2 {
+      color: #00eaff;
+    }
+
+    .contact p {
+      color: #ccc;
     }
 
     .contact a {
       display: inline-block;
-      margin-top: 15px;
-      padding: 12px 25px;
-      background-color: #007BFF;
-      color: white;
+      margin-top: 20px;
+      padding: 12px 30px;
+      background: #00eaff;
+      color: #000;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .contact a:hover {
+      background: #00bcd4;
+      box-shadow: 0 0 15px #00eaff;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #000;
+      color: #888;
+      font-size: 14px;
+      border-top: 1px solid rgba(0,255,255,0.2);
     }
   </style>
 </head>
@@ -85,19 +121,19 @@
 
   <!-- Navbar -->
   <div class="navbar">
-    <a href="#">Home</a>
-    <a href="#about">About</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
     <a href="#contact">Contact</a>
   </div>
 
   <!-- Hero Section -->
   <div class="hero">
-    <h1>Welcome to Bytenex Innovation</h1>
+    <h1>Bytenex Innovation</h1>
     <p>Precision Automation for Every Industry</p>
   </div>
 
   <!-- About Section -->
-  <section id="about" class="about-section">
+  <section class="about-section">
     <h2>About Bytenex Innovation</h2>
     <p>
       <strong>Bytenex Innovation</strong> is a leading provider of sales and services in Electronic Automation, Safety, and Security solutions. We specialize in the design and implementation of turnkey ELV automation systems, helping businesses across diverse industries achieve optimal performance, enhanced productivity, and operational efficiency.
@@ -111,6 +147,11 @@
     <p>Email: info@bytenexinnovation.in</p>
 
     <a href="tel:+918200031345">Call Now</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    © 2026 Bytenex Innovation. All Rights Reserved.
   </div>
 
 </body>
