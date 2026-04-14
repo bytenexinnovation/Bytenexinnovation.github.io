@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products - Bytenex Innovation</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0f1a;
+      color: #fff;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,255,255,0.2);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      animation: slideDown 1s ease;
+    }
+
+    .logo {
+      height: 45px;
+      border-radius: 10px;
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      filter: brightness(1.2) contrast(1.1);
+      box-shadow: 0 0 20px rgba(0,234,255,0.4);
+      animation: glowPulse 2s infinite alternate;
+      transition: 0.3s;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    .brand-name {
+      margin-left: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00eaff;
+    }
+
+    .nav-links a {
+      color: #00eaff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .header h1 {
+      color: #00eaff;
+      font-size: 40px;
+    }
+
+    .header p {
+      color: #bbb;
+    }
+
+    /* Product Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 40px;
+    }
+
+    .card {
+      background: #111827;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,255,255,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
+    }
+
+    .card h3 {
+      color: #00eaff;
+    }
+
+    .brands {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    /* Animations */
+    @keyframes glowPulse {
+      from { box-shadow: 0 0 10px #00eaff; }
+      to { box-shadow: 0 0 30px #00eaff; }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #000;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar with Logo -->
+  <div class="navbar">
+    <div class="nav-left">
+      <img src="DOC-20260410-WA0001.jpg" class="logo">
+      <span class="brand-name">Bytenex</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="product.html">Products</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Our Products & Solutions</h1>
+    <p>Smart Automation | ELV | Security | Networking</p>
+  </div>
+
+  <!-- Products -->
+  <div class="grid">
+
+    <div class="card">
+      <h3>Industrial Automation with IIoT</h3>
+      <div class="brands">
+        PLC: ABB, GE Fanuc, Siemens, Schneider, Allen Bradley<br>
+        DCS: Honeywell, ABB, Metso Automation<br>
+        SCADA: Honeywell, ABB, Siemens, Customized Bytenex
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Fire Alarm Systems</h3>
+      <div class="brands">
+        Honeywell / Notifier, Simplex, Morley, GST, Ravel, Customized Bytenex
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Access Control Systems</h3>
+      <div class="brands">
+        Honeywell, Siemens, Spectra, Customized Bytenex
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>CCTV & Surveillance</h3>
+      <div class="brands">
+        Honeywell, Hikvision, Dahua, CP Plus, Securus, Hifocus
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>BMS Software & Hardware</h3>
+      <div class="brands">
+        Honeywell, Siemens, Schneider, Customized Bytenex
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Networking Solutions</h3>
+      <div class="brands">
+        Cisco, HP, Netgear, D-Link, TP-Link
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    © 2026 Bytenex Innovation. All Rights Reserved.
+  </div>
+
+</body>
+</html>
