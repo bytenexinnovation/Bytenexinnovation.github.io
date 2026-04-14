@@ -30,23 +30,18 @@
       animation: slideDown 1s ease;
     }
 
-    /* Logo Box */
+    /* Rounded Logo */
     .logo-box {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 50px;
       height: 50px;
-      background: linear-gradient(135deg, #00eaff, #007bff);
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,234,255,0.6);
+      border-radius: 50%;
+      overflow: hidden;
     }
 
     .logo {
-      width: 40px;
-      height: 40px;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      mix-blend-mode: screen;
     }
 
     .brand-name {
@@ -69,11 +64,6 @@
       background: linear-gradient(135deg, #0b0f1a, #001f3f);
     }
 
-    .welcome-text {
-      color: #ccc;
-      animation: fadeIn 2s ease;
-    }
-
     .typing {
       font-size: 45px;
       color: #00eaff;
@@ -87,7 +77,6 @@
 
     .hero p {
       color: #ccc;
-      animation: fadeIn 3s ease;
     }
 
     .hero a {
@@ -108,7 +97,6 @@
 
     .section h2 {
       color: #00eaff;
-      margin-bottom: 20px;
     }
 
     .section p {
@@ -137,26 +125,36 @@
       box-shadow: 0 0 15px #00eaff;
     }
 
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 25px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .call-btn {
+      background: #00eaff;
+      color: #000;
+    }
+
+    .mail-btn {
+      border: 2px solid #fff;
+      color: #fff;
+    }
+
+    .mail-btn:hover {
+      background: #00eaff;
+      color: #000;
+    }
+
     /* CTA */
     .cta {
       background: linear-gradient(135deg, #001f3f, #002a5c);
       text-align: center;
       padding: 80px 20px;
-    }
-
-    .cta-btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 15px 40px;
-      border: 2px solid #fff;
-      color: #fff;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .cta-btn:hover {
-      background: #00eaff;
-      color: #000;
     }
 
     /* Footer */
@@ -179,11 +177,6 @@
 
     @keyframes blink {
       50% { border-color: transparent }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
   </style>
@@ -210,10 +203,11 @@
 
 <!-- Hero -->
 <div class="hero">
-  <h2 class="welcome-text">Welcome to</h2>
+  <h2>Welcome to</h2>
   <h1 class="typing">Bytenex Innovation</h1>
   <p>Delivering Advanced ELV & Automation Solutions Across Industries</p>
-  <a href="about.html">Explore More</a>
+
+  <a href="about.html" class="btn call-btn">Explore More</a>
 </div>
 
 <!-- Expertise -->
@@ -221,17 +215,16 @@
   <h2>Our Expertise</h2>
   <p>
     At <strong>Bytenex Innovation</strong>, we specialize in delivering intelligent and future-ready automation solutions. 
-    Our expertise spans across <strong>IoT Integration, Industrial Automation, and Advanced ELV Systems</strong>, 
-    enabling businesses to achieve smarter operations, enhanced security, and seamless connectivity.
+    Our expertise spans across <strong>IoT Integration, Industrial Automation, and Advanced ELV Systems</strong>.
   </p>
 
   <div class="grid">
-    <div class="card">IoT Integration & Smart Systems</div>
-    <div class="card">Industrial Automation Solutions</div>
-    <div class="card">Smart Building & ELV Integration</div>
-    <div class="card">Security & Surveillance Systems</div>
-    <div class="card">Network & Communication Infrastructure</div>
-    <div class="card">Customized Automation Projects</div>
+    <div class="card">IoT Integration</div>
+    <div class="card">Industrial Automation</div>
+    <div class="card">Smart Building</div>
+    <div class="card">Security Systems</div>
+    <div class="card">Networking</div>
+    <div class="card">Custom Projects</div>
   </div>
 </div>
 
@@ -239,8 +232,7 @@
 <div class="section" style="background:#0f172a;">
   <h2>Why Choose Bytenex?</h2>
   <p>
-    With a strong team of experienced professionals, Bytenex Innovation delivers reliable, scalable, and customized automation solutions. 
-    We focus on quality, innovation, and long-term client relationships, ensuring every project meets the highest industry standards.
+    With a strong team of experienced professionals, Bytenex Innovation delivers reliable, scalable, and customized automation solutions.
   </p>
 </div>
 
@@ -248,6 +240,8 @@
 <div id="contact" class="section">
   <h2>Contact Us</h2>
   <p>+91-8200031345 | info@bytenexinnovation.in</p>
+
+  <a href="tel:+918200031345" class="btn call-btn">Call Now</a>
 </div>
 
 <!-- CTA -->
@@ -255,8 +249,14 @@
   <h2>Reach Out to Us</h2>
   <h1>Your Next Project Starts Here</h1>
 
-  <a href="mailto:engineers@bytenexinnovation.in?subject=Enquiry&body=Hello Bytenex Team," class="cta-btn">
+  <a href="mailto:engineers@bytenexinnovation.in?subject=Enquiry&body=Hello Bytenex Team," class="btn mail-btn">
     Enquire Now →
+  </a>
+
+  <br>
+
+  <a href="tel:+918200031345" class="btn call-btn">
+    Call Now
   </a>
 </div>
 
