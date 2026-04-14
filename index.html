@@ -27,20 +27,33 @@
     .nav-left {
       display: flex;
       align-items: center;
-      animation: fadeIn 1s ease;
+      animation: slideDown 1s ease;
+    }
+
+    /* Logo Box */
+    .logo-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #00eaff, #007bff);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,234,255,0.6);
     }
 
     .logo {
-      height: 45px;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
       mix-blend-mode: screen;
-      opacity: 0.9;
-      animation: glow 2s infinite alternate;
     }
 
     .brand-name {
       margin-left: 10px;
-      color: #00eaff;
+      font-size: 20px;
       font-weight: bold;
+      color: #00eaff;
     }
 
     .nav-links a {
@@ -57,8 +70,8 @@
     }
 
     .welcome-text {
-      animation: fadeIn 2s ease;
       color: #ccc;
+      animation: fadeIn 2s ease;
     }
 
     .typing {
@@ -73,8 +86,8 @@
     }
 
     .hero p {
-      animation: fadeIn 3s ease;
       color: #ccc;
+      animation: fadeIn 3s ease;
     }
 
     .hero a {
@@ -85,11 +98,6 @@
       color: #000;
       border-radius: 25px;
       text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .hero a:hover {
-      box-shadow: 0 0 15px #00eaff;
     }
 
     /* Section */
@@ -108,7 +116,6 @@
       margin: auto;
       color: #bbb;
       line-height: 1.8;
-      animation: fadeIn 2s ease;
     }
 
     .grid {
@@ -123,7 +130,6 @@
       padding: 20px;
       border-radius: 10px;
       transition: 0.3s;
-      animation: fadeInUp 1s ease;
     }
 
     .card:hover {
@@ -161,9 +167,9 @@
     }
 
     /* Animations */
-    @keyframes glow {
-      from { box-shadow: 0 0 10px #00eaff; }
-      to { box-shadow: 0 0 25px #00eaff; }
+    @keyframes slideDown {
+      from { transform: translateY(-60px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     @keyframes typing {
@@ -180,10 +186,6 @@
       to { opacity: 1; }
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 
@@ -192,7 +194,9 @@
 <!-- Navbar -->
 <div class="navbar">
   <div class="nav-left">
-    <img src="DOC-20260410-WA0001.jpg" class="logo">
+    <div class="logo-box">
+      <img src="DOC-20260410-WA0001.jpg" class="logo">
+    </div>
     <span class="brand-name">Bytenex</span>
   </div>
 
