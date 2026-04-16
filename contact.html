@@ -1,54 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Bytenex</title>
+  <meta charset="UTF-8">
+  <title>Contact - Bytenex Innovation</title>
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #0f172a;
-            color: white;
-            text-align: center;
-            padding: 50px;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
 
-        .box {
-            background: #020617;
-            padding: 30px;
-            border-radius: 10px;
-            display: inline-block;
-        }
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #fff;
+      font-size: 28px;
+      font-weight: bold;
+      color: #00aaff;
+      border-bottom: 1px solid #ddd;
+    }
 
-        a {
-            color: #38bdf8;
-            text-decoration: none;
-            display: block;
-            margin-top: 10px;
-        }
+    /* Section */
+    .container {
+      padding: 30px 20px;
+    }
 
-        .btn {
-            background: #38bdf8;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-    </style>
+    h1 {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    /* Card */
+    .card {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      transition: 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Icon */
+    .icon {
+      font-size: 50px;
+      margin-right: 20px;
+    }
+
+    .title {
+      font-size: 20px;
+      color: #0077aa;
+      font-weight: bold;
+    }
+
+    .desc {
+      color: #555;
+      margin-top: 5px;
+    }
+
+  </style>
 </head>
 
 <body>
 
-<div class="box">
-    <h2>Contact Us</h2>
-    
-    <p>📞 Phone: <a href="tel:+918200031345">+91-8200031345</a></p>
-    
-    <p>📧 Email: <a href="mailto:info@bytenexinnovation.in">info@bytenexinnovation.in</a></p>
+<!-- Header -->
+<div class="header">
+  Bytenex Innovation
+</div>
 
-    <br>
-    <a href="index.html" class="btn">Back to Home</a>
+<!-- Content -->
+<div class="container">
+
+  <h1>Contact Us</h1>
+
+  <!-- Sales -->
+  <a href="mailto:info@bytenexinnovation.in?subject=Sales Enquiry&body=Hello Bytenex Team," class="card">
+    <div class="icon">📧</div>
+    <div>
+      <div class="title">Sales</div>
+      <div class="desc">Get in touch with one of our sales representatives.</div>
+    </div>
+  </a>
+
+  <!-- Support -->
+  <a href="mailto:engineers@bytenexinnovation.in?subject=Support Request&body=Hello Bytenex Team," class="card">
+    <div class="icon">🎧</div>
+    <div>
+      <div class="title">Help and Support</div>
+      <div class="desc">For product support, careers and company questions.</div>
+    </div>
+  </a>
+
 </div>
 
 </body>
