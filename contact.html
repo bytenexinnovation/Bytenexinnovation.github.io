@@ -15,17 +15,49 @@
     /* Header */
     .header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      padding: 20px;
+      padding: 12px 20px;
       background: #fff;
-      font-size: 28px;
-      font-weight: bold;
-      color: #00aaff;
       border-bottom: 1px solid #ddd;
     }
 
-    /* Section */
+    .left {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Logo */
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand {
+      margin-left: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00aaff;
+    }
+
+    .home-btn {
+      text-decoration: none;
+      padding: 8px 18px;
+      background: #00aaff;
+      color: #fff;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    /* Container */
     .container {
       padding: 30px 20px;
     }
@@ -53,7 +85,6 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    /* Icon */
     .icon {
       font-size: 50px;
       margin-right: 20px;
@@ -70,6 +101,16 @@
       margin-top: 5px;
     }
 
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #000;
+      color: #888;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
   </style>
 </head>
 
@@ -77,7 +118,14 @@
 
 <!-- Header -->
 <div class="header">
-  Bytenex Innovation
+  <div class="left">
+    <div class="logo-box">
+      <img src="DOC-20260410-WA0001.jpg" class="logo">
+    </div>
+    <div class="brand">Bytenex Innovation</div>
+  </div>
+
+  <a href="index.html" class="home-btn">Home</a>
 </div>
 
 <!-- Content -->
@@ -103,6 +151,11 @@
     </div>
   </a>
 
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
 </body>
