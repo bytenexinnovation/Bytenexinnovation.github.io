@@ -57,7 +57,7 @@ button {
 
 <script>
 
-/* ================= USER ID GENERATOR ================= */
+/* ================= USER ID ================= */
 function generateUserId() {
   let num = Math.floor(Math.random() * 1999999) + 1;
   return "BNTINV" + num + "A";
@@ -75,7 +75,6 @@ function register() {
     mobile: r_mobile.value,
     company: r_company.value,
 
-    // SITE DETAILS
     siteName: r_site_name.value,
     siteAddress: r_site_address.value,
 
@@ -85,7 +84,7 @@ function register() {
 
   localStorage.setItem(userId, JSON.stringify(user));
 
-  alert("Account Created!\nYour USER ID:\n" + userId);
+  alert("Account Created!\nUSER ID: " + userId);
 
   showLogin();
 }
@@ -96,26 +95,27 @@ function login() {
   let input = user_email.value;
   let pass = user_pass.value;
 
-  /* ADMIN LOGIN */
+  /* ADMIN */
   if(input === "info@bytenexinnovation.in") {
 
-    localStorage.setItem("currentUser", JSON.stringify({
+    let admin = {
       email: input,
       name: "Admin",
       role: "admin"
-    }));
+    };
+
+    localStorage.setItem("currentUser", JSON.stringify(admin));
 
     login_box.style.display = "none";
     register_box.style.display = "none";
     portal.style.display = "block";
 
-    document.getElementById("welcome_user").innerText = "Admin";
-
+    welcome_user.innerText = "Admin";
     loadDashboard();
     return;
   }
 
-  /* USER LOGIN */
+  /* CUSTOMER */
   let user = JSON.parse(localStorage.getItem(input));
 
   if(user && user.password === pass) {
@@ -126,18 +126,15 @@ function login() {
     register_box.style.display = "none";
     portal.style.display = "block";
 
-    document.getElementById("welcome_user").innerText = user.name;
+    welcome_user.innerText = user.name;
 
     c_name.value = user.name;
     c_company.value = user.company;
     c_mobile.value = user.mobile;
     c_email.value = user.email;
 
-    // STORE SITE FOR DASHBOARD
-    window.currentSite = {
-      siteName: user.siteName,
-      siteAddress: user.siteAddress
-    };
+    site_name.innerText = user.siteName || "-";
+    site_address.innerText = user.siteAddress || "-";
 
     loadDashboard();
 
@@ -156,21 +153,18 @@ function logout() {
 /* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
 
-  let id = prompt("Enter your USER ID:");
+  let id = prompt("Enter USER ID:");
   let user = JSON.parse(localStorage.getItem(id));
 
-  if(!user) {
-    alert("User not found");
-    return;
-  }
+  if(!user) return alert("User not found");
 
-  let newPass = prompt("Enter new password:");
+  let newPass = prompt("New Password:");
   if(!newPass) return;
 
   user.password = newPass;
   localStorage.setItem(id, JSON.stringify(user));
 
-  alert("Password updated successfully");
+  alert("Password Updated");
 }
 
 /* ================= SWITCH ================= */
@@ -184,32 +178,31 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-/* ================= SERVICE TOGGLE ================= */
+/* ================= SERVICE ================= */
 function toggleOtherField() {
   other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= DASHBOARD (FIXED ISOLATION) ================= */
 function loadDashboard() {
 
-  let userData = JSON.parse(localStorage.getItem(
-    JSON.parse(localStorage.getItem("currentUser") || "{}").userId
-  ) || "{}");
-
-  if(userData.siteName) {
-    document.getElementById("site_name").innerText = userData.siteName;
-    document.getElementById("site_address").innerText = userData.siteAddress;
-  }
-
+  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
-  total_count.innerText = tickets.length;
-  open_count.innerText = tickets.filter(t => t.status === "Open").length;
-  close_count.innerText = tickets.filter(t => t.status === "Closed").length;
+  let isAdmin = currentUser.role === "admin";
+  let userId = currentUser.userId;
+
+  let filtered = isAdmin
+    ? tickets
+    : tickets.filter(t => t.userId === userId);
+
+  total_count.innerText = filtered.length;
+  open_count.innerText = filtered.filter(t => t.status === "Open").length;
+  close_count.innerText = filtered.filter(t => t.status === "Closed").length;
 
   let html = "";
 
-  tickets.forEach((t) => {
+  filtered.forEach(t => {
 
     html += `
       <div style="background:#111827; padding:12px; margin:10px 0; border-radius:10px; text-align:left;">
@@ -222,9 +215,9 @@ function loadDashboard() {
 
         ${t.status === "Closed" ? `
           <hr>
-          <b>Root Cause:</b> ${t.rootCause}<br>
-          <b>Closing Remark:</b> ${t.closingRemark}<br>
-          <small>Closed At: ${t.closedAt}</small>
+          <b>Root Cause:</b> ${t.rootCause || "-"}<br>
+          <b>Closing Remark:</b> ${t.closingRemark || "-"}<br>
+          <small>Closed At: ${t.closedAt || "-"}</small>
         ` : ""}
 
       </div>
@@ -250,9 +243,9 @@ function generateTicket() {
 
   ticket_no.innerText = "Ticket No: " + ticket;
 
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-
   let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
     id: ticket,
@@ -276,26 +269,15 @@ function generateTicket() {
   let subject = encodeURIComponent("Ticket No: " + ticket);
 
   let body = encodeURIComponent(
-    "===== BYTENEX SERVICE REQUEST =====\n\n" +
-
-    "Ticket No: " + ticket + "\n" +
-    "Date: " + new Date().toLocaleString() + "\n\n" +
-
-    "Customer Details:\n" +
+    "===== BYTENEX REQUEST =====\n\n" +
+    "Ticket: " + ticket + "\n\n" +
     "Name: " + c_name.value + "\n" +
     "Company: " + c_company.value + "\n" +
     "Mobile: " + c_mobile.value + "\n" +
     "Email: " + c_email.value + "\n\n" +
-
-    "Service Details:\n" +
-    "Type: " + type + "\n" +
-    "Contract: " + contract + "\n" +
     "Service: " + finalService + "\n" +
     "Priority: " + priority + "\n\n" +
-
-    "Issue:\n" + issue + "\n\n" +
-
-    "===== END ====="
+    "Issue:\n" + issue
   );
 
   window.location.href =
@@ -319,10 +301,8 @@ function generateTicket() {
 
   <button onclick="login()">Login</button>
 
-  <div>
-    <span class="link" onclick="showRegister()">Create Account</span>
-    <span class="link" onclick="forgotPassword()">Forgot Password</span>
-  </div>
+  <span class="link" onclick="showRegister()">Create Account</span>
+  <span class="link" onclick="forgotPassword()">Forgot Password</span>
 </div>
 
 <!-- REGISTER -->
@@ -332,33 +312,29 @@ function generateTicket() {
   <input id="r_mobile" placeholder="Mobile">
   <input id="r_company" placeholder="Company">
 
-  <!-- SITE DETAILS -->
   <input id="r_site_name" placeholder="Site Name">
   <textarea id="r_site_address" placeholder="Site Address"></textarea>
 
   <input id="r_pass" type="password" placeholder="Password">
 
   <button onclick="register()">Create Account</button>
-  <p class="link" onclick="showLogin()">Back to Login</p>
+  <p class="link" onclick="showLogin()">Back</p>
 </div>
 
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
 
   <!-- HEADER -->
-  <div style="display:flex; justify-content:space-between; align-items:center;">
+  <div style="display:flex; justify-content:space-between;">
     <h3>Welcome, <span id="welcome_user">User</span></h3>
-    <button onclick="logout()" style="width:auto; background:#ff4d4d; padding:8px 15px;">
-      Logout
-    </button>
+    <button onclick="logout()" style="width:auto;background:#ff4d4d;">Logout</button>
   </div>
 
-  <!-- SITE DETAILS -->
-  <h3>My Site Details</h3>
+  <!-- SITE -->
+  <h3>My Site</h3>
   <div style="background:#111827; padding:10px; border-radius:10px; text-align:left;">
     <b>Site Name:</b> <span id="site_name">-</span><br>
-    <b>Site Address:</b><br>
-    <span id="site_address">-</span>
+    <b>Site Address:</b> <span id="site_address">-</span>
   </div>
 
   <hr>
@@ -375,9 +351,7 @@ function generateTicket() {
 
   <hr>
 
-  <!-- TICKET FORM -->
-  <h3>Raise Ticket</h3>
-
+  <!-- FORM -->
   <input id="c_name" placeholder="Name">
   <input id="c_company" placeholder="Company">
   <input id="c_mobile" placeholder="Mobile">
@@ -412,13 +386,11 @@ function generateTicket() {
 
   <button onclick="generateTicket()">Submit</button>
 
-  <div id="ticket_no" style="color:#00eaff;margin-top:10px;"></div>
+  <div id="ticket_no"></div>
 
 </div>
 
-<div class="footer">
-© 2026 Bytenex Innovation
-</div>
+<div class="footer">© 2026 Bytenex Innovation</div>
 
 </body>
 </html>
