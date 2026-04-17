@@ -155,7 +155,7 @@ function logout() {
   login_box.style.display = "block";
 }
 
-/* ================= FORGOT ================= */
+/* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
 
   let id = prompt("Enter USER ID:");
@@ -191,7 +191,6 @@ function toggleOtherField() {
 function closeTicket(id) {
 
   let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   let rca = document.getElementById("rca_" + id).value;
@@ -270,8 +269,15 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= GENERATE TICKET + MAIL FIX ================= */
+/* ================= GENERATE TICKET (FIXED + STABLE MAIL) ================= */
 function generateTicket() {
+
+  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  if(!currentUser || !currentUser.userId) {
+    alert("Session expired. Please login again.");
+    return;
+  }
 
   let issue = issue_desc.value.trim();
   let serviceType = service.value;
@@ -294,33 +300,22 @@ function generateTicket() {
 
   let finalService = serviceType === "Other" ? other : serviceType;
 
-  let ticket = "TKT-" + Math.floor(Math.random()*999999);
-
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-  if(!currentUser.userId) {
-    alert("Session expired. Login again.");
-    return;
-  }
+  let ticket = "TKT-" + Date.now();
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
     id: ticket,
     userId: currentUser.userId,
-
     name: c_name.value,
     company: c_company.value,
     mobile: c_mobile.value,
     email: c_email.value,
-
     siteName: currentUser.siteName,
     siteAddress: currentUser.siteAddress,
-
     service: finalService,
     priority: priority_sel.value,
     issue: issue,
-
     status: "Open",
     createdAt: new Date().toLocaleString()
   });
@@ -329,23 +324,29 @@ function generateTicket() {
 
   loadDashboard();
 
-  /* ================= MAIL REDIRECT FIX ================= */
+  /* ================= MAIL REDIRECT ================= */
+
   let subject = "Bytenex Ticket - " + ticket;
 
   let body =
-  "Ticket: " + ticket + "%0D%0A" +
-  "Name: " + c_name.value + "%0D%0A" +
-  "Company: " + c_company.value + "%0D%0A" +
-  "Mobile: " + c_mobile.value + "%0D%0A%0D%0A" +
-  "Site: " + currentUser.siteName + "%0D%0A" +
-  "Address: " + currentUser.siteAddress + "%0D%0A%0D%0A" +
-  "Issue: " + issue + "%0D%0A%0D%0A" +
-  "Priority: " + priority_sel.value;
+`Ticket: ${ticket}
+Name: ${c_name.value}
+Company: ${c_company.value}
+Mobile: ${c_mobile.value}
+
+Site: ${currentUser.siteName}
+Address: ${currentUser.siteAddress}
+
+Service: ${finalService}
+Priority: ${priority_sel.value}
+
+Issue:
+${issue}`;
 
   window.location.href =
   "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in"
   + "?subject=" + encodeURIComponent(subject)
-  + "&body=" + body;
+  + "&body=" + encodeURIComponent(body);
 }
 
 </script>
