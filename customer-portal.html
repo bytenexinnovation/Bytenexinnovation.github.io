@@ -35,6 +35,7 @@ button {
   border: none;
   border-radius: 20px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .ticket {
@@ -45,11 +46,32 @@ button {
 </style>
 
 <script>
+// REGISTER USER
+function register() {
+  let userData = {
+    name: document.getElementById("r_name").value,
+    email: document.getElementById("r_email").value,
+    mobile: document.getElementById("r_mobile").value,
+    location: document.getElementById("r_location").value,
+    company: document.getElementById("r_company").value,
+    password: document.getElementById("r_pass").value
+  };
+
+  localStorage.setItem(userData.email, JSON.stringify(userData));
+
+  alert("Account Created Successfully!");
+  document.getElementById("register-box").style.display = "none";
+  document.getElementById("login-box").style.display = "block";
+}
+
+// LOGIN USER
 function login() {
-  let user = document.getElementById("user").value;
+  let email = document.getElementById("user").value;
   let pass = document.getElementById("pass").value;
 
-  if(user === "admin" && pass === "1234") {
+  let storedUser = JSON.parse(localStorage.getItem(email));
+
+  if(storedUser && storedUser.password === pass) {
     document.getElementById("login-box").style.display = "none";
     document.getElementById("portal").style.display = "block";
   } else {
@@ -57,15 +79,26 @@ function login() {
   }
 }
 
+// GENERATE TICKET
 function generateTicket() {
   let type = document.getElementById("type").value;
   let service = document.getElementById("service").value;
 
   let random = Math.floor(Math.random() * 9999999);
-
   let ticket = type + "/" + service + "/" + random;
 
   document.getElementById("ticket").innerText = "Ticket No: " + ticket;
+}
+
+// SWITCH FORMS
+function showRegister() {
+  document.getElementById("login-box").style.display = "none";
+  document.getElementById("register-box").style.display = "block";
+}
+
+function showLogin() {
+  document.getElementById("register-box").style.display = "none";
+  document.getElementById("login-box").style.display = "block";
 }
 </script>
 
@@ -75,15 +108,31 @@ function generateTicket() {
 
 <h2>Customer Portal</h2>
 
-<!-- Login -->
+<!-- LOGIN -->
 <div id="login-box" class="container">
   <h3>Login</h3>
-  <input type="text" id="user" placeholder="User ID">
+  <input type="text" id="user" placeholder="Email ID">
   <input type="password" id="pass" placeholder="Password">
   <button onclick="login()">Login</button>
+  <p>Don't have account? <span onclick="showRegister()" style="color:#00eaff; cursor:pointer;">Create Account</span></p>
 </div>
 
-<!-- Portal -->
+<!-- REGISTER -->
+<div id="register-box" class="container" style="display:none;">
+  <h3>Create Account</h3>
+
+  <input type="text" id="r_name" placeholder="Full Name">
+  <input type="email" id="r_email" placeholder="Company Email ID">
+  <input type="text" id="r_mobile" placeholder="Mobile Number">
+  <input type="text" id="r_location" placeholder="Location">
+  <input type="text" id="r_company" placeholder="Company Name">
+  <input type="password" id="r_pass" placeholder="Create Password">
+
+  <button onclick="register()">Create Account</button>
+  <p>Already have account? <span onclick="showLogin()" style="color:#00eaff; cursor:pointer;">Login</span></p>
+</div>
+
+<!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
   <h3>Raise Service Request</h3>
 
