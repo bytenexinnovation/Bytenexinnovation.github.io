@@ -1,124 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Contact - Bytenex Innovation</title>
+<meta charset="UTF-8">
+<title>Contact - Bytenex Innovation</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-    }
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  animation: fadeDown 0.8s ease;
+}
 
-    .left {
-      display: flex;
-      align-items: center;
-    }
+.left {
+  display: flex;
+  align-items: center;
+}
 
-    .logo-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
+.logo-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
 
-    .logo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .brand {
-      margin-left: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00aaff;
-    }
+.brand {
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00aaff;
+}
 
-    .nav-btn {
-      text-decoration: none;
-      padding: 8px 18px;
-      background: #00aaff;
-      color: #fff;
-      border-radius: 20px;
-      font-size: 14px;
-      margin-left: 10px;
-    }
+/* SAME BUTTON STYLE */
+.nav-btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  background: #00aaff;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: 0.3s;
+}
 
-    .container {
-      padding: 30px 20px;
-    }
+.nav-btn:hover {
+  background: #0077aa;
+}
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 30px;
-    }
+/* Container */
+.container {
+  padding: 30px 20px;
+  animation: fadeUp 1s ease;
+}
 
-    .card {
-      display: flex;
-      align-items: center;
-      background: #fff;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      transition: 0.3s;
-      text-decoration: none;
-      color: #333;
-    }
+h1 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #0077aa;
+}
 
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+/* Cards */
+.card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #eee;
+}
 
-    .icon {
-      font-size: 50px;
-      margin-right: 20px;
-    }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
 
-    .title {
-      font-size: 20px;
-      color: #0077aa;
-      font-weight: bold;
-    }
+.icon {
+  font-size: 45px;
+  margin-right: 20px;
+}
 
-    .desc {
-      color: #555;
-      margin-top: 5px;
-    }
+.title {
+  font-size: 20px;
+  color: #0077aa;
+  font-weight: bold;
+}
 
-    .desc a {
-      color: #0077aa;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.desc {
+  color: #555;
+  margin-top: 5px;
+}
 
-    .remark {
-      font-size: 13px;
-      color: #888;
-      margin-left: 5px;
-    }
+.desc a {
+  color: #0077aa;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: #000;
-      color: #888;
-      font-size: 14px;
-      margin-top: 40px;
-    }
-  </style>
+.remark {
+  font-size: 13px;
+  color: #888;
+  margin-left: 5px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #000;
+  color: #888;
+  font-size: 14px;
+  margin-top: 40px;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 
 <body>
@@ -134,6 +159,10 @@
 
   <div>
     <a href="index.html" class="nav-btn">Home</a>
+    <a href="about.html" class="nav-btn">About</a>
+    <a href="product.html" class="nav-btn">Products</a>
+    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
   </div>
 </div>
 
@@ -147,7 +176,7 @@
     <div class="icon">📧</div>
     <div>
       <div class="title">Sales</div>
-      <div class="desc">Get in touch with one of our sales representatives.</div>
+      <div class="desc">Get in touch with our sales team.</div>
     </div>
   </a>
 
@@ -156,7 +185,7 @@
     <div class="icon">🎧</div>
     <div>
       <div class="title">Help and Support</div>
-      <div class="desc">For product support, careers and company questions.</div>
+      <div class="desc">Product support & technical queries.</div>
     </div>
   </a>
 
@@ -168,17 +197,17 @@
 
       <div class="desc">
         <a href="tel:+918200031345">+91 82000 31345</a>
-        <span class="remark">(For Domestic Projects)</span>
+        <span class="remark">(Domestic Projects)</span>
       </div>
 
       <div class="desc">
         <a href="tel:+919998266352">+91 99982 66352</a>
-        <span class="remark">(For International Projects Consultancy)</span>
+        <span class="remark">(International Consultancy)</span>
       </div>
 
       <div class="desc">
         <a href="tel:+919725552933">+91 97255 52933</a>
-        <span class="remark">(For International Projects Coordination)</span>
+        <span class="remark">(International Coordination)</span>
       </div>
 
     </div>
