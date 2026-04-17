@@ -27,15 +27,9 @@ input, select, textarea {
   padding: 12px;
   margin: 8px 0;
   border-radius: 8px;
-  border: 1px solid #374151;
+  border: none;
   background: #111827;
   color: white;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #00eaff;
-  box-shadow: 0 0 6px #00eaff55;
-  outline: none;
 }
 
 button {
@@ -45,7 +39,6 @@ button {
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  margin-top: 8px;
 }
 
 .link {
@@ -55,18 +48,10 @@ button {
   display: inline-block;
 }
 
-label {
-  font-size: 13px;
-  color: #9ca3af;
-  margin-top: 10px;
-  display: block;
-}
-
 .footer {
   margin-top: 20px;
   font-size: 12px;
   color: #aaa;
-  text-align: center;
 }
 </style>
 
@@ -74,7 +59,8 @@ label {
 
 /* ================= USER ID ================= */
 function generateUserId() {
-  return "BNTINV" + Math.floor(Math.random() * 1999999 + 1) + "A";
+  let num = Math.floor(Math.random() * 1999999) + 1;
+  return "BNTINV" + num + "A";
 }
 
 /* ================= REGISTER ================= */
@@ -88,8 +74,10 @@ function register() {
     email: r_email.value,
     mobile: r_mobile.value,
     company: r_company.value,
+
     siteName: r_site_name.value,
     siteAddress: r_site_address.value,
+
     password: r_pass.value,
     role: "customer"
   };
@@ -97,6 +85,7 @@ function register() {
   localStorage.setItem(userId, JSON.stringify(user));
 
   alert("Account Created!\nUSER ID: " + userId);
+
   showLogin();
 }
 
@@ -106,6 +95,7 @@ function login() {
   let input = user_email.value;
   let pass = user_pass.value;
 
+  /* ADMIN LOGIN */
   if(input === "info@bytenexinnovation.in") {
 
     localStorage.setItem("currentUser", JSON.stringify({
@@ -114,22 +104,25 @@ function login() {
       role: "admin"
     }));
 
-    portal.style.display = "block";
     login_box.style.display = "none";
+    register_box.style.display = "none";
+    portal.style.display = "block";
 
     welcome_user.innerText = "Admin";
     loadDashboard();
     return;
   }
 
+  /* CUSTOMER LOGIN */
   let user = JSON.parse(localStorage.getItem(input));
 
   if(user && user.password === pass) {
 
     localStorage.setItem("currentUser", JSON.stringify(user));
 
-    portal.style.display = "block";
     login_box.style.display = "none";
+    register_box.style.display = "none";
+    portal.style.display = "block";
 
     welcome_user.innerText = user.name;
 
@@ -138,13 +131,13 @@ function login() {
     c_mobile.value = user.mobile;
     c_email.value = user.email;
 
-    site_name.innerText = user.siteName;
-    site_address.innerText = user.siteAddress;
+    site_name.innerText = user.siteName || "-";
+    site_address.innerText = user.siteAddress || "-";
 
     loadDashboard();
 
   } else {
-    alert("Invalid Login");
+    alert("Invalid USER ID or Password");
   }
 }
 
@@ -157,22 +150,21 @@ function logout() {
 
 /* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
-
   let id = prompt("Enter USER ID:");
   let user = JSON.parse(localStorage.getItem(id));
 
   if(!user) return alert("User not found");
 
-  let pass = prompt("New Password:");
-  if(!pass) return;
+  let newPass = prompt("New Password:");
+  if(!newPass) return;
 
-  user.password = pass;
+  user.password = newPass;
   localStorage.setItem(id, JSON.stringify(user));
 
   alert("Password Updated");
 }
 
-/* ================= UI ================= */
+/* ================= SWITCH ================= */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -183,47 +175,51 @@ function showLogin(){
   login_box.style.display="block";
 }
 
+/* ================= SERVICE ================= */
 function toggleOtherField() {
-  other_box.style.display = service.value === "Other" ? "block" : "none";
+  other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
 /* ================= CLOSE TICKET ================= */
-function closeTicket(id) {
+function closeTicket(ticketId) {
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
-  let rca = document.getElementById("rca_" + id).value;
-  let remark = document.getElementById("remark_" + id).value;
+  let rca = document.getElementById("rca_" + ticketId).value;
+  let remark = document.getElementById("remark_" + ticketId).value;
 
   tickets = tickets.map(t => {
-    if(t.id === id) {
+
+    if(t.id === ticketId) {
       t.status = "Closed";
       t.rootCause = rca;
       t.closingRemark = remark;
-      t.closedBy = currentUser.email;
       t.closedAt = new Date().toLocaleString();
+      t.closedBy = currentUser.email || "admin";
     }
+
     return t;
   });
 
   localStorage.setItem("tickets", JSON.stringify(tickets));
+
   loadDashboard();
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= DASHBOARD (FIXED CRM) ================= */
 function loadDashboard() {
 
   let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   let isAdmin = currentUser.role === "admin";
+  let userId = currentUser.userId;
 
   let filtered = isAdmin
     ? tickets
-    : tickets.filter(t => t.userId === currentUser.userId);
-
-  filtered = filtered.filter(t => t.userId);
+    : tickets.filter(t => t.userId === userId);
 
   total_count.innerText = filtered.length;
   open_count.innerText = filtered.filter(t => t.status === "Open").length;
@@ -234,88 +230,84 @@ function loadDashboard() {
   filtered.forEach(t => {
 
     html += `
-    <div style="background:#111827;padding:12px;margin:10px 0;border-radius:10px;text-align:left;">
+      <div style="background:#111827; padding:12px; margin:10px 0; border-radius:10px; text-align:left;">
 
-      <b>Ticket:</b> ${t.id}<br>
-      <b>User ID:</b> ${t.userId}<br>
-      <b>Name:</b> ${t.name}<br>
-      <b>Company:</b> ${t.company}<br>
+        <b>Ticket:</b> ${t.id}<br>
+        <b>User:</b> ${t.userId}<br>
+        <b>Name:</b> ${t.name}<br>
+        <b>Company:</b> ${t.company}<br>
 
-      <b>Site:</b> ${t.siteName}<br>
-      <b>Address:</b> ${t.siteAddress}<br>
+        <b>Site:</b> ${t.siteName || "-"}<br>
+        <b>Address:</b> ${t.siteAddress || "-"}<br>
 
-      <b>Issue:</b> ${t.issue}<br>
+        <b>Service:</b> ${t.service}<br>
+        <b>Priority:</b> ${t.priority}<br>
+        <b>Issue:</b> ${t.issue}<br>
 
-      <b>Status:</b>
-      <span style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</span><br>
+        <b>Status:</b>
+        <span style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</span><br>
 
-      ${t.status === "Closed" ? `
-        <hr>
-        <b>Root Cause:</b> ${t.rootCause}<br>
-        <b>Remark:</b> ${t.closingRemark}<br>
-        <b>Closed By:</b> ${t.closedBy}<br>
-      ` : ""}
+        ${t.status === "Closed" ? `
+          <hr>
+          <b>Root Cause:</b> ${t.rootCause || "-"}<br>
+          <b>Closing Remark:</b> ${t.closingRemark || "-"}<br>
+          <b>Closed By:</b> ${t.closedBy || "-"}<br>
+          <small>${t.closedAt || ""}</small>
+        ` : ""}
 
-      ${isAdmin && t.status === "Open" ? `
-        <hr>
-        <input id="rca_${t.id}" placeholder="Root Cause">
-        <input id="remark_${t.id}" placeholder="Closing Remark">
-        <button onclick="closeTicket('${t.id}')">Close Ticket</button>
-      ` : ""}
+        ${isAdmin && t.status === "Open" ? `
+          <hr>
+          <input id="rca_${t.id}" placeholder="Root Cause">
+          <input id="remark_${t.id}" placeholder="Closing Remark">
+          <button onclick="closeTicket('${t.id}')"
+            style="background:#22c55e;margin-top:8px;">
+            Close Ticket
+          </button>
+        ` : ""}
 
-    </div>`;
+      </div>
+    `;
   });
 
   ticket_list.innerHTML = html;
 }
 
-/* ================= GENERATE TICKET (FIXED + STABLE MAIL) ================= */
+/* ================= GENERATE TICKET ================= */
 function generateTicket() {
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-  if(!currentUser || !currentUser.userId) {
-    alert("Session expired. Please login again.");
-    return;
-  }
-
-  let issue = issue_desc.value.trim();
+  let type = type_sel.value;
+  let contract = contract_no.value;
   let serviceType = service.value;
-  let other = other_service.value.trim();
+  let other = other_service.value;
+  let priority = priority_sel.value;
+  let issue = issue_desc.value;
 
-  if(issue === "") {
-    alert("Issue Description required");
-    return;
-  }
+  let finalService = (serviceType === "Other") ? other : serviceType;
 
-  if(serviceType === "Other" && other === "") {
-    alert("Please describe Other Service");
-    return;
-  }
+  let ticket = type + "-" + (contract || "NA") + "-" + Math.floor(Math.random()*999999);
 
-  if(type_sel.value === "AMC" && contract_no.value.trim() === "") {
-    alert("Contract Number required for AMC");
-    return;
-  }
+  ticket_no.innerText = "Ticket No: " + ticket;
 
-  let finalService = serviceType === "Other" ? other : serviceType;
-
-  let ticket = "TKT-" + Date.now();
+  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
     id: ticket,
-    userId: currentUser.userId,
+    userId: currentUser.userId || "ADMIN",
+
     name: c_name.value,
     company: c_company.value,
     mobile: c_mobile.value,
     email: c_email.value,
-    siteName: currentUser.siteName,
-    siteAddress: currentUser.siteAddress,
+
+    siteName: currentUser.siteName || "-",
+    siteAddress: currentUser.siteAddress || "-",
+
     service: finalService,
-    priority: priority_sel.value,
+    priority: priority,
     issue: issue,
+
     status: "Open",
     createdAt: new Date().toLocaleString()
   });
@@ -324,29 +316,20 @@ function generateTicket() {
 
   loadDashboard();
 
-  /* ================= MAIL REDIRECT ================= */
+  /* MAIL */
+  let subject = encodeURIComponent("Ticket No: " + ticket);
 
-  let subject = "Bytenex Ticket - " + ticket;
-
-  let body =
-`Ticket: ${ticket}
-Name: ${c_name.value}
-Company: ${c_company.value}
-Mobile: ${c_mobile.value}
-
-Site: ${currentUser.siteName}
-Address: ${currentUser.siteAddress}
-
-Service: ${finalService}
-Priority: ${priority_sel.value}
-
-Issue:
-${issue}`;
+  let body = encodeURIComponent(
+    "Ticket: " + ticket + "\n" +
+    "Name: " + c_name.value + "\n" +
+    "Company: " + c_company.value + "\n" +
+    "Issue: " + issue
+  );
 
   window.location.href =
-  "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in"
-  + "?subject=" + encodeURIComponent(subject)
-  + "&body=" + encodeURIComponent(body);
+    "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in" +
+    "?subject=" + subject +
+    "&body=" + body;
 }
 
 </script>
@@ -360,7 +343,7 @@ ${issue}`;
 <!-- LOGIN -->
 <div id="login_box" class="container">
   <input id="user_email" placeholder="USER ID / ADMIN EMAIL">
-  <input id="user_pass" type="password" placeholder="Enter Your Password">
+  <input id="user_pass" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
 
@@ -387,51 +370,52 @@ ${issue}`;
 <div id="portal" class="container" style="display:none;">
 
   <div style="display:flex;justify-content:space-between;">
-    <h3>Welcome, <span id="welcome_user"></span></h3>
-    <button onclick="logout()" style="width:auto;background:red;">Logout</button>
+    <h3>Welcome, <span id="welcome_user">User</span></h3>
+    <button onclick="logout()" style="width:auto;background:#ff4d4d;">Logout</button>
   </div>
 
-  <h4>My Site</h4>
-  <div style="text-align:left;background:#111827;padding:10px;">
-    <b>Site Name:</b> <span id="site_name"></span><br>
-    <b>Site Address:</b> <span id="site_address"></span>
+  <h3>My Site</h3>
+  <div style="text-align:left;background:#111827;padding:10px;border-radius:10px;">
+    <b>Site Name:</b> <span id="site_name">-</span><br>
+    <b>Site Address:</b> <span id="site_address">-</span>
   </div>
 
   <hr>
 
   <div style="display:flex;justify-content:space-between;">
-    <div>Total <span id="total_count">0</span></div>
-    <div>Open <span id="open_count">0</span></div>
-    <div>Closed <span id="close_count">0</span></div>
+    <div>Total: <span id="total_count">0</span></div>
+    <div>Open: <span id="open_count">0</span></div>
+    <div>Closed: <span id="close_count">0</span></div>
   </div>
 
+  <h3>Tickets</h3>
   <div id="ticket_list"></div>
 
   <hr>
 
-  <label>Service Type</label>
+  <input id="c_name" placeholder="Name">
+  <input id="c_company" placeholder="Company">
+  <input id="c_mobile" placeholder="Mobile">
+  <input id="c_email" placeholder="Email">
+
+  <select id="service" onchange="toggleOtherField()">
+    <option>Repair</option>
+    <option>Replacement</option>
+    <option>Installation</option>
+    <option value="Other">Other</option>
+  </select>
+
+  <div id="other_box" style="display:none;">
+    <textarea id="other_service"></textarea>
+  </div>
+
   <select id="type_sel">
     <option>AMC</option>
     <option>NONAMC</option>
   </select>
 
-  <label>Contract Number</label>
-  <input id="contract_no">
+  <input id="contract_no" placeholder="Contract Number">
 
-  <label>Service</label>
-  <select id="service" onchange="toggleOtherField()">
-    <option>Repair</option>
-    <option>Replacement</option>
-    <option>Installation</option>
-    <option>Other</option>
-  </select>
-
-  <div id="other_box" style="display:none;">
-    <label>Other Service</label>
-    <textarea id="other_service"></textarea>
-  </div>
-
-  <label>Priority</label>
   <select id="priority_sel">
     <option>Low</option>
     <option>Medium</option>
@@ -439,17 +423,15 @@ ${issue}`;
     <option>Critical</option>
   </select>
 
-  <label>Issue Description</label>
-  <textarea id="issue_desc" placeholder="Describe your issue here..."></textarea>
+  <textarea id="issue_desc"></textarea>
 
   <button onclick="generateTicket()">Submit</button>
 
+  <div id="ticket_no"></div>
+
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-© 2026 Bytenex Innovation. All Rights Reserved.
-</div>
+<div class="footer">© 2026 Bytenex Innovation</div>
 
 </body>
 </html>
