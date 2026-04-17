@@ -1,137 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Industrial Automation - Bytenex Innovation</title>
+<meta charset="UTF-8">
+<title>Industrial Automation - Bytenex Innovation</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
 
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-    }
+/* Header (Same as Home) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  animation: fadeDown 0.8s ease;
+}
 
-    .left {
-      display: flex;
-      align-items: center;
-    }
+.left {
+  display: flex;
+  align-items: center;
+}
 
-    .logo-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
+.logo-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
 
-    .logo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .brand {
-      margin-left: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00aaff;
-    }
+.brand {
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00aaff;
+}
 
-    .nav-btn {
-      text-decoration: none;
-      padding: 8px 18px;
-      background: #00aaff;
-      color: #fff;
-      border-radius: 20px;
-      font-size: 14px;
-      margin-left: 10px;
-    }
+/* SAME BUTTON STYLE */
+.nav-btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  background: #00aaff;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: 0.3s;
+}
 
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 50px 20px;
-      background: #eaf8ff;
-    }
+.nav-btn:hover {
+  background: #0077aa;
+}
 
-    .hero h1 {
-      font-size: 32px;
-      color: #0077aa;
-    }
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 50px 20px;
+  background: #eaf8ff;
+  animation: fadeUp 1s ease;
+}
 
-    .hero p {
-      color: #555;
-      margin-top: 10px;
-    }
+.hero h1 {
+  font-size: 32px;
+  color: #0077aa;
+}
 
-    /* Content */
-    .content {
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
+.hero p {
+  color: #555;
+  margin-top: 10px;
+}
 
-    .content p {
-      color: #555;
-      line-height: 1.8;
-      font-size: 17px;
-    }
+/* Content */
+.content {
+  padding: 40px 20px;
+  max-width: 1100px;
+  margin: auto;
+  animation: fadeUp 1s ease;
+}
 
-    /* Grid */
-    .grid {
-      margin-top: 40px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
+.content p {
+  color: #555;
+  line-height: 1.8;
+  font-size: 17px;
+}
 
-    .card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      transition: 0.3s;
-      border: 1px solid #eee;
-    }
+/* Grid */
+.grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+/* Cards */
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: 0.3s;
+  border: 1px solid #eee;
+}
 
-    .card img {
-      width: 60px;
-      margin-bottom: 10px;
-    }
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
 
-    .card h3 {
-      color: #0077aa;
-    }
+.card img {
+  width: 60px;
+  margin-bottom: 10px;
+}
 
-    .card p {
-      color: #666;
-      font-size: 14px;
-    }
+.card h3 {
+  color: #0077aa;
+}
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: #000;
-      color: #888;
-      margin-top: 40px;
-    }
-  </style>
+.card p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #000;
+  color: #888;
+  margin-top: 40px;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 
 <body>
@@ -147,6 +168,9 @@
 
   <div>
     <a href="index.html" class="nav-btn">Home</a>
+    <a href="about.html" class="nav-btn">About</a>
+    <a href="product.html" class="nav-btn">Products</a>
+    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
     <a href="contact.html" class="nav-btn">Contact</a>
   </div>
 </div>
@@ -162,11 +186,11 @@
 
   <p>
     At <strong>Bytenex Innovation</strong>, we specialize in industrial automation panel design and manufacturing. 
-    Our solutions are engineered to deliver high performance, reliability, and seamless integration with modern industrial systems.
+    Our solutions are engineered to deliver high performance, reliability, and seamless integration.
   </p>
 
   <p>
-    We design and manufacture customized control panels including PLC panels, MCC panels, PCC panels, and SCADA-based automation systems, ensuring efficient and safe industrial operations.
+    We design customized control panels including PLC, MCC, PCC, and SCADA systems for safe and efficient operations.
   </p>
 
   <!-- Services -->
@@ -174,38 +198,38 @@
 
     <div class="card">
       <img src="images/plc.png">
-      <h3>PLC Control Panels</h3>
-      <p>Advanced programmable logic control systems for automation.</p>
+      <h3>PLC Panels</h3>
+      <p>Advanced automation control systems.</p>
     </div>
 
     <div class="card">
       <img src="images/mcc.png">
       <h3>MCC Panels</h3>
-      <p>Motor Control Centers designed for industrial applications.</p>
+      <p>Motor control for industrial applications.</p>
     </div>
 
     <div class="card">
       <img src="images/pcc.png">
       <h3>PCC Panels</h3>
-      <p>Power Control Centers ensuring efficient power distribution.</p>
+      <p>Efficient power distribution systems.</p>
     </div>
 
     <div class="card">
       <img src="images/scada.png">
       <h3>SCADA Systems</h3>
-      <p>Real-time monitoring and control of industrial processes.</p>
+      <p>Real-time monitoring & control.</p>
     </div>
 
     <div class="card">
       <img src="images/vfd.png">
       <h3>VFD Panels</h3>
-      <p>Variable Frequency Drives for energy-efficient motor control.</p>
+      <p>Energy-efficient motor control.</p>
     </div>
 
     <div class="card">
       <img src="images/custom.png">
       <h3>Custom Panels</h3>
-      <p>Tailor-made automation panels based on client requirements.</p>
+      <p>Tailor-made solutions for clients.</p>
     </div>
 
   </div>
