@@ -155,7 +155,7 @@ function logout() {
   login_box.style.display = "block";
 }
 
-/* ================= FORGOT PASSWORD ================= */
+/* ================= FORGOT ================= */
 function forgotPassword() {
 
   let id = prompt("Enter USER ID:");
@@ -224,6 +224,8 @@ function loadDashboard() {
     ? tickets
     : tickets.filter(t => t.userId === currentUser.userId);
 
+  filtered = filtered.filter(t => t.userId);
+
   total_count.innerText = filtered.length;
   open_count.innerText = filtered.filter(t => t.status === "Open").length;
   close_count.innerText = filtered.filter(t => t.status === "Closed").length;
@@ -268,7 +270,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= GENERATE TICKET ================= */
+/* ================= GENERATE TICKET + MAIL FIX ================= */
 function generateTicket() {
 
   let issue = issue_desc.value.trim();
@@ -296,6 +298,11 @@ function generateTicket() {
 
   let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
+  if(!currentUser.userId) {
+    alert("Session expired. Login again.");
+    return;
+  }
+
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
@@ -322,18 +329,23 @@ function generateTicket() {
 
   loadDashboard();
 
-  let subject = encodeURIComponent("Ticket " + ticket);
+  /* ================= MAIL REDIRECT FIX ================= */
+  let subject = "Bytenex Ticket - " + ticket;
 
-  let body = encodeURIComponent(
-    "Ticket: " + ticket + "\n" +
-    "Name: " + c_name.value + "\n" +
-    "Issue: " + issue
-  );
+  let body =
+  "Ticket: " + ticket + "%0D%0A" +
+  "Name: " + c_name.value + "%0D%0A" +
+  "Company: " + c_company.value + "%0D%0A" +
+  "Mobile: " + c_mobile.value + "%0D%0A%0D%0A" +
+  "Site: " + currentUser.siteName + "%0D%0A" +
+  "Address: " + currentUser.siteAddress + "%0D%0A%0D%0A" +
+  "Issue: " + issue + "%0D%0A%0D%0A" +
+  "Priority: " + priority_sel.value;
 
   window.location.href =
-    "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in" +
-    "?subject=" + subject +
-    "&body=" + body;
+  "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in"
+  + "?subject=" + encodeURIComponent(subject)
+  + "&body=" + body;
 }
 
 </script>
@@ -403,7 +415,7 @@ function generateTicket() {
   </select>
 
   <label>Contract Number</label>
-  <input id="contract_no" placeholder="Enter contract number">
+  <input id="contract_no">
 
   <label>Service</label>
   <select id="service" onchange="toggleOtherField()">
@@ -433,7 +445,7 @@ function generateTicket() {
 
 </div>
 
-<!-- FOOTER FIX -->
+<!-- FOOTER -->
 <div class="footer">
 © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
