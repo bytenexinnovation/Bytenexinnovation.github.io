@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <title>Customer Portal - Bytenex</title>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-
 <style>
 body {
   font-family: Arial;
@@ -23,7 +21,7 @@ body {
   border-radius: 10px;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
@@ -53,10 +51,6 @@ button {
 </style>
 
 <script>
-// INIT EMAILJS
-(function(){
-  emailjs.init("96jeYqjxp_2n0Pukl");
-})();
 
 // REGISTER
 function register() {
@@ -92,31 +86,36 @@ function login() {
   }
 }
 
-// GENERATE TICKET + SEND MAIL
+// GENERATE TICKET + OPEN MAIL
 function generateTicket() {
-  let type = document.getElementById("type").value;
-  let service = document.getElementById("service").value;
+  let type = type_sel.value;
+  let service = service_sel.value;
+  let issue = issue_desc.value;
 
   let random = Math.floor(Math.random() * 9999999);
   let ticket = type + "/" + service + "/" + random;
 
   document.getElementById("ticket").innerText = "Ticket No: " + ticket;
 
-  let templateParams = {
-    customer_name: c_name.value,
-    customer_email: c_email.value,
-    mobile: c_mobile.value,
-    company: c_company.value,
-    ticket: ticket
-  };
+  // Mail content
+  let subject = encodeURIComponent("Service Ticket - " + ticket);
 
-  emailjs.send("service_gpf0tfn", "template_rjju7w9", templateParams)
-    .then(function() {
-      alert("Ticket Generated & Email Sent!");
-    }, function(error) {
-      alert("Email Failed!");
-      console.log(error);
-    });
+  let body = encodeURIComponent(
+    "Customer Name: " + c_name.value + "\n" +
+    "Email: " + c_email.value + "\n" +
+    "Mobile: " + c_mobile.value + "\n" +
+    "Company: " + c_company.value + "\n\n" +
+    "Issue:\n" + issue + "\n\n" +
+    "Ticket No: " + ticket
+  );
+
+  // Mailto link
+  let mailtoLink = "mailto:engineers@bytenexinnovation.in,info@bytenexinnovation.in"
+                   + "?subject=" + subject
+                   + "&body=" + body;
+
+  // Open mail client
+  window.location.href = mailtoLink;
 }
 
 // SWITCH
@@ -129,6 +128,7 @@ function showLogin(){
   register_box.style.display="none";
   login_box.style.display="block";
 }
+
 </script>
 
 </head>
@@ -164,17 +164,20 @@ function showLogin(){
   <input id="c_mobile" placeholder="Mobile">
   <input id="c_email" placeholder="Email">
 
-  <select id="type">
+  <select id="type_sel">
     <option value="AMC">AMC</option>
     <option value="NONAMC">NON AMC</option>
   </select>
 
-  <select id="service">
+  <select id="service_sel">
     <option value="BI">BI</option>
     <option value="SERVICE">SERVICE</option>
   </select>
 
-  <button onclick="generateTicket()">Generate Ticket</button>
+  <!-- NEW FIELD -->
+  <textarea id="issue_desc" placeholder="Describe your issue..."></textarea>
+
+  <button onclick="generateTicket()">Submit Request</button>
 
   <div id="ticket" class="ticket"></div>
 </div>
