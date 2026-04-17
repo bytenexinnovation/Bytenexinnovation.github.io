@@ -63,6 +63,12 @@ body {
   background: #0077aa;
 }
 
+/* Highlight Customer Portal */
+a[href="customer-portal.html"] {
+  background: #0077aa;
+  box-shadow: 0 0 10px #00aaff;
+}
+
 /* Hero */
 .hero {
   text-align: center;
@@ -202,7 +208,7 @@ body {
   to { width: 100% }
 }
 
-/* ✅ Chatbot CSS (ONLY ADD) */
+/* Chatbot */
 #chatBtn {
   position: fixed;
   bottom: 20px;
@@ -267,6 +273,7 @@ body {
     <a href="about.html" class="nav-btn">About</a>
     <a href="product.html" class="nav-btn">Products</a>
     <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
+    <a href="customer-portal.html" class="nav-btn">Customer Portal</a>
     <a href="contact.html" class="nav-btn">Contact</a>
   </div>
 </div>
@@ -314,7 +321,7 @@ body {
   © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
-<!-- ✅ Chatbot HTML (ONLY ADD) -->
+<!-- Chatbot -->
 <div id="chatBtn" onclick="toggleChat()">💬</div>
 
 <div id="chatBox">
@@ -323,7 +330,6 @@ body {
   <input type="text" id="userInput" placeholder="Ask something..." onkeypress="handleKey(event)">
 </div>
 
-<!-- ✅ Chatbot Script (ONLY ADD) -->
 <script>
 function toggleChat() {
   let box = document.getElementById("chatBox");
