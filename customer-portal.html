@@ -2,42 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Bytenex Portal</title>
+<title>Bytenex Customer Portal</title>
 
 <style>
 body {
   font-family: 'Segoe UI', Arial;
-  background: #0b0f1a;
+  background: linear-gradient(135deg, #0b0f1a, #111827);
   color: white;
   text-align: center;
   padding: 20px;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 650px;
   margin: auto;
   background: #1f2937;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 25px;
+  border-radius: 12px;
 }
 
 input, select, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 8px 0;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   background: #111827;
   color: white;
 }
 
 button {
-  padding: 10px;
+  padding: 12px;
   width: 100%;
   background: #00eaff;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .link {
@@ -48,6 +49,7 @@ button {
 .ticket {
   margin-top: 10px;
   color: #00eaff;
+  font-weight: bold;
 }
 
 .footer {
@@ -91,7 +93,7 @@ function login() {
   }
 }
 
-// SHOW FORMS
+// SWITCH
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -102,9 +104,11 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-// OTHER FIELD
+// TOGGLE OTHER
 function toggleOtherField() {
-  other_box.style.display = (service.value === "Other") ? "block" : "none";
+  let val = service.value;
+  let box = document.getElementById("other_box");
+  box.style.display = (val === "Other") ? "block" : "none";
 }
 
 // GENERATE TICKET
@@ -117,12 +121,12 @@ function generateTicket() {
   let priority = priority_sel.value;
   let issue = issue_desc.value;
 
-  if(type === "AMC" && contract === "") {
+  if(type === "AMC" && contract.trim() === "") {
     alert("Contract Number required for AMC");
     return;
   }
 
-  if(serviceType === "Other" && other === "") {
+  if(serviceType === "Other" && other.trim() === "") {
     alert("Please describe service");
     return;
   }
@@ -182,6 +186,12 @@ function generateTicket() {
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
 
+  <h3>Raise Service Request</h3>
+
+  <p style="font-size:14px; color:#9ca3af; margin-bottom:15px; line-height:1.5;">
+  We're sorry to hear about your experience. Kindly share the details of your concern below, and our team will ensure prompt resolution.
+  </p>
+
   <input id="c_name" placeholder="Name">
   <input id="c_company" placeholder="Company">
   <input id="c_mobile" placeholder="Mobile">
@@ -192,16 +202,18 @@ function generateTicket() {
     <option value="NONAMC">NON AMC</option>
   </select>
 
-  <input id="contract_no" placeholder="Contract Number">
+  <input id="contract_no" placeholder="Contract Number (Required for AMC)">
 
   <select id="service" onchange="toggleOtherField()">
     <option value="Repair">Repair</option>
     <option value="Replacement">Replacement</option>
     <option value="Installation">Installation</option>
-    <option value="Other">Other</option>
+    <option value="Other">Other (Please Describe)</option>
   </select>
 
-  <textarea id="other_service" placeholder="Describe service..." style="display:none;"></textarea>
+  <div id="other_box" style="display:none;">
+    <textarea id="other_service" placeholder="Describe service..."></textarea>
+  </div>
 
   <select id="priority_sel">
     <option value="Low">Low</option>
@@ -219,7 +231,7 @@ function generateTicket() {
 </div>
 
 <div class="footer">
-© 2026 Bytenex Innovation
+© 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
 </body>
