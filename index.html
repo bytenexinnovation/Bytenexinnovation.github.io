@@ -201,6 +201,53 @@ body {
   from { width: 0 }
   to { width: 100% }
 }
+
+/* ✅ Chatbot CSS (ONLY ADD) */
+#chatBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #00aaff;
+  color: #fff;
+  padding: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 999;
+}
+
+#chatBox {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 420px;
+  background: #fff;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+#chatHeader {
+  background: #00aaff;
+  color: #fff;
+  padding: 10px;
+}
+
+#chatMessages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+#userInput {
+  border: none;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  width: 100%;
+}
 </style>
 </head>
 
@@ -266,6 +313,64 @@ body {
 <div class="footer">
   © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
+
+<!-- ✅ Chatbot HTML (ONLY ADD) -->
+<div id="chatBtn" onclick="toggleChat()">💬</div>
+
+<div id="chatBox">
+  <div id="chatHeader">Bytenex AI Assistant</div>
+  <div id="chatMessages"></div>
+  <input type="text" id="userInput" placeholder="Ask something..." onkeypress="handleKey(event)">
+</div>
+
+<!-- ✅ Chatbot Script (ONLY ADD) -->
+<script>
+function toggleChat() {
+  let box = document.getElementById("chatBox");
+  box.style.display = box.style.display === "flex" ? "none" : "flex";
+}
+
+function handleKey(e) {
+  if (e.key === "Enter") {
+    let input = document.getElementById("userInput");
+    let msg = input.value.toLowerCase().trim();
+
+    let chat = document.getElementById("chatMessages");
+    chat.innerHTML += "<div><b>You:</b> " + msg + "</div>";
+
+    let reply = "";
+    let found = true;
+
+    if (msg.includes("hi") || msg.includes("hello")) {
+      reply = "Hello! Welcome to Bytenex Innovation 😊";
+    }
+    else if (msg.includes("price") || msg.includes("cost")) {
+      reply = "Redirecting to sales...";
+      window.location.href = "mailto:info@bytenexinnovation.in";
+    }
+    else if (msg.includes("support")) {
+      reply = "Redirecting to support...";
+      window.location.href = "mailto:engineers@bytenexinnovation.in";
+    }
+    else if (msg.includes("call")) {
+      reply = "Call us at +91 82000 31345";
+    }
+    else {
+      found = false;
+    }
+
+    if (!found) {
+      reply = "This support is diverted to engineers.";
+      window.location.href = "mailto:engineers@bytenexinnovation.in?body=" + encodeURIComponent(msg);
+    }
+
+    chat.innerHTML += "<div><b>AI:</b> " + reply + "</div>";
+
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+  }
+}
+</script>
 
 </body>
 </html>
