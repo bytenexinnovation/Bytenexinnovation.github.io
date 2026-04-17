@@ -44,12 +44,8 @@ button {
 .link {
   color: #00eaff;
   cursor: pointer;
-}
-
-.ticket {
-  margin-top: 10px;
-  color: #00eaff;
-  font-weight: bold;
+  margin: 5px;
+  display: inline-block;
 }
 
 .footer {
@@ -61,7 +57,7 @@ button {
 
 <script>
 
-/* ========== REGISTER ========== */
+/* ================= REGISTER ================= */
 function register() {
   let user = {
     name: r_name.value,
@@ -76,11 +72,14 @@ function register() {
   showLogin();
 }
 
-/* ========== LOGIN ========== */
+/* ================= LOGIN ================= */
 function login() {
   let data = JSON.parse(localStorage.getItem(user_email.value));
 
   if(data && data.password === user_pass.value) {
+
+    localStorage.setItem("currentUser", data.email);
+
     login_box.style.display = "none";
     register_box.style.display = "none";
     portal.style.display = "block";
@@ -96,7 +95,33 @@ function login() {
   }
 }
 
-/* ========== SWITCH ========== */
+/* ================= LOGOUT ================= */
+function logout() {
+  localStorage.removeItem("currentUser");
+  portal.style.display = "none";
+  login_box.style.display = "block";
+}
+
+/* ================= FORGOT PASSWORD ================= */
+function forgotPassword() {
+  let email = prompt("Enter registered email:");
+  let user = JSON.parse(localStorage.getItem(email));
+
+  if(!user) {
+    alert("User not found");
+    return;
+  }
+
+  let newPass = prompt("Enter new password:");
+  if(!newPass) return;
+
+  user.password = newPass;
+  localStorage.setItem(email, JSON.stringify(user));
+
+  alert("Password updated successfully");
+}
+
+/* ================= SWITCH ================= */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -107,12 +132,12 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-/* ========== SERVICE TOGGLE ========== */
+/* ================= SERVICE TOGGLE ================= */
 function toggleOtherField() {
   other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
-/* ========== DASHBOARD ========== */
+/* ================= DASHBOARD ================= */
 function loadDashboard() {
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
@@ -139,11 +164,6 @@ function loadDashboard() {
           <small>Closed At: ${t.closedAt}</small>
         ` : ""}
 
-        <button onclick="closeTicket(${index})"
-          style="margin-top:10px; padding:8px; border-radius:8px;">
-          Close Ticket
-        </button>
-
       </div>
     `;
   });
@@ -151,34 +171,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ========== CLOSE TICKET (ADMIN ONLY) ========== */
-function closeTicket(index) {
-
-  let adminEmail = "info@bytenexinnovation.in";
-
-  if(c_email.value !== adminEmail) {
-    alert("Only admin can close tickets");
-    return;
-  }
-
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-
-  let remark = prompt("Enter Closing Remark:");
-  if(!remark) return;
-
-  let rootCause = prompt("Enter Root Cause:");
-  if(!rootCause) return;
-
-  tickets[index].status = "Closed";
-  tickets[index].closingRemark = remark;
-  tickets[index].rootCause = rootCause;
-  tickets[index].closedAt = new Date().toLocaleString();
-
-  localStorage.setItem("tickets", JSON.stringify(tickets));
-  loadDashboard();
-}
-
-/* ========== GENERATE TICKET ========== */
+/* ================= GENERATE TICKET + MAIL REDIRECT ================= */
 function generateTicket() {
 
   let type = type_sel.value;
@@ -193,17 +186,13 @@ function generateTicket() {
     return;
   }
 
-  if(serviceType === "Other" && other.trim() === "") {
-    alert("Describe service");
-    return;
-  }
-
   let finalService = (serviceType === "Other") ? other : serviceType;
 
   let ticket = type + "-" + (contract || "NA") + "-" + Math.floor(Math.random()*999999);
 
   ticket_no.innerText = "Ticket No: " + ticket;
 
+  /* SAVE TICKET */
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
@@ -222,6 +211,37 @@ function generateTicket() {
   localStorage.setItem("tickets", JSON.stringify(tickets));
 
   loadDashboard();
+
+  /* ================= MAIL REDIRECT ================= */
+  let subject = encodeURIComponent("Ticket No: " + ticket);
+
+  let body = encodeURIComponent(
+    "===== BYTENEX SERVICE REQUEST =====\n\n" +
+
+    "Ticket No: " + ticket + "\n" +
+    "Date: " + new Date().toLocaleString() + "\n\n" +
+
+    "Customer Details:\n" +
+    "Name: " + c_name.value + "\n" +
+    "Company: " + c_company.value + "\n" +
+    "Mobile: " + c_mobile.value + "\n" +
+    "Email: " + c_email.value + "\n\n" +
+
+    "Service Details:\n" +
+    "Type: " + type + "\n" +
+    "Contract: " + contract + "\n" +
+    "Service: " + finalService + "\n" +
+    "Priority: " + priority + "\n\n" +
+
+    "Issue:\n" + issue + "\n\n" +
+
+    "===== END ====="
+  );
+
+  window.location.href =
+    "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in" +
+    "?subject=" + subject +
+    "&body=" + body;
 }
 
 </script>
@@ -237,7 +257,11 @@ function generateTicket() {
   <input id="user_email" placeholder="Email">
   <input id="user_pass" type="password" placeholder="Password">
   <button onclick="login()">Login</button>
-  <p class="link" onclick="showRegister()">Create Account</p>
+
+  <div>
+    <span class="link" onclick="showRegister()">Create Account</span>
+    <span class="link" onclick="forgotPassword()">Forgot Password</span>
+  </div>
 </div>
 
 <!-- REGISTER -->
@@ -248,11 +272,15 @@ function generateTicket() {
   <input id="r_company" placeholder="Company">
   <input id="r_pass" type="password" placeholder="Password">
   <button onclick="register()">Create Account</button>
-  <p class="link" onclick="showLogin()">Back</p>
+  <p class="link" onclick="showLogin()">Back to Login</p>
 </div>
 
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
+
+  <button onclick="logout()" style="background:#ff4d4d; margin-bottom:10px;">
+    Logout
+  </button>
 
   <h3>Dashboard</h3>
 
@@ -275,8 +303,8 @@ function generateTicket() {
   <input id="c_email" placeholder="Email">
 
   <select id="type_sel">
-    <option value="AMC">AMC</option>
-    <option value="NONAMC">NON AMC</option>
+    <option>AMC</option>
+    <option>NONAMC</option>
   </select>
 
   <input id="contract_no" placeholder="Contract Number">
@@ -303,7 +331,7 @@ function generateTicket() {
 
   <button onclick="generateTicket()">Submit</button>
 
-  <div id="ticket_no" class="ticket"></div>
+  <div id="ticket_no" style="color:#00eaff;margin-top:10px;"></div>
 
 </div>
 
