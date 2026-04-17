@@ -27,9 +27,15 @@ input, select, textarea {
   padding: 12px;
   margin: 8px 0;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #374151;
   background: #111827;
   color: white;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #00eaff;
+  box-shadow: 0 0 6px #00eaff55;
+  outline: none;
 }
 
 button {
@@ -39,6 +45,7 @@ button {
   border: none;
   border-radius: 25px;
   cursor: pointer;
+  margin-top: 8px;
 }
 
 .link {
@@ -46,6 +53,13 @@ button {
   cursor: pointer;
   margin: 5px;
   display: inline-block;
+}
+
+label {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 10px;
+  display: block;
 }
 
 .footer {
@@ -59,8 +73,7 @@ button {
 
 /* ================= USER ID ================= */
 function generateUserId() {
-  let num = Math.floor(Math.random() * 1999999) + 1;
-  return "BNTINV" + num + "A";
+  return "BNTINV" + Math.floor(Math.random() * 1999999 + 1) + "A";
 }
 
 /* ================= REGISTER ================= */
@@ -74,10 +87,8 @@ function register() {
     email: r_email.value,
     mobile: r_mobile.value,
     company: r_company.value,
-
     siteName: r_site_name.value,
     siteAddress: r_site_address.value,
-
     password: r_pass.value,
     role: "customer"
   };
@@ -95,7 +106,6 @@ function login() {
   let input = user_email.value;
   let pass = user_pass.value;
 
-  /* ADMIN LOGIN */
   if(input === "info@bytenexinnovation.in") {
 
     localStorage.setItem("currentUser", JSON.stringify({
@@ -104,25 +114,22 @@ function login() {
       role: "admin"
     }));
 
-    login_box.style.display = "none";
-    register_box.style.display = "none";
     portal.style.display = "block";
+    login_box.style.display = "none";
 
     welcome_user.innerText = "Admin";
     loadDashboard();
     return;
   }
 
-  /* CUSTOMER LOGIN */
   let user = JSON.parse(localStorage.getItem(input));
 
   if(user && user.password === pass) {
 
     localStorage.setItem("currentUser", JSON.stringify(user));
 
-    login_box.style.display = "none";
-    register_box.style.display = "none";
     portal.style.display = "block";
+    login_box.style.display = "none";
 
     welcome_user.innerText = user.name;
 
@@ -131,13 +138,13 @@ function login() {
     c_mobile.value = user.mobile;
     c_email.value = user.email;
 
-    site_name.innerText = user.siteName || "-";
-    site_address.innerText = user.siteAddress || "-";
+    site_name.innerText = user.siteName;
+    site_address.innerText = user.siteAddress;
 
     loadDashboard();
 
   } else {
-    alert("Invalid USER ID or Password");
+    alert("Invalid Login");
   }
 }
 
@@ -150,21 +157,22 @@ function logout() {
 
 /* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
+
   let id = prompt("Enter USER ID:");
   let user = JSON.parse(localStorage.getItem(id));
 
   if(!user) return alert("User not found");
 
-  let newPass = prompt("New Password:");
-  if(!newPass) return;
+  let pass = prompt("New Password:");
+  if(!pass) return;
 
-  user.password = newPass;
+  user.password = pass;
   localStorage.setItem(id, JSON.stringify(user));
 
   alert("Password Updated");
 }
 
-/* ================= SWITCH ================= */
+/* ================= UI SWITCH ================= */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -177,49 +185,45 @@ function showLogin(){
 
 /* ================= SERVICE ================= */
 function toggleOtherField() {
-  other_box.style.display = (service.value === "Other") ? "block" : "none";
+  other_box.style.display = service.value === "Other" ? "block" : "none";
 }
 
 /* ================= CLOSE TICKET ================= */
-function closeTicket(ticketId) {
+function closeTicket(id) {
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  let user = JSON.parse(localStorage.getItem("currentUser"));
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
-  let rca = document.getElementById("rca_" + ticketId).value;
-  let remark = document.getElementById("remark_" + ticketId).value;
+  let rca = document.getElementById("rca_" + id).value;
+  let remark = document.getElementById("remark_" + id).value;
 
   tickets = tickets.map(t => {
-
-    if(t.id === ticketId) {
+    if(t.id === id) {
       t.status = "Closed";
       t.rootCause = rca;
       t.closingRemark = remark;
+      t.closedBy = user.email;
       t.closedAt = new Date().toLocaleString();
-      t.closedBy = currentUser.email || "admin";
     }
-
     return t;
   });
 
   localStorage.setItem("tickets", JSON.stringify(tickets));
-
   loadDashboard();
 }
 
-/* ================= DASHBOARD (FIXED CRM) ================= */
+/* ================= DASHBOARD ================= */
 function loadDashboard() {
 
   let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   let isAdmin = currentUser.role === "admin";
-  let userId = currentUser.userId;
 
   let filtered = isAdmin
     ? tickets
-    : tickets.filter(t => t.userId === userId);
+    : tickets.filter(t => t.userId === currentUser.userId);
 
   total_count.innerText = filtered.length;
   open_count.innerText = filtered.filter(t => t.status === "Open").length;
@@ -230,43 +234,33 @@ function loadDashboard() {
   filtered.forEach(t => {
 
     html += `
-      <div style="background:#111827; padding:12px; margin:10px 0; border-radius:10px; text-align:left;">
+    <div style="background:#111827;padding:12px;margin:10px 0;border-radius:10px;text-align:left;">
 
-        <b>Ticket:</b> ${t.id}<br>
-        <b>User:</b> ${t.userId}<br>
-        <b>Name:</b> ${t.name}<br>
-        <b>Company:</b> ${t.company}<br>
+      <b>Ticket:</b> ${t.id}<br>
+      <b>User:</b> ${t.userId}<br>
+      <b>Name:</b> ${t.name}<br>
+      <b>Site:</b> ${t.siteName}<br>
 
-        <b>Site:</b> ${t.siteName || "-"}<br>
-        <b>Address:</b> ${t.siteAddress || "-"}<br>
+      <b>Issue:</b> ${t.issue}<br>
 
-        <b>Service:</b> ${t.service}<br>
-        <b>Priority:</b> ${t.priority}<br>
-        <b>Issue:</b> ${t.issue}<br>
+      <b>Status:</b>
+      <span style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</span><br>
 
-        <b>Status:</b>
-        <span style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</span><br>
+      ${t.status === "Closed" ? `
+        <hr>
+        <b>RCA:</b> ${t.rootCause}<br>
+        <b>Remark:</b> ${t.closingRemark}<br>
+        <b>Closed By:</b> ${t.closedBy}<br>
+      ` : ""}
 
-        ${t.status === "Closed" ? `
-          <hr>
-          <b>Root Cause:</b> ${t.rootCause || "-"}<br>
-          <b>Closing Remark:</b> ${t.closingRemark || "-"}<br>
-          <b>Closed By:</b> ${t.closedBy || "-"}<br>
-          <small>${t.closedAt || ""}</small>
-        ` : ""}
+      ${isAdmin && t.status === "Open" ? `
+        <hr>
+        <input id="rca_${t.id}" placeholder="Root Cause">
+        <input id="remark_${t.id}" placeholder="Closing Remark">
+        <button onclick="closeTicket('${t.id}')">Close Ticket</button>
+      ` : ""}
 
-        ${isAdmin && t.status === "Open" ? `
-          <hr>
-          <input id="rca_${t.id}" placeholder="Root Cause">
-          <input id="remark_${t.id}" placeholder="Closing Remark">
-          <button onclick="closeTicket('${t.id}')"
-            style="background:#22c55e;margin-top:8px;">
-            Close Ticket
-          </button>
-        ` : ""}
-
-      </div>
-    `;
+    </div>`;
   });
 
   ticket_list.innerHTML = html;
@@ -275,39 +269,28 @@ function loadDashboard() {
 /* ================= GENERATE TICKET ================= */
 function generateTicket() {
 
-  let type = type_sel.value;
-  let contract = contract_no.value;
-  let serviceType = service.value;
-  let other = other_service.value;
-  let priority = priority_sel.value;
-  let issue = issue_desc.value;
+  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  let finalService = (serviceType === "Other") ? other : serviceType;
+  let ticket = "TKT-" + Math.floor(Math.random()*999999);
 
-  let ticket = type + "-" + (contract || "NA") + "-" + Math.floor(Math.random()*999999);
-
-  ticket_no.innerText = "Ticket No: " + ticket;
-
-  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  let finalService = service.value === "Other"
+    ? other_service.value
+    : service.value;
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
     id: ticket,
-    userId: currentUser.userId || "ADMIN",
-
+    userId: currentUser.userId,
     name: c_name.value,
     company: c_company.value,
     mobile: c_mobile.value,
     email: c_email.value,
-
-    siteName: currentUser.siteName || "-",
-    siteAddress: currentUser.siteAddress || "-",
-
+    siteName: currentUser.siteName,
+    siteAddress: currentUser.siteAddress,
     service: finalService,
-    priority: priority,
-    issue: issue,
-
+    priority: priority_sel.value,
+    issue: issue_desc.value,
     status: "Open",
     createdAt: new Date().toLocaleString()
   });
@@ -316,14 +299,12 @@ function generateTicket() {
 
   loadDashboard();
 
-  /* MAIL */
-  let subject = encodeURIComponent("Ticket No: " + ticket);
+  let subject = encodeURIComponent("Ticket " + ticket);
 
   let body = encodeURIComponent(
     "Ticket: " + ticket + "\n" +
     "Name: " + c_name.value + "\n" +
-    "Company: " + c_company.value + "\n" +
-    "Issue: " + issue
+    "Issue: " + issue_desc.value
   );
 
   window.location.href =
@@ -343,7 +324,7 @@ function generateTicket() {
 <!-- LOGIN -->
 <div id="login_box" class="container">
   <input id="user_email" placeholder="USER ID / ADMIN EMAIL">
-  <input id="user_pass" type="password" placeholder="Password">
+  <input id="user_pass" type="password">
 
   <button onclick="login()">Login</button>
 
@@ -361,7 +342,7 @@ function generateTicket() {
   <input id="r_site_name" placeholder="Site Name">
   <textarea id="r_site_address" placeholder="Site Address"></textarea>
 
-  <input id="r_pass" type="password" placeholder="Password">
+  <input id="r_pass" type="password">
 
   <button onclick="register()">Create Account</button>
 </div>
@@ -370,29 +351,29 @@ function generateTicket() {
 <div id="portal" class="container" style="display:none;">
 
   <div style="display:flex;justify-content:space-between;">
-    <h3>Welcome, <span id="welcome_user">User</span></h3>
-    <button onclick="logout()" style="width:auto;background:#ff4d4d;">Logout</button>
+    <h3>Welcome, <span id="welcome_user"></span></h3>
+    <button onclick="logout()" style="width:auto;background:red;">Logout</button>
   </div>
 
-  <h3>My Site</h3>
-  <div style="text-align:left;background:#111827;padding:10px;border-radius:10px;">
-    <b>Site Name:</b> <span id="site_name">-</span><br>
-    <b>Site Address:</b> <span id="site_address">-</span>
+  <h4>My Site</h4>
+  <div style="text-align:left;background:#111827;padding:10px;">
+    <b>Name:</b> <span id="site_name"></span><br>
+    <b>Address:</b> <span id="site_address"></span>
   </div>
 
   <hr>
 
   <div style="display:flex;justify-content:space-between;">
-    <div>Total: <span id="total_count">0</span></div>
-    <div>Open: <span id="open_count">0</span></div>
-    <div>Closed: <span id="close_count">0</span></div>
+    <div>Total <span id="total_count">0</span></div>
+    <div>Open <span id="open_count">0</span></div>
+    <div>Closed <span id="close_count">0</span></div>
   </div>
 
-  <h3>Tickets</h3>
   <div id="ticket_list"></div>
 
   <hr>
 
+  <!-- FORM -->
   <input id="c_name" placeholder="Name">
   <input id="c_company" placeholder="Company">
   <input id="c_mobile" placeholder="Mobile">
@@ -402,7 +383,7 @@ function generateTicket() {
     <option>Repair</option>
     <option>Replacement</option>
     <option>Installation</option>
-    <option value="Other">Other</option>
+    <option>Other</option>
   </select>
 
   <div id="other_box" style="display:none;">
@@ -414,7 +395,7 @@ function generateTicket() {
     <option>NONAMC</option>
   </select>
 
-  <input id="contract_no" placeholder="Contract Number">
+  <input id="contract_no">
 
   <select id="priority_sel">
     <option>Low</option>
@@ -427,11 +408,7 @@ function generateTicket() {
 
   <button onclick="generateTicket()">Submit</button>
 
-  <div id="ticket_no"></div>
-
 </div>
-
-<div class="footer">© 2026 Bytenex Innovation</div>
 
 </body>
 </html>
