@@ -57,13 +57,13 @@ button {
 
 <script>
 
-/* ========== USER ID GENERATOR ========== */
+/* ================= USER ID GENERATOR ================= */
 function generateUserId() {
   let num = Math.floor(Math.random() * 1999999) + 1;
   return "BNTINV" + num + "A";
 }
 
-/* ========== REGISTER ========== */
+/* ================= REGISTER ================= */
 function register() {
 
   let userId = generateUserId();
@@ -74,18 +74,23 @@ function register() {
     email: r_email.value,
     mobile: r_mobile.value,
     company: r_company.value,
+
+    // SITE DETAILS
+    siteName: r_site_name.value,
+    siteAddress: r_site_address.value,
+
     password: r_pass.value,
     role: "customer"
   };
 
   localStorage.setItem(userId, JSON.stringify(user));
 
-  alert("Account Created!\nYour USER ID:\n" + userId + "\nSave it for login");
+  alert("Account Created!\nYour USER ID:\n" + userId);
 
   showLogin();
 }
 
-/* ========== LOGIN (USER ID + ADMIN EMAIL) ========== */
+/* ================= LOGIN ================= */
 function login() {
 
   let input = user_email.value;
@@ -96,6 +101,7 @@ function login() {
 
     localStorage.setItem("currentUser", JSON.stringify({
       email: input,
+      name: "Admin",
       role: "admin"
     }));
 
@@ -103,11 +109,13 @@ function login() {
     register_box.style.display = "none";
     portal.style.display = "block";
 
+    document.getElementById("welcome_user").innerText = "Admin";
+
     loadDashboard();
     return;
   }
 
-  /* CUSTOMER LOGIN */
+  /* USER LOGIN */
   let user = JSON.parse(localStorage.getItem(input));
 
   if(user && user.password === pass) {
@@ -118,10 +126,18 @@ function login() {
     register_box.style.display = "none";
     portal.style.display = "block";
 
+    document.getElementById("welcome_user").innerText = user.name;
+
     c_name.value = user.name;
     c_company.value = user.company;
     c_mobile.value = user.mobile;
     c_email.value = user.email;
+
+    // STORE SITE FOR DASHBOARD
+    window.currentSite = {
+      siteName: user.siteName,
+      siteAddress: user.siteAddress
+    };
 
     loadDashboard();
 
@@ -130,14 +146,14 @@ function login() {
   }
 }
 
-/* ========== LOGOUT ========== */
+/* ================= LOGOUT ================= */
 function logout() {
   localStorage.removeItem("currentUser");
   portal.style.display = "none";
   login_box.style.display = "block";
 }
 
-/* ========== FORGOT PASSWORD ========== */
+/* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
 
   let id = prompt("Enter your USER ID:");
@@ -157,7 +173,7 @@ function forgotPassword() {
   alert("Password updated successfully");
 }
 
-/* ========== SWITCH ========== */
+/* ================= SWITCH ================= */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -168,13 +184,22 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-/* ========== SERVICE TOGGLE ========== */
+/* ================= SERVICE TOGGLE ================= */
 function toggleOtherField() {
   other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
-/* ========== DASHBOARD ========== */
+/* ================= DASHBOARD ================= */
 function loadDashboard() {
+
+  let userData = JSON.parse(localStorage.getItem(
+    JSON.parse(localStorage.getItem("currentUser") || "{}").userId
+  ) || "{}");
+
+  if(userData.siteName) {
+    document.getElementById("site_name").innerText = userData.siteName;
+    document.getElementById("site_address").innerText = userData.siteAddress;
+  }
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
@@ -209,7 +234,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ========== GENERATE TICKET + MAIL REDIRECT ========== */
+/* ================= GENERATE TICKET + MAIL ================= */
 function generateTicket() {
 
   let type = type_sel.value;
@@ -219,18 +244,12 @@ function generateTicket() {
   let priority = priority_sel.value;
   let issue = issue_desc.value;
 
-  if(type === "AMC" && contract.trim() === "") {
-    alert("Contract Number required");
-    return;
-  }
-
   let finalService = (serviceType === "Other") ? other : serviceType;
 
   let ticket = type + "-" + (contract || "NA") + "-" + Math.floor(Math.random()*999999);
 
   ticket_no.innerText = "Ticket No: " + ticket;
 
-  /* SAVE TICKET */
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
@@ -312,6 +331,11 @@ function generateTicket() {
   <input id="r_email" placeholder="Email">
   <input id="r_mobile" placeholder="Mobile">
   <input id="r_company" placeholder="Company">
+
+  <!-- SITE DETAILS -->
+  <input id="r_site_name" placeholder="Site Name">
+  <textarea id="r_site_address" placeholder="Site Address"></textarea>
+
   <input id="r_pass" type="password" placeholder="Password">
 
   <button onclick="register()">Create Account</button>
@@ -321,12 +345,25 @@ function generateTicket() {
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
 
-  <button onclick="logout()" style="background:#ff4d4d; margin-bottom:10px;">
-    Logout
-  </button>
+  <!-- HEADER -->
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h3>Welcome, <span id="welcome_user">User</span></h3>
+    <button onclick="logout()" style="width:auto; background:#ff4d4d; padding:8px 15px;">
+      Logout
+    </button>
+  </div>
 
-  <h3>Dashboard</h3>
+  <!-- SITE DETAILS -->
+  <h3>My Site Details</h3>
+  <div style="background:#111827; padding:10px; border-radius:10px; text-align:left;">
+    <b>Site Name:</b> <span id="site_name">-</span><br>
+    <b>Site Address:</b><br>
+    <span id="site_address">-</span>
+  </div>
 
+  <hr>
+
+  <!-- DASHBOARD -->
   <div style="display:flex; justify-content:space-between;">
     <div>Total: <span id="total_count">0</span></div>
     <div>Open: <span id="open_count">0</span></div>
@@ -338,6 +375,7 @@ function generateTicket() {
 
   <hr>
 
+  <!-- TICKET FORM -->
   <h3>Raise Ticket</h3>
 
   <input id="c_name" placeholder="Name">
