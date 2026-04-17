@@ -96,7 +96,6 @@ function register() {
   localStorage.setItem(userId, JSON.stringify(user));
 
   alert("Account Created!\nUSER ID: " + userId);
-
   showLogin();
 }
 
@@ -155,7 +154,7 @@ function logout() {
   login_box.style.display = "block";
 }
 
-/* ================= FORGOT PASSWORD ================= */
+/* ================= FORGOT ================= */
 function forgotPassword() {
 
   let id = prompt("Enter USER ID:");
@@ -172,7 +171,7 @@ function forgotPassword() {
   alert("Password Updated");
 }
 
-/* ================= UI SWITCH ================= */
+/* ================= UI ================= */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -183,7 +182,6 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-/* ================= SERVICE ================= */
 function toggleOtherField() {
   other_box.style.display = service.value === "Other" ? "block" : "none";
 }
@@ -191,7 +189,7 @@ function toggleOtherField() {
 /* ================= CLOSE TICKET ================= */
 function closeTicket(id) {
 
-  let user = JSON.parse(localStorage.getItem("currentUser"));
+  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
@@ -203,7 +201,7 @@ function closeTicket(id) {
       t.status = "Closed";
       t.rootCause = rca;
       t.closingRemark = remark;
-      t.closedBy = user.email;
+      t.closedBy = currentUser.email;
       t.closedAt = new Date().toLocaleString();
     }
     return t;
@@ -237,9 +235,12 @@ function loadDashboard() {
     <div style="background:#111827;padding:12px;margin:10px 0;border-radius:10px;text-align:left;">
 
       <b>Ticket:</b> ${t.id}<br>
-      <b>User:</b> ${t.userId}<br>
+      <b>User ID:</b> ${t.userId}<br>
       <b>Name:</b> ${t.name}<br>
+      <b>Company:</b> ${t.company}<br>
+
       <b>Site:</b> ${t.siteName}<br>
+      <b>Address:</b> ${t.siteAddress}<br>
 
       <b>Issue:</b> ${t.issue}<br>
 
@@ -248,7 +249,7 @@ function loadDashboard() {
 
       ${t.status === "Closed" ? `
         <hr>
-        <b>RCA:</b> ${t.rootCause}<br>
+        <b>Root Cause:</b> ${t.rootCause}<br>
         <b>Remark:</b> ${t.closingRemark}<br>
         <b>Closed By:</b> ${t.closedBy}<br>
       ` : ""}
@@ -266,31 +267,52 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= GENERATE TICKET ================= */
+/* ================= VALIDATION FIX ================= */
 function generateTicket() {
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  let issue = issue_desc.value.trim();
+  let serviceType = service.value;
+  let other = other_service.value.trim();
+
+  if(issue === "") {
+    alert("Issue Description required");
+    return;
+  }
+
+  if(serviceType === "Other" && other === "") {
+    alert("Please describe Other Service");
+    return;
+  }
+
+  if(type_sel.value === "AMC" && contract_no.value.trim() === "") {
+    alert("Contract Number required for AMC");
+    return;
+  }
+
+  let finalService = serviceType === "Other" ? other : serviceType;
 
   let ticket = "TKT-" + Math.floor(Math.random()*999999);
 
-  let finalService = service.value === "Other"
-    ? other_service.value
-    : service.value;
+  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
     id: ticket,
     userId: currentUser.userId,
+
     name: c_name.value,
     company: c_company.value,
     mobile: c_mobile.value,
     email: c_email.value,
+
     siteName: currentUser.siteName,
     siteAddress: currentUser.siteAddress,
+
     service: finalService,
     priority: priority_sel.value,
-    issue: issue_desc.value,
+    issue: issue,
+
     status: "Open",
     createdAt: new Date().toLocaleString()
   });
@@ -304,7 +326,7 @@ function generateTicket() {
   let body = encodeURIComponent(
     "Ticket: " + ticket + "\n" +
     "Name: " + c_name.value + "\n" +
-    "Issue: " + issue_desc.value
+    "Issue: " + issue
   );
 
   window.location.href =
@@ -357,8 +379,8 @@ function generateTicket() {
 
   <h4>My Site</h4>
   <div style="text-align:left;background:#111827;padding:10px;">
-    <b>Name:</b> <span id="site_name"></span><br>
-    <b>Address:</b> <span id="site_address"></span>
+    <b>Site Name:</b> <span id="site_name"></span><br>
+    <b>Site Address:</b> <span id="site_address"></span>
   </div>
 
   <hr>
@@ -374,11 +396,16 @@ function generateTicket() {
   <hr>
 
   <!-- FORM -->
-  <input id="c_name" placeholder="Name">
-  <input id="c_company" placeholder="Company">
-  <input id="c_mobile" placeholder="Mobile">
-  <input id="c_email" placeholder="Email">
+  <label>Service Type</label>
+  <select id="type_sel">
+    <option>AMC</option>
+    <option>NONAMC</option>
+  </select>
 
+  <label>Contract Number</label>
+  <input id="contract_no">
+
+  <label>Service</label>
   <select id="service" onchange="toggleOtherField()">
     <option>Repair</option>
     <option>Replacement</option>
@@ -387,16 +414,11 @@ function generateTicket() {
   </select>
 
   <div id="other_box" style="display:none;">
+    <label>Other Service</label>
     <textarea id="other_service"></textarea>
   </div>
 
-  <select id="type_sel">
-    <option>AMC</option>
-    <option>NONAMC</option>
-  </select>
-
-  <input id="contract_no">
-
+  <label>Priority</label>
   <select id="priority_sel">
     <option>Low</option>
     <option>Medium</option>
@@ -404,7 +426,8 @@ function generateTicket() {
     <option>Critical</option>
   </select>
 
-  <textarea id="issue_desc"></textarea>
+  <label>Issue Description</label>
+  <textarea id="issue_desc" placeholder="Describe your issue here..."></textarea>
 
   <button onclick="generateTicket()">Submit</button>
 
