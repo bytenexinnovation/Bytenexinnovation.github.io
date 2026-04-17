@@ -20,6 +20,7 @@ body {
   padding: 12px 20px;
   background: #fff;
   border-bottom: 1px solid #ddd;
+  animation: fadeDown 0.8s ease;
 }
 
 .left {
@@ -47,6 +48,7 @@ body {
   color: #00aaff;
 }
 
+/* SAME BUTTON STYLE */
 .nav-btn {
   text-decoration: none;
   padding: 8px 18px;
@@ -55,16 +57,26 @@ body {
   border-radius: 20px;
   font-size: 14px;
   margin-left: 10px;
+  transition: 0.3s;
 }
 
+.nav-btn:hover {
+  background: #0077aa;
+}
+
+/* Container */
 .container {
   padding: 30px 20px;
+  animation: fadeUp 1s ease;
 }
 
 h1 {
+  font-size: 28px;
+  margin-bottom: 30px;
   color: #0077aa;
 }
 
+/* Cards */
 .card {
   display: flex;
   align-items: center;
@@ -72,10 +84,19 @@ h1 {
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
+  transition: 0.3s;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #eee;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
 .icon {
-  font-size: 40px;
+  font-size: 45px;
   margin-right: 20px;
 }
 
@@ -85,67 +106,49 @@ h1 {
   font-weight: bold;
 }
 
+.desc {
+  color: #555;
+  margin-top: 5px;
+}
+
 .desc a {
   color: #0077aa;
   text-decoration: none;
+  font-weight: bold;
 }
 
+.remark {
+  font-size: 13px;
+  color: #888;
+  margin-left: 5px;
+}
+
+/* Footer */
 .footer {
   text-align: center;
   padding: 20px;
   background: #000;
   color: #888;
+  font-size: 14px;
+  margin-top: 40px;
 }
 
-/* Chatbot */
-#chatBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #00aaff;
-  color: #fff;
-  padding: 14px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 20px;
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-#chatBox {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 320px;
-  height: 420px;
-  background: #fff;
-  border-radius: 10px;
-  display: none;
-  flex-direction: column;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-}
-
-#chatHeader {
-  background: #00aaff;
-  color: #fff;
-  padding: 10px;
-}
-
-#chatMessages {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-}
-
-#userInput {
-  border: none;
-  border-top: 1px solid #ddd;
-  padding: 10px;
-  width: 100%;
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 
 <body>
 
+<!-- Header -->
 <div class="header">
   <div class="left">
     <div class="logo-box">
@@ -155,74 +158,67 @@ h1 {
   </div>
 
   <div>
-    <a href="#" class="nav-btn">Home</a>
-    <a href="#" class="nav-btn">Contact</a>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="about.html" class="nav-btn">About</a>
+    <a href="product.html" class="nav-btn">Products</a>
+    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
   </div>
 </div>
 
+<!-- Main Content -->
 <div class="container">
+
   <h1>Contact Us</h1>
 
-  <div class="card">
+  <!-- Sales -->
+  <a href="mailto:info@bytenexinnovation.in?subject=Sales Enquiry&body=Hello Bytenex Team," class="card">
     <div class="icon">📧</div>
     <div>
       <div class="title">Sales</div>
-      <div class="desc">info@bytenexinnovation.in</div>
+      <div class="desc">Get in touch with our sales team.</div>
     </div>
-  </div>
+  </a>
 
+  <!-- Support -->
+  <a href="mailto:engineers@bytenexinnovation.in?subject=Support Request&body=Hello Bytenex Team," class="card">
+    <div class="icon">🎧</div>
+    <div>
+      <div class="title">Help and Support</div>
+      <div class="desc">Product support & technical queries.</div>
+    </div>
+  </a>
+
+  <!-- Phone -->
   <div class="card">
     <div class="icon">📞</div>
     <div>
       <div class="title">Call Us</div>
-      <div class="desc">+91 82000 31345</div>
+
+      <div class="desc">
+        <a href="tel:+918200031345">+91 82000 31345</a>
+        <span class="remark">(Domestic Projects)</span>
+      </div>
+
+      <div class="desc">
+        <a href="tel:+919998266352">+91 99982 66352</a>
+        <span class="remark">(International Consultancy)</span>
+      </div>
+
+      <div class="desc">
+        <a href="tel:+919725552933">+91 97255 52933</a>
+        <span class="remark">(International Coordination)</span>
+      </div>
+
     </div>
   </div>
+
 </div>
 
-<div id="chatBtn" onclick="toggleChat()">💬</div>
-
-<div id="chatBox">
-  <div id="chatHeader">AI Assistant</div>
-  <div id="chatMessages"></div>
-  <input type="text" id="userInput" placeholder="Ask something..." onkeypress="handleKey(event)">
+<!-- Footer -->
+<div class="footer">
+  © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
-
-<div class="footer">© 2026 Bytenex Innovation</div>
-
-<script>
-function toggleChat() {
-  let box = document.getElementById("chatBox");
-  box.style.display = box.style.display === "flex" ? "none" : "flex";
-}
-
-function handleKey(e) {
-  if (e.key === "Enter") {
-    let input = document.getElementById("userInput");
-    let msg = input.value.toLowerCase();
-
-    let chat = document.getElementById("chatMessages");
-    chat.innerHTML += "<div><b>You:</b> " + msg + "</div>";
-
-    let reply = "";
-
-    if (msg.includes("price") || msg.includes("product")) {
-      reply = "Please contact sales: info@bytenexinnovation.in";
-    } else if (msg.includes("support")) {
-      reply = "Contact support: engineers@bytenexinnovation.in";
-    } else if (msg.includes("call")) {
-      reply = "Call us at +91 82000 31345";
-    } else {
-      reply = "Hello! How can I help you?";
-    }
-
-    chat.innerHTML += "<div><b>AI:</b> " + reply + "</div>";
-
-    input.value = "";
-    chat.scrollTop = chat.scrollHeight;
-  }
-}
-</script>
 
 </body>
 </html>
