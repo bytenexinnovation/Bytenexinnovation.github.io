@@ -1,214 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Products - Bytenex Innovation</title>
+<meta charset="UTF-8">
+<title>Products - Bytenex Innovation</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0f1a;
-      color: #fff;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
 
-    /* Navbar */
-    .navbar {
-      position: sticky;
-      top: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0,255,255,0.2);
-    }
+/* Header (Same as Contact/Home) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  animation: fadeDown 0.8s ease;
+}
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      animation: slideDown 1s ease;
-    }
+.left {
+  display: flex;
+  align-items: center;
+}
 
-    .logo {
-      height: 45px;
-      border-radius: 10px;
-      mix-blend-mode: screen;
-      opacity: 0.9;
-      filter: brightness(1.2) contrast(1.1);
-      box-shadow: 0 0 20px rgba(0,234,255,0.4);
-      animation: glowPulse 2s infinite alternate;
-      transition: 0.3s;
-    }
+.logo-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
 
-    .logo:hover {
-      transform: scale(1.1);
-      opacity: 1;
-    }
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .brand-name {
-      margin-left: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00eaff;
-    }
+.brand {
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00aaff;
+}
 
-    .nav-links a {
-      color: #00eaff;
-      margin-left: 20px;
-      text-decoration: none;
-      font-size: 18px;
-    }
+.nav-btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  background: #00aaff;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: 0.3s;
+}
 
-    .nav-links a:hover {
-      color: #fff;
-    }
+.nav-btn:hover {
+  background: #0077aa;
+}
 
-    /* Header */
-    .header {
-      text-align: center;
-      padding: 60px 20px;
-    }
+/* Page Header */
+.page-header {
+  text-align: center;
+  padding: 50px 20px;
+  background: #eaf8ff;
+  animation: fadeUp 1s ease;
+}
 
-    .header h1 {
-      color: #00eaff;
-      font-size: 40px;
-    }
+.page-header h1 {
+  color: #0077aa;
+  font-size: 32px;
+}
 
-    .header p {
-      color: #bbb;
-    }
+.page-header p {
+  color: #555;
+}
 
-    /* Product Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      padding: 40px;
-    }
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
 
-    .card {
-      background: #111827;
-      padding: 25px;
-      border-radius: 12px;
-      border: 1px solid rgba(0,255,255,0.1);
-      transition: 0.3s;
-    }
+/* Cards */
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  transition: 0.3s;
+  animation: fadeUp 1s ease;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px rgba(0,255,255,0.3);
-    }
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-    .card h3 {
-      color: #00eaff;
-    }
+.card h3 {
+  color: #0077aa;
+}
 
-    .brands {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #888;
-      line-height: 1.6;
-    }
+.brands {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}
 
-    /* Animations */
-    @keyframes glowPulse {
-      from { box-shadow: 0 0 10px #00eaff; }
-      to { box-shadow: 0 0 30px #00eaff; }
-    }
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #000;
+  color: #888;
+}
 
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: #000;
-      color: #888;
-    }
-  </style>
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- Navbar with Logo -->
-  <div class="navbar">
-    <div class="nav-left">
+<!-- Header -->
+<div class="header">
+  <div class="left">
+    <div class="logo-box">
       <img src="DOC-20260410-WA0001.jpg" class="logo">
-      <span class="brand-name">Bytenex</span>
     </div>
+    <div class="brand">Bytenex Innovation</div>
+  </div>
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="product.html">Products</a>
-      <a href="index.html#contact">Contact</a>
+  <div>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="about.html" class="nav-btn">About</a>
+    <a href="product.html" class="nav-btn">Products</a>
+    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
+  </div>
+</div>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1>Our Products & Solutions</h1>
+  <p>Smart Automation | ELV | Security | Networking</p>
+</div>
+
+<!-- Products Grid -->
+<div class="grid">
+
+  <div class="card">
+    <h3>Industrial Automation with IIoT</h3>
+    <div class="brands">
+      PLC: ABB, Siemens, Schneider, Allen Bradley<br>
+      DCS: Honeywell, ABB, Metso<br>
+      SCADA: Siemens, ABB, Honeywell
     </div>
   </div>
 
-  <!-- Header -->
-  <div class="header">
-    <h1>Our Products & Solutions</h1>
-    <p>Smart Automation | ELV | Security | Networking</p>
+  <div class="card">
+    <h3>Fire Alarm Systems</h3>
+    <div class="brands">
+      Honeywell, Notifier, Simplex, Morley, GST, Ravel
+    </div>
   </div>
 
-  <!-- Products -->
-  <div class="grid">
-
-    <div class="card">
-      <h3>Industrial Automation with IIoT</h3>
-      <div class="brands">
-        PLC: ABB, GE Fanuc, Siemens, Schneider, Allen Bradley<br>
-        DCS: Honeywell, ABB, Metso Automation<br>
-        SCADA: Honeywell, ABB, Siemens, Customized Bytenex
-      </div>
+  <div class="card">
+    <h3>Access Control Systems</h3>
+    <div class="brands">
+      Honeywell, Siemens, Spectra
     </div>
-
-    <div class="card">
-      <h3>Fire Alarm Systems</h3>
-      <div class="brands">
-        Honeywell / Notifier, Simplex, Morley, GST, Ravel, Customized Bytenex
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Access Control Systems</h3>
-      <div class="brands">
-        Honeywell, Siemens, Spectra, Customized Bytenex
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>CCTV & Surveillance</h3>
-      <div class="brands">
-        Honeywell, Hikvision, Dahua, CP Plus, Securus, Hifocus
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>BMS Software & Hardware</h3>
-      <div class="brands">
-        Honeywell, Siemens, Schneider, Customized Bytenex
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Networking Solutions</h3>
-      <div class="brands">
-        Cisco, HP, Netgear, D-Link, TP-Link
-      </div>
-    </div>
-
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    © 2026 Bytenex Innovation. All Rights Reserved.
+  <div class="card">
+    <h3>CCTV & Surveillance</h3>
+    <div class="brands">
+      Hikvision, Dahua, CP Plus, Securus, Hifocus
+    </div>
   </div>
+
+  <div class="card">
+    <h3>BMS Systems</h3>
+    <div class="brands">
+      Honeywell, Siemens, Schneider
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Networking Solutions</h3>
+    <div class="brands">
+      Cisco, HP, Netgear, D-Link, TP-Link
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2026 Bytenex Innovation. All Rights Reserved.
+</div>
 
 </body>
 </html>
