@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer Portal - Bytenex</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0b0f1a;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: #111827;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  background: #00eaff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.ticket {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #00eaff;
+}
+</style>
+
+<script>
+function login() {
+  let user = document.getElementById("user").value;
+  let pass = document.getElementById("pass").value;
+
+  if(user === "admin" && pass === "1234") {
+    document.getElementById("login-box").style.display = "none";
+    document.getElementById("portal").style.display = "block";
+  } else {
+    alert("Invalid Login");
+  }
+}
+
+function generateTicket() {
+  let type = document.getElementById("type").value;
+  let service = document.getElementById("service").value;
+
+  let random = Math.floor(Math.random() * 9999999);
+
+  let ticket = type + "/" + service + "/" + random;
+
+  document.getElementById("ticket").innerText = "Ticket No: " + ticket;
+}
+</script>
+
+</head>
+
+<body>
+
+<h2>Customer Portal</h2>
+
+<!-- Login -->
+<div id="login-box" class="container">
+  <h3>Login</h3>
+  <input type="text" id="user" placeholder="User ID">
+  <input type="password" id="pass" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- Portal -->
+<div id="portal" class="container" style="display:none;">
+  <h3>Raise Service Request</h3>
+
+  <input type="text" placeholder="Customer Name">
+  <input type="text" placeholder="Company Name">
+  <input type="text" placeholder="Mobile Number">
+
+  <select id="type">
+    <option value="AMC">AMC</option>
+    <option value="NONAMC">NON AMC</option>
+  </select>
+
+  <select id="service">
+    <option value="BI">BI</option>
+    <option value="SERVICE">SERVICE</option>
+  </select>
+
+  <button onclick="generateTicket()">Generate Ticket</button>
+
+  <div id="ticket" class="ticket"></div>
+</div>
+
+</body>
+</html>
