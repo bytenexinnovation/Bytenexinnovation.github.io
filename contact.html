@@ -12,7 +12,6 @@
       color: #333;
     }
 
-    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
@@ -47,16 +46,16 @@
       color: #00aaff;
     }
 
-    .home-btn {
+    .nav-btn {
       text-decoration: none;
       padding: 8px 18px;
       background: #00aaff;
       color: #fff;
       border-radius: 20px;
       font-size: 14px;
+      margin-left: 10px;
     }
 
-    /* Container */
     .container {
       padding: 30px 20px;
     }
@@ -66,7 +65,6 @@
       margin-bottom: 30px;
     }
 
-    /* Card */
     .card {
       display: flex;
       align-items: center;
@@ -106,7 +104,12 @@
       font-weight: bold;
     }
 
-    /* Footer */
+    .remark {
+      font-size: 13px;
+      color: #888;
+      margin-left: 5px;
+    }
+
     .footer {
       text-align: center;
       padding: 20px;
@@ -115,13 +118,11 @@
       font-size: 14px;
       margin-top: 40px;
     }
-
   </style>
 </head>
 
 <body>
 
-<!-- Header -->
 <div class="header">
   <div class="left">
     <div class="logo-box">
@@ -130,10 +131,11 @@
     <div class="brand">Bytenex Innovation</div>
   </div>
 
-  <a href="index.html" class="home-btn">Home</a>
+  <div>
+    <a href="index.html" class="nav-btn">Home</a>
+  </div>
 </div>
 
-<!-- Content -->
 <div class="container">
 
   <h1>Contact Us</h1>
@@ -162,14 +164,13 @@
     <div>
       <div class="title">Call Us</div>
 
-      <!-- Clickable -->
       <div class="desc">
         <a href="tel:8200031345">8200031345</a>
       </div>
 
-      <!-- Display Only -->
       <div class="desc">
-        +91 97255 52933
+        <a href="tel:+919725552933">+91 97255 52933</a>
+        <span class="remark">(For International Projects)</span>
       </div>
 
     </div>
@@ -177,7 +178,6 @@
 
 </div>
 
-<!-- Footer -->
 <div class="footer">
   © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
