@@ -57,55 +57,91 @@ button {
 
 <script>
 
-/* ================= REGISTER ================= */
+/* ========== USER ID GENERATOR ========== */
+function generateUserId() {
+  let num = Math.floor(Math.random() * 1999999) + 1;
+  return "BNTINV" + num + "A";
+}
+
+/* ========== REGISTER ========== */
 function register() {
+
+  let userId = generateUserId();
+
   let user = {
+    userId: userId,
     name: r_name.value,
     email: r_email.value,
     mobile: r_mobile.value,
     company: r_company.value,
-    password: r_pass.value
+    password: r_pass.value,
+    role: "customer"
   };
 
-  localStorage.setItem(user.email, JSON.stringify(user));
-  alert("Account Created!");
+  localStorage.setItem(userId, JSON.stringify(user));
+
+  alert("Account Created!\nYour USER ID:\n" + userId + "\nSave it for login");
+
   showLogin();
 }
 
-/* ================= LOGIN ================= */
+/* ========== LOGIN (USER ID + ADMIN EMAIL) ========== */
 function login() {
-  let data = JSON.parse(localStorage.getItem(user_email.value));
 
-  if(data && data.password === user_pass.value) {
+  let input = user_email.value;
+  let pass = user_pass.value;
 
-    localStorage.setItem("currentUser", data.email);
+  /* ADMIN LOGIN */
+  if(input === "info@bytenexinnovation.in") {
+
+    localStorage.setItem("currentUser", JSON.stringify({
+      email: input,
+      role: "admin"
+    }));
 
     login_box.style.display = "none";
     register_box.style.display = "none";
     portal.style.display = "block";
 
-    c_name.value = data.name;
-    c_company.value = data.company;
-    c_mobile.value = data.mobile;
-    c_email.value = data.email;
+    loadDashboard();
+    return;
+  }
+
+  /* CUSTOMER LOGIN */
+  let user = JSON.parse(localStorage.getItem(input));
+
+  if(user && user.password === pass) {
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    login_box.style.display = "none";
+    register_box.style.display = "none";
+    portal.style.display = "block";
+
+    c_name.value = user.name;
+    c_company.value = user.company;
+    c_mobile.value = user.mobile;
+    c_email.value = user.email;
 
     loadDashboard();
+
   } else {
-    alert("Invalid Login");
+    alert("Invalid USER ID or Password");
   }
 }
 
-/* ================= LOGOUT ================= */
+/* ========== LOGOUT ========== */
 function logout() {
   localStorage.removeItem("currentUser");
   portal.style.display = "none";
   login_box.style.display = "block";
 }
 
-/* ================= FORGOT PASSWORD ================= */
+/* ========== FORGOT PASSWORD ========== */
 function forgotPassword() {
-  let email = prompt("Enter registered email:");
-  let user = JSON.parse(localStorage.getItem(email));
+
+  let id = prompt("Enter your USER ID:");
+  let user = JSON.parse(localStorage.getItem(id));
 
   if(!user) {
     alert("User not found");
@@ -116,12 +152,12 @@ function forgotPassword() {
   if(!newPass) return;
 
   user.password = newPass;
-  localStorage.setItem(email, JSON.stringify(user));
+  localStorage.setItem(id, JSON.stringify(user));
 
   alert("Password updated successfully");
 }
 
-/* ================= SWITCH ================= */
+/* ========== SWITCH ========== */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -132,13 +168,14 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-/* ================= SERVICE TOGGLE ================= */
+/* ========== SERVICE TOGGLE ========== */
 function toggleOtherField() {
   other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
-/* ================= DASHBOARD ================= */
+/* ========== DASHBOARD ========== */
 function loadDashboard() {
+
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   total_count.innerText = tickets.length;
@@ -147,7 +184,8 @@ function loadDashboard() {
 
   let html = "";
 
-  tickets.forEach((t, index) => {
+  tickets.forEach((t) => {
+
     html += `
       <div style="background:#111827; padding:12px; margin:10px 0; border-radius:10px; text-align:left;">
 
@@ -171,7 +209,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= GENERATE TICKET + MAIL REDIRECT ================= */
+/* ========== GENERATE TICKET + MAIL REDIRECT ========== */
 function generateTicket() {
 
   let type = type_sel.value;
@@ -195,8 +233,11 @@ function generateTicket() {
   /* SAVE TICKET */
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
+  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
   tickets.push({
     id: ticket,
+    userId: currentUser.userId || "ADMIN",
     name: c_name.value,
     company: c_company.value,
     mobile: c_mobile.value,
@@ -212,7 +253,7 @@ function generateTicket() {
 
   loadDashboard();
 
-  /* ================= MAIL REDIRECT ================= */
+  /* MAIL REDIRECT */
   let subject = encodeURIComponent("Ticket No: " + ticket);
 
   let body = encodeURIComponent(
@@ -254,8 +295,9 @@ function generateTicket() {
 
 <!-- LOGIN -->
 <div id="login_box" class="container">
-  <input id="user_email" placeholder="Email">
+  <input id="user_email" placeholder="USER ID / ADMIN EMAIL">
   <input id="user_pass" type="password" placeholder="Password">
+
   <button onclick="login()">Login</button>
 
   <div>
@@ -271,6 +313,7 @@ function generateTicket() {
   <input id="r_mobile" placeholder="Mobile">
   <input id="r_company" placeholder="Company">
   <input id="r_pass" type="password" placeholder="Password">
+
   <button onclick="register()">Create Account</button>
   <p class="link" onclick="showLogin()">Back to Login</p>
 </div>
