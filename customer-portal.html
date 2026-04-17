@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-  max-width: 650px;
+  max-width: 700px;
   margin: auto;
   background: #1f2937;
   padding: 25px;
@@ -95,16 +95,14 @@ function login() {
   let input = user_email.value;
   let pass = user_pass.value;
 
-  /* ADMIN */
+  /* ADMIN LOGIN */
   if(input === "info@bytenexinnovation.in") {
 
-    let admin = {
+    localStorage.setItem("currentUser", JSON.stringify({
       email: input,
       name: "Admin",
       role: "admin"
-    };
-
-    localStorage.setItem("currentUser", JSON.stringify(admin));
+    }));
 
     login_box.style.display = "none";
     register_box.style.display = "none";
@@ -115,7 +113,7 @@ function login() {
     return;
   }
 
-  /* CUSTOMER */
+  /* CUSTOMER LOGIN */
   let user = JSON.parse(localStorage.getItem(input));
 
   if(user && user.password === pass) {
@@ -152,7 +150,6 @@ function logout() {
 
 /* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
-
   let id = prompt("Enter USER ID:");
   let user = JSON.parse(localStorage.getItem(id));
 
@@ -183,7 +180,35 @@ function toggleOtherField() {
   other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
-/* ================= DASHBOARD (FIXED ISOLATION) ================= */
+/* ================= CLOSE TICKET ================= */
+function closeTicket(ticketId) {
+
+  let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+
+  let rca = document.getElementById("rca_" + ticketId).value;
+  let remark = document.getElementById("remark_" + ticketId).value;
+
+  tickets = tickets.map(t => {
+
+    if(t.id === ticketId) {
+      t.status = "Closed";
+      t.rootCause = rca;
+      t.closingRemark = remark;
+      t.closedAt = new Date().toLocaleString();
+      t.closedBy = currentUser.email || "admin";
+    }
+
+    return t;
+  });
+
+  localStorage.setItem("tickets", JSON.stringify(tickets));
+
+  loadDashboard();
+}
+
+/* ================= DASHBOARD (FIXED CRM) ================= */
 function loadDashboard() {
 
   let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
@@ -207,17 +232,37 @@ function loadDashboard() {
     html += `
       <div style="background:#111827; padding:12px; margin:10px 0; border-radius:10px; text-align:left;">
 
-        <b>${t.id}</b><br>
-        ${t.service} | ${t.priority}<br>
+        <b>Ticket:</b> ${t.id}<br>
+        <b>User:</b> ${t.userId}<br>
+        <b>Name:</b> ${t.name}<br>
+        <b>Company:</b> ${t.company}<br>
 
-        Status:
-        <b style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</b><br>
+        <b>Site:</b> ${t.siteName || "-"}<br>
+        <b>Address:</b> ${t.siteAddress || "-"}<br>
+
+        <b>Service:</b> ${t.service}<br>
+        <b>Priority:</b> ${t.priority}<br>
+        <b>Issue:</b> ${t.issue}<br>
+
+        <b>Status:</b>
+        <span style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</span><br>
 
         ${t.status === "Closed" ? `
           <hr>
           <b>Root Cause:</b> ${t.rootCause || "-"}<br>
           <b>Closing Remark:</b> ${t.closingRemark || "-"}<br>
-          <small>Closed At: ${t.closedAt || "-"}</small>
+          <b>Closed By:</b> ${t.closedBy || "-"}<br>
+          <small>${t.closedAt || ""}</small>
+        ` : ""}
+
+        ${isAdmin && t.status === "Open" ? `
+          <hr>
+          <input id="rca_${t.id}" placeholder="Root Cause">
+          <input id="remark_${t.id}" placeholder="Closing Remark">
+          <button onclick="closeTicket('${t.id}')"
+            style="background:#22c55e;margin-top:8px;">
+            Close Ticket
+          </button>
         ` : ""}
 
       </div>
@@ -227,7 +272,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= GENERATE TICKET + MAIL ================= */
+/* ================= GENERATE TICKET ================= */
 function generateTicket() {
 
   let type = type_sel.value;
@@ -250,13 +295,19 @@ function generateTicket() {
   tickets.push({
     id: ticket,
     userId: currentUser.userId || "ADMIN",
+
     name: c_name.value,
     company: c_company.value,
     mobile: c_mobile.value,
     email: c_email.value,
+
+    siteName: currentUser.siteName || "-",
+    siteAddress: currentUser.siteAddress || "-",
+
     service: finalService,
     priority: priority,
     issue: issue,
+
     status: "Open",
     createdAt: new Date().toLocaleString()
   });
@@ -265,19 +316,14 @@ function generateTicket() {
 
   loadDashboard();
 
-  /* MAIL REDIRECT */
+  /* MAIL */
   let subject = encodeURIComponent("Ticket No: " + ticket);
 
   let body = encodeURIComponent(
-    "===== BYTENEX REQUEST =====\n\n" +
-    "Ticket: " + ticket + "\n\n" +
+    "Ticket: " + ticket + "\n" +
     "Name: " + c_name.value + "\n" +
     "Company: " + c_company.value + "\n" +
-    "Mobile: " + c_mobile.value + "\n" +
-    "Email: " + c_email.value + "\n\n" +
-    "Service: " + finalService + "\n" +
-    "Priority: " + priority + "\n\n" +
-    "Issue:\n" + issue
+    "Issue: " + issue
   );
 
   window.location.href =
@@ -318,29 +364,25 @@ function generateTicket() {
   <input id="r_pass" type="password" placeholder="Password">
 
   <button onclick="register()">Create Account</button>
-  <p class="link" onclick="showLogin()">Back</p>
 </div>
 
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
 
-  <!-- HEADER -->
-  <div style="display:flex; justify-content:space-between;">
+  <div style="display:flex;justify-content:space-between;">
     <h3>Welcome, <span id="welcome_user">User</span></h3>
     <button onclick="logout()" style="width:auto;background:#ff4d4d;">Logout</button>
   </div>
 
-  <!-- SITE -->
   <h3>My Site</h3>
-  <div style="background:#111827; padding:10px; border-radius:10px; text-align:left;">
+  <div style="text-align:left;background:#111827;padding:10px;border-radius:10px;">
     <b>Site Name:</b> <span id="site_name">-</span><br>
     <b>Site Address:</b> <span id="site_address">-</span>
   </div>
 
   <hr>
 
-  <!-- DASHBOARD -->
-  <div style="display:flex; justify-content:space-between;">
+  <div style="display:flex;justify-content:space-between;">
     <div>Total: <span id="total_count">0</span></div>
     <div>Open: <span id="open_count">0</span></div>
     <div>Closed: <span id="close_count">0</span></div>
@@ -351,18 +393,10 @@ function generateTicket() {
 
   <hr>
 
-  <!-- FORM -->
   <input id="c_name" placeholder="Name">
   <input id="c_company" placeholder="Company">
   <input id="c_mobile" placeholder="Mobile">
   <input id="c_email" placeholder="Email">
-
-  <select id="type_sel">
-    <option>AMC</option>
-    <option>NONAMC</option>
-  </select>
-
-  <input id="contract_no" placeholder="Contract Number">
 
   <select id="service" onchange="toggleOtherField()">
     <option>Repair</option>
@@ -374,6 +408,13 @@ function generateTicket() {
   <div id="other_box" style="display:none;">
     <textarea id="other_service"></textarea>
   </div>
+
+  <select id="type_sel">
+    <option>AMC</option>
+    <option>NONAMC</option>
+  </select>
+
+  <input id="contract_no" placeholder="Contract Number">
 
   <select id="priority_sel">
     <option>Low</option>
