@@ -2,69 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Bytenex Service Portal</title>
+<title>Bytenex Portal</title>
 
 <style>
 body {
-  margin: 0;
   font-family: 'Segoe UI', Arial;
-  background: linear-gradient(135deg, #0b0f1a, #111827);
+  background: #0b0f1a;
   color: white;
-}
-
-.header {
   text-align: center;
   padding: 20px;
-  font-size: 24px;
-  font-weight: bold;
 }
 
 .container {
-  max-width: 750px;
+  max-width: 600px;
   margin: auto;
   background: #1f2937;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.4);
-}
-
-.form-row {
-  display: flex;
-  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 input, select, textarea {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
   border: none;
   background: #111827;
   color: white;
 }
 
-input:focus, textarea:focus {
-  border: 1px solid #00eaff;
-}
-
 button {
+  padding: 10px;
   width: 100%;
-  padding: 14px;
   background: #00eaff;
   border: none;
-  border-radius: 25px;
-  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.link {
+  color: #00eaff;
   cursor: pointer;
 }
 
 .ticket {
-  margin-top: 15px;
+  margin-top: 10px;
   color: #00eaff;
-  font-weight: bold;
 }
 
 .footer {
-  text-align: center;
   margin-top: 20px;
   font-size: 12px;
   color: #aaa;
@@ -73,57 +59,97 @@ button {
 
 <script>
 
-// Show/Hide "Other Service"
-function toggleOtherField() {
-  let service = document.getElementById("service").value;
-  let box = document.getElementById("other_box");
+// REGISTER
+function register() {
+  let user = {
+    name: r_name.value,
+    email: r_email.value,
+    mobile: r_mobile.value,
+    company: r_company.value,
+    password: r_pass.value
+  };
 
-  box.style.display = (service === "Other") ? "block" : "none";
+  localStorage.setItem(user.email, JSON.stringify(user));
+  alert("Account Created!");
+  showLogin();
 }
 
-// Generate Ticket
+// LOGIN
+function login() {
+  let data = JSON.parse(localStorage.getItem(user_email.value));
+
+  if(data && data.password === user_pass.value) {
+    login_box.style.display = "none";
+    portal.style.display = "block";
+
+    c_name.value = data.name;
+    c_company.value = data.company;
+    c_mobile.value = data.mobile;
+    c_email.value = data.email;
+  } else {
+    alert("Invalid Login");
+  }
+}
+
+// SHOW FORMS
+function showRegister(){
+  login_box.style.display="none";
+  register_box.style.display="block";
+}
+
+function showLogin(){
+  register_box.style.display="none";
+  login_box.style.display="block";
+}
+
+// OTHER FIELD
+function toggleOtherField() {
+  other_box.style.display = (service.value === "Other") ? "block" : "none";
+}
+
+// GENERATE TICKET
 function generateTicket() {
 
-  let type = document.getElementById("type").value;
-  let contract = document.getElementById("contract").value;
-  let service = document.getElementById("service").value;
-  let other = document.getElementById("other_service").value;
-  let priority = document.getElementById("priority").value;
-  let issue = document.getElementById("issue").value;
+  let type = type_sel.value;
+  let contract = contract_no.value;
+  let serviceType = service.value;
+  let other = other_service.value;
+  let priority = priority_sel.value;
+  let issue = issue_desc.value;
 
-  // Validation
-  if(type === "AMC" && contract.trim() === "") {
+  if(type === "AMC" && contract === "") {
     alert("Contract Number required for AMC");
     return;
   }
 
-  if(service === "Other" && other.trim() === "") {
-    alert("Please describe the service");
+  if(serviceType === "Other" && other === "") {
+    alert("Please describe service");
     return;
   }
 
-  let finalService = (service === "Other") ? other : service;
+  let finalService = (serviceType === "Other") ? other : serviceType;
 
-  let random = Math.floor(Math.random() * 999999);
-  let ticket = type + "-" + (contract || "NA") + "-" + random;
+  let ticket = type + "-" + (contract || "NA") + "-" + Math.floor(Math.random()*999999);
 
-  document.getElementById("ticket").innerText = "Ticket No: " + ticket;
+  ticket_no.innerText = "Ticket No: " + ticket;
 
   let subject = encodeURIComponent("Bytenex Ticket - " + ticket);
 
   let body = encodeURIComponent(
-    "Contract Type: " + type + "\n" +
-    "Contract No: " + (contract || "NA") + "\n" +
+    "Name: " + c_name.value + "\n" +
+    "Company: " + c_company.value + "\n" +
+    "Mobile: " + c_mobile.value + "\n" +
+    "Email: " + c_email.value + "\n\n" +
+    "Contract: " + contract + "\n" +
     "Service: " + finalService + "\n" +
     "Priority: " + priority + "\n\n" +
     "Issue:\n" + issue + "\n\n" +
-    "Ticket No: " + ticket
+    "Ticket: " + ticket
   );
 
-  let mailto = "mailto:engineers@bytenexinnovation.in,info@bytenexinnovation.in"
-              + "?subject=" + subject + "&body=" + body;
+  let mail = "mailto:engineers@bytenexinnovation.in,info@bytenexinnovation.in?subject=" + subject + "&body=" + body;
 
-  window.location.href = mailto;
+  window.location.href = mail;
 }
 
 </script>
@@ -132,49 +158,68 @@ function generateTicket() {
 
 <body>
 
-<div class="header">Bytenex Service Request Portal</div>
+<h2>Bytenex Customer Portal</h2>
 
-<div class="container">
+<!-- LOGIN -->
+<div id="login_box" class="container">
+  <input id="user_email" placeholder="Email">
+  <input id="user_pass" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p class="link" onclick="showRegister()">Create Account</p>
+</div>
 
-  <!-- TYPE -->
-  <select id="type">
+<!-- REGISTER -->
+<div id="register_box" class="container" style="display:none;">
+  <input id="r_name" placeholder="Name">
+  <input id="r_email" placeholder="Email">
+  <input id="r_mobile" placeholder="Mobile">
+  <input id="r_company" placeholder="Company">
+  <input id="r_pass" type="password" placeholder="Password">
+  <button onclick="register()">Create Account</button>
+  <p class="link" onclick="showLogin()">Back to Login</p>
+</div>
+
+<!-- PORTAL -->
+<div id="portal" class="container" style="display:none;">
+
+  <input id="c_name" placeholder="Name">
+  <input id="c_company" placeholder="Company">
+  <input id="c_mobile" placeholder="Mobile">
+  <input id="c_email" placeholder="Email">
+
+  <select id="type_sel">
     <option value="AMC">AMC</option>
     <option value="NONAMC">NON AMC</option>
   </select>
 
-  <!-- CONTRACT -->
-  <input id="contract" placeholder="Contract Number (Required for AMC)">
+  <input id="contract_no" placeholder="Contract Number">
 
-  <!-- SERVICE -->
   <select id="service" onchange="toggleOtherField()">
     <option value="Repair">Repair</option>
     <option value="Replacement">Replacement</option>
     <option value="Installation">Installation</option>
-    <option value="Other">Other (Please Describe)</option>
+    <option value="Other">Other</option>
   </select>
 
-  <!-- OTHER FIELD -->
   <textarea id="other_service" placeholder="Describe service..." style="display:none;"></textarea>
 
-  <!-- PRIORITY -->
-  <select id="priority">
-    <option value="Low">Low Priority</option>
-    <option value="Medium">Medium Priority</option>
-    <option value="High">High Priority</option>
+  <select id="priority_sel">
+    <option value="Low">Low</option>
+    <option value="Medium">Medium</option>
+    <option value="High">High</option>
     <option value="Critical">Critical</option>
   </select>
 
-  <!-- ISSUE -->
-  <textarea id="issue" rows="4" placeholder="Describe your issue clearly..."></textarea>
+  <textarea id="issue_desc" placeholder="Describe your issue"></textarea>
 
   <button onclick="generateTicket()">Submit Request</button>
 
-  <div id="ticket" class="ticket"></div>
+  <div id="ticket_no" class="ticket"></div>
 
 </div>
 
 <div class="footer">
-  © 2026 Bytenex Innovation. All Rights Reserved.
+© 2026 Bytenex Innovation
 </div>
 
 </body>
