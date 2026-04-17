@@ -2,37 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bytenex Innovation</title>
+  <title>Contact - Bytenex Innovation</title>
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0b0f1a;
-      color: #fff;
+      background: #f5f5f5;
+      color: #333;
     }
 
-    /* Navbar */
-    .navbar {
-      position: sticky;
-      top: 0;
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 40px;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
     }
 
-    .nav-left {
+    .left {
       display: flex;
       align-items: center;
-      animation: slideDown 1s ease;
     }
 
     .logo-box {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       overflow: hidden;
     }
@@ -43,139 +39,83 @@
       object-fit: cover;
     }
 
-    .brand-name {
+    .brand {
       margin-left: 10px;
       font-size: 20px;
       font-weight: bold;
-      color: #00eaff;
+      color: #00aaff;
     }
 
-    .nav-links a {
-      color: #00eaff;
-      margin-left: 20px;
+    .home-btn {
       text-decoration: none;
+      padding: 8px 18px;
+      background: #00aaff;
+      color: #fff;
+      border-radius: 20px;
+      font-size: 14px;
     }
 
-    /* Hero */
-    .hero {
-      padding: 120px 20px;
-      text-align: center;
-      background: linear-gradient(135deg, #0b0f1a, #001f3f);
+    .container {
+      padding: 30px 20px;
     }
 
-    .typing {
-      font-size: 45px;
-      color: #00eaff;
-      text-shadow: 0 0 20px #00eaff;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 3px solid #00eaff;
-      width: 0;
-      animation: typing 3s steps(20, end) forwards, blink 0.8s infinite;
-    }
-
-    .hero p {
-      color: #ccc;
-    }
-
-    .hero a {
-      margin-top: 20px;
-      display: inline-block;
-      padding: 12px 30px;
-      background: #00eaff;
-      color: #000;
-      border-radius: 25px;
-      text-decoration: none;
-    }
-
-    /* Section */
-    .section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .section h2 {
-      color: #00eaff;
-    }
-
-    .section p {
-      max-width: 800px;
-      margin: auto;
-      color: #bbb;
-      line-height: 1.8;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 40px;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 30px;
     }
 
     .card {
-      background: #111827;
+      display: flex;
+      align-items: center;
+      background: #fff;
       padding: 20px;
+      margin-bottom: 20px;
       border-radius: 10px;
       transition: 0.3s;
+      text-decoration: none;
+      color: #333;
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 15px #00eaff;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    /* Buttons */
-    .btn {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 25px;
-      border-radius: 25px;
+    .icon {
+      font-size: 50px;
+      margin-right: 20px;
+    }
+
+    .title {
+      font-size: 20px;
+      color: #0077aa;
+      font-weight: bold;
+    }
+
+    .desc {
+      color: #555;
+      margin-top: 5px;
+    }
+
+    .desc a {
+      color: #0077aa;
       text-decoration: none;
       font-weight: bold;
     }
 
-    .call-btn {
-      background: #00eaff;
-      color: #000;
+    .remark {
+      font-size: 13px;
+      color: #888;
+      margin-left: 5px;
     }
 
-    .mail-btn {
-      border: 2px solid #fff;
-      color: #fff;
-    }
-
-    .mail-btn:hover {
-      background: #00eaff;
-      color: #000;
-    }
-
-    /* CTA */
-    .cta {
-      background: linear-gradient(135deg, #001f3f, #002a5c);
-      text-align: center;
-      padding: 80px 20px;
-    }
-
-    /* Footer */
     .footer {
       text-align: center;
       padding: 20px;
       background: #000;
-    }
-
-    /* Animations */
-    @keyframes slideDown {
-      from { transform: translateY(-60px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent }
+      color: #888;
+      font-size: 14px;
+      margin-top: 40px;
     }
 
   </style>
@@ -183,87 +123,63 @@
 
 <body>
 
-<!-- Navbar -->
-<div class="navbar">
-  <div class="nav-left">
+<div class="header">
+  <div class="left">
     <div class="logo-box">
       <img src="DOC-20260410-WA0001.jpg" class="logo">
     </div>
-    <span class="brand-name">Bytenex</span>
+    <div class="brand">Bytenex Innovation</div>
   </div>
 
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="product.html">Products</a>
-    <a href="contact.html">Contact</a>
-  </div>
+  <a href="index.html" class="home-btn">Home</a>
 </div>
 
-<!-- Hero -->
-<div class="hero">
-  <h2>Welcome to</h2>
-  <h1 class="typing">Bytenex Innovation</h1>
-  <p>Delivering Advanced ELV & Automation Solutions Across Industries</p>
+<div class="container">
 
-  <a href="about.html" class="btn call-btn">Explore More</a>
-  <br>
-  <a href="contact.html" class="btn mail-btn">Contact Us</a>
-</div>
+  <h1>Contact Us</h1>
 
-<!-- Expertise -->
-<div class="section">
-  <h2>Our Expertise</h2>
-  <p>
-    At <strong>Bytenex Innovation</strong>, we specialize in delivering intelligent and future-ready automation solutions. 
-    Our expertise spans across <strong>IoT Integration, Industrial Automation, and Advanced ELV Systems</strong>.
-  </p>
-
-  <div class="grid">
-    <div class="card">IoT Integration</div>
-    <div class="card">Industrial Automation</div>
-    <div class="card">Smart Building</div>
-    <div class="card">Security Systems</div>
-    <div class="card">Networking</div>
-    <div class="card">Custom Projects</div>
-  </div>
-</div>
-
-<!-- Why -->
-<div class="section" style="background:#0f172a;">
-  <h2>Why Choose Bytenex?</h2>
-  <p>
-    With a strong team of experienced professionals, Bytenex Innovation delivers reliable, scalable, and customized automation solutions.
-  </p>
-</div>
-
-<!-- Contact Preview -->
-<div class="section">
-  <h2>Contact Us</h2>
-  <p>+91-8200031345 | info@bytenexinnovation.in</p>
-
-  <a href="tel:+918200031345" class="btn call-btn">Call Now</a>
-  <a href="contact.html" class="btn mail-btn">Send Enquiry</a>
-</div>
-
-<!-- CTA -->
-<div class="cta">
-  <h2>Reach Out to Us</h2>
-  <h1>Your Next Project Starts Here</h1>
-
-  <a href="contact.html" class="btn mail-btn">
-    Enquire Now →
+  <!-- Sales -->
+  <a href="mailto:info@bytenexinnovation.in?subject=Sales Enquiry&body=Hello Bytenex Team," class="card">
+    <div class="icon">📧</div>
+    <div>
+      <div class="title">Sales</div>
+      <div class="desc">Get in touch with one of our sales representatives.</div>
+    </div>
   </a>
 
-  <br>
-
-  <a href="tel:+918200031345" class="btn call-btn">
-    Call Now
+  <!-- Support -->
+  <a href="mailto:engineers@bytenexinnovation.in?subject=Support Request&body=Hello Bytenex Team," class="card">
+    <div class="icon">🎧</div>
+    <div>
+      <div class="title">Help and Support</div>
+      <div class="desc">For product support, careers and company questions.</div>
+    </div>
   </a>
+
+  <!-- Phone -->
+  <div class="card">
+    <div class="icon">📞</div>
+    <div>
+      <div class="title">Call Us</div>
+
+      <!-- Number 1 -->
+      <div class="desc">
+        <a href="tel:8200031345">8200031345</a>
+      </div>
+
+      <!-- Number 2 with remark -->
+      <div class="desc">
+        <a href="tel:+919725552933">+91 97255 52933</a>
+        <span class="remark">(For International Projects)</span>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <div class="footer">
-  © 2026 Bytenex Innovation
+  © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
 </body>
