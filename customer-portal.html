@@ -66,6 +66,7 @@ label {
   margin-top: 20px;
   font-size: 12px;
   color: #aaa;
+  text-align: center;
 }
 </style>
 
@@ -154,7 +155,7 @@ function logout() {
   login_box.style.display = "block";
 }
 
-/* ================= FORGOT ================= */
+/* ================= FORGOT PASSWORD ================= */
 function forgotPassword() {
 
   let id = prompt("Enter USER ID:");
@@ -267,7 +268,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= VALIDATION FIX ================= */
+/* ================= GENERATE TICKET ================= */
 function generateTicket() {
 
   let issue = issue_desc.value.trim();
@@ -346,7 +347,7 @@ function generateTicket() {
 <!-- LOGIN -->
 <div id="login_box" class="container">
   <input id="user_email" placeholder="USER ID / ADMIN EMAIL">
-  <input id="user_pass" type="password">
+  <input id="user_pass" type="password" placeholder="Enter Your Password">
 
   <button onclick="login()">Login</button>
 
@@ -364,7 +365,7 @@ function generateTicket() {
   <input id="r_site_name" placeholder="Site Name">
   <textarea id="r_site_address" placeholder="Site Address"></textarea>
 
-  <input id="r_pass" type="password">
+  <input id="r_pass" type="password" placeholder="Password">
 
   <button onclick="register()">Create Account</button>
 </div>
@@ -395,7 +396,6 @@ function generateTicket() {
 
   <hr>
 
-  <!-- FORM -->
   <label>Service Type</label>
   <select id="type_sel">
     <option>AMC</option>
@@ -403,7 +403,7 @@ function generateTicket() {
   </select>
 
   <label>Contract Number</label>
-  <input id="contract_no">
+  <input id="contract_no" placeholder="Enter contract number">
 
   <label>Service</label>
   <select id="service" onchange="toggleOtherField()">
@@ -431,6 +431,11 @@ function generateTicket() {
 
   <button onclick="generateTicket()">Submit</button>
 
+</div>
+
+<!-- FOOTER FIX -->
+<div class="footer">
+© 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
 </body>
