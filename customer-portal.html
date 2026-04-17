@@ -53,8 +53,9 @@ button {
 </style>
 
 <script>
+// INIT EMAILJS
 (function(){
-  emailjs.init("YOUR_PUBLIC_KEY");
+  emailjs.init("96jeYqjxp_2n0Pukl");
 })();
 
 // REGISTER
@@ -76,16 +77,12 @@ function register() {
 
 // LOGIN
 function login() {
-  let email = user.value;
-  let pass = passw.value;
+  let data = JSON.parse(localStorage.getItem(user.value));
 
-  let data = JSON.parse(localStorage.getItem(email));
-
-  if(data && data.password === pass) {
+  if(data && data.password === passw.value) {
     login_box.style.display = "none";
     portal.style.display = "block";
 
-    // auto fill
     c_name.value = data.name;
     c_company.value = data.company;
     c_mobile.value = data.mobile;
@@ -110,22 +107,28 @@ function generateTicket() {
     customer_email: c_email.value,
     mobile: c_mobile.value,
     company: c_company.value,
-    ticket: ticket,
-    cc1: "engineers@bytenexinnovation.in",
-    cc2: "info@bytenexinnovation.in"
+    ticket: ticket
   };
 
-  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
-    .then(function(response) {
-       alert("Ticket Generated & Email Sent!");
+  emailjs.send("service_gpf0tfn", "template_rjju7w9", templateParams)
+    .then(function() {
+      alert("Ticket Generated & Email Sent!");
     }, function(error) {
-       alert("Email Failed!");
+      alert("Email Failed!");
+      console.log(error);
     });
 }
 
 // SWITCH
-function showRegister(){ login_box.style.display="none"; register_box.style.display="block"; }
-function showLogin(){ register_box.style.display="none"; login_box.style.display="block"; }
+function showRegister(){
+  login_box.style.display="none";
+  register_box.style.display="block";
+}
+
+function showLogin(){
+  register_box.style.display="none";
+  login_box.style.display="block";
+}
 </script>
 
 </head>
@@ -151,6 +154,7 @@ function showLogin(){ register_box.style.display="none"; login_box.style.display
   <input id="r_company" placeholder="Company">
   <input id="r_pass" type="password" placeholder="Password">
   <button onclick="register()">Create</button>
+  <p onclick="showLogin()" style="cursor:pointer;color:#00eaff;">Back to Login</p>
 </div>
 
 <!-- PORTAL -->
