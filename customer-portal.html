@@ -39,7 +39,6 @@ button {
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 15px;
 }
 
 .link {
@@ -62,7 +61,7 @@ button {
 
 <script>
 
-/* ================= REGISTER ================= */
+/* ========== REGISTER ========== */
 function register() {
   let user = {
     name: r_name.value,
@@ -77,7 +76,7 @@ function register() {
   showLogin();
 }
 
-/* ================= LOGIN ================= */
+/* ========== LOGIN ========== */
 function login() {
   let data = JSON.parse(localStorage.getItem(user_email.value));
 
@@ -97,7 +96,7 @@ function login() {
   }
 }
 
-/* ================= SWITCH ================= */
+/* ========== SWITCH ========== */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -108,37 +107,43 @@ function showLogin(){
   login_box.style.display="block";
 }
 
-/* ================= SERVICE TOGGLE ================= */
+/* ========== SERVICE TOGGLE ========== */
 function toggleOtherField() {
-  let box = document.getElementById("other_box");
-  box.style.display = (service.value === "Other") ? "block" : "none";
+  other_box.style.display = (service.value === "Other") ? "block" : "none";
 }
 
-/* ================= LOAD DASHBOARD ================= */
+/* ========== DASHBOARD ========== */
 function loadDashboard() {
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
-  let total = tickets.length;
-  let open = tickets.filter(t => t.status === "Open").length;
-  let closed = tickets.filter(t => t.status === "Closed").length;
-
-  total_count.innerText = total;
-  open_count.innerText = open;
-  close_count.innerText = closed;
+  total_count.innerText = tickets.length;
+  open_count.innerText = tickets.filter(t => t.status === "Open").length;
+  close_count.innerText = tickets.filter(t => t.status === "Closed").length;
 
   let html = "";
 
   tickets.forEach((t, index) => {
     html += `
-      <div style="background:#111827; padding:10px; margin:8px 0; border-radius:10px; text-align:left;">
+      <div style="background:#111827; padding:12px; margin:10px 0; border-radius:10px; text-align:left;">
+
         <b>${t.id}</b><br>
         ${t.service} | ${t.priority}<br>
-        Status: <b style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</b><br>
+
+        Status:
+        <b style="color:${t.status==='Open'?'#00eaff':'#22c55e'}">${t.status}</b><br>
+
+        ${t.status === "Closed" ? `
+          <hr>
+          <b>Root Cause:</b> ${t.rootCause}<br>
+          <b>Closing Remark:</b> ${t.closingRemark}<br>
+          <small>Closed At: ${t.closedAt}</small>
+        ` : ""}
 
         <button onclick="closeTicket(${index})"
-          style="margin-top:8px; padding:8px; border-radius:8px;">
+          style="margin-top:10px; padding:8px; border-radius:8px;">
           Close Ticket
         </button>
+
       </div>
     `;
   });
@@ -146,7 +151,7 @@ function loadDashboard() {
   ticket_list.innerHTML = html;
 }
 
-/* ================= CLOSE TICKET (ADMIN ONLY) ================= */
+/* ========== CLOSE TICKET (ADMIN ONLY) ========== */
 function closeTicket(index) {
 
   let adminEmail = "info@bytenexinnovation.in";
@@ -157,13 +162,23 @@ function closeTicket(index) {
   }
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+
+  let remark = prompt("Enter Closing Remark:");
+  if(!remark) return;
+
+  let rootCause = prompt("Enter Root Cause:");
+  if(!rootCause) return;
+
   tickets[index].status = "Closed";
+  tickets[index].closingRemark = remark;
+  tickets[index].rootCause = rootCause;
+  tickets[index].closedAt = new Date().toLocaleString();
 
   localStorage.setItem("tickets", JSON.stringify(tickets));
   loadDashboard();
 }
 
-/* ================= GENERATE TICKET ================= */
+/* ========== GENERATE TICKET ========== */
 function generateTicket() {
 
   let type = type_sel.value;
@@ -174,12 +189,12 @@ function generateTicket() {
   let issue = issue_desc.value;
 
   if(type === "AMC" && contract.trim() === "") {
-    alert("Contract Number required for AMC");
+    alert("Contract Number required");
     return;
   }
 
   if(serviceType === "Other" && other.trim() === "") {
-    alert("Please describe service");
+    alert("Describe service");
     return;
   }
 
@@ -189,7 +204,6 @@ function generateTicket() {
 
   ticket_no.innerText = "Ticket No: " + ticket;
 
-  /* SAVE TICKET */
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   tickets.push({
@@ -198,7 +212,6 @@ function generateTicket() {
     company: c_company.value,
     mobile: c_mobile.value,
     email: c_email.value,
-    contract: contract,
     service: finalService,
     priority: priority,
     issue: issue,
@@ -209,24 +222,6 @@ function generateTicket() {
   localStorage.setItem("tickets", JSON.stringify(tickets));
 
   loadDashboard();
-
-  /* MAIL */
-  let subject = encodeURIComponent("Bytenex Ticket - " + ticket);
-
-  let body = encodeURIComponent(
-    "Name: " + c_name.value + "\n" +
-    "Company: " + c_company.value + "\n" +
-    "Mobile: " + c_mobile.value + "\n" +
-    "Email: " + c_email.value + "\n\n" +
-    "Service: " + finalService + "\n" +
-    "Priority: " + priority + "\n\n" +
-    "Issue:\n" + issue + "\n\n" +
-    "Ticket: " + ticket
-  );
-
-  window.location.href =
-  "mailto:engineers@bytenexinnovation.in,info@bytenexinnovation.in?subject=" +
-  subject + "&body=" + body;
 }
 
 </script>
@@ -253,29 +248,26 @@ function generateTicket() {
   <input id="r_company" placeholder="Company">
   <input id="r_pass" type="password" placeholder="Password">
   <button onclick="register()">Create Account</button>
-  <p class="link" onclick="showLogin()">Back to Login</p>
+  <p class="link" onclick="showLogin()">Back</p>
 </div>
 
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
 
-  <h3>Raise Service Request</h3>
+  <h3>Dashboard</h3>
 
-  <!-- DASHBOARD -->
-  <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+  <div style="display:flex; justify-content:space-between;">
     <div>Total: <span id="total_count">0</span></div>
     <div>Open: <span id="open_count">0</span></div>
     <div>Closed: <span id="close_count">0</span></div>
   </div>
 
-  <h3>My Tickets</h3>
+  <h3>Tickets</h3>
   <div id="ticket_list"></div>
 
   <hr>
 
-  <p style="font-size:14px; color:#9ca3af;">
-  We're sorry to hear about your experience. Kindly share details below.
-  </p>
+  <h3>Raise Ticket</h3>
 
   <input id="c_name" placeholder="Name">
   <input id="c_company" placeholder="Company">
@@ -290,14 +282,14 @@ function generateTicket() {
   <input id="contract_no" placeholder="Contract Number">
 
   <select id="service" onchange="toggleOtherField()">
-    <option value="Repair">Repair</option>
-    <option value="Replacement">Replacement</option>
-    <option value="Installation">Installation</option>
+    <option>Repair</option>
+    <option>Replacement</option>
+    <option>Installation</option>
     <option value="Other">Other</option>
   </select>
 
   <div id="other_box" style="display:none;">
-    <textarea id="other_service" placeholder="Describe service..."></textarea>
+    <textarea id="other_service"></textarea>
   </div>
 
   <select id="priority_sel">
@@ -307,16 +299,16 @@ function generateTicket() {
     <option>Critical</option>
   </select>
 
-  <textarea id="issue_desc" placeholder="Describe issue"></textarea>
+  <textarea id="issue_desc"></textarea>
 
-  <button onclick="generateTicket()">Submit Request</button>
+  <button onclick="generateTicket()">Submit</button>
 
   <div id="ticket_no" class="ticket"></div>
 
 </div>
 
 <div class="footer">
-© 2026 Bytenex Innovation. All Rights Reserved.
+© 2026 Bytenex Innovation
 </div>
 
 </body>
