@@ -6,133 +6,113 @@
 
 <style>
 body {
-  font-family: 'Segoe UI', Arial;
+  font-family: Arial;
   background: #f5f5f5;
-  color: #333;
   text-align: center;
-  padding: 20px;
 }
 
 .container {
   max-width: 700px;
   margin: auto;
   background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #eee;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-input, select, textarea {
+input, textarea {
   width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 6px 0;
 }
 
 button {
-  padding: 12px;
   width: 100%;
-  background: #00aaff;
+  padding: 10px;
+  background: #0077aa;
+  color: white;
   border: none;
-  border-radius: 25px;
   cursor: pointer;
-  color: #fff;
-  font-weight: bold;
-}
-
-.link {
-  color: #00aaff;
-  cursor: pointer;
-  margin: 5px;
-  display: inline-block;
-}
-
-.footer {
-  margin-top: 20px;
-  font-size: 12px;
-  color: #888;
 }
 
 .ticket {
-  background:#f9f9f9;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  text-align:left;
-  border:1px solid #eee;
+  text-align: left;
+  padding: 10px;
+  margin: 10px 0;
+  background: #f9f9f9;
+  border-radius: 8px;
 }
 </style>
 
 <script>
 
+/* ADMIN CONFIG */
+const ADMIN_EMAIL = "info@bytenexinnovation.in";
+const ADMIN_PASS = "admin123";
+
 /* USER ID */
-function generateUserId() {
+function generateUserId(){
   return "BNT" + Math.floor(Math.random()*999999);
 }
 
 /* REGISTER */
-function register() {
+function register(){
 
-  let id = generateUserId();
+  if(!r_name.value || !r_email.value || !r_pass.value){
+    alert("Fill all fields");
+    return;
+  }
 
   let user = {
-    userId: id,
+    userId: generateUserId(),
     name: r_name.value,
     email: r_email.value,
     password: r_pass.value,
     role: "customer"
   };
 
-  localStorage.setItem(id, JSON.stringify(user));
+  localStorage.setItem(user.email, JSON.stringify(user));
 
-  alert("USER ID CREATED: " + id);
+  alert("Account created! Your User ID: " + user.userId);
   showLogin();
 }
 
 /* LOGIN */
-function login() {
+function login(){
 
-  let input = user_email.value;
+  let email = user_email.value;
   let pass = user_pass.value;
 
-  /* ADMIN */
-  if(input === "info@bytenexinnovation.in") {
+  /* ADMIN LOGIN */
+  if(email === ADMIN_EMAIL && pass === ADMIN_PASS){
 
     localStorage.setItem("currentUser", JSON.stringify({
-      role: "admin",
-      email: input
+      email,
+      role: "admin"
     }));
 
-    login_box.style.display = "none";
-    register_box.style.display = "none";
-    portal.style.display = "block";
-
+    showPortal();
     loadDashboard();
     return;
   }
 
-  /* CUSTOMER */
-  let user = JSON.parse(localStorage.getItem(input));
+  /* CUSTOMER LOGIN */
+  let user = JSON.parse(localStorage.getItem(email));
 
-  if(user && user.password === pass) {
+  if(user && user.password === pass){
 
     localStorage.setItem("currentUser", JSON.stringify(user));
 
-    login_box.style.display = "none";
-    register_box.style.display = "none";
-    portal.style.display = "block";
-
+    showPortal();
     loadDashboard();
 
   } else {
-    alert("Invalid USER ID or Password");
+    alert("Invalid login");
   }
 }
 
-/* SWITCH */
+/* SWITCH UI */
 function showRegister(){
   login_box.style.display="none";
   register_box.style.display="block";
@@ -141,6 +121,12 @@ function showRegister(){
 function showLogin(){
   register_box.style.display="none";
   login_box.style.display="block";
+}
+
+function showPortal(){
+  login_box.style.display="none";
+  register_box.style.display="none";
+  portal.style.display="block";
 }
 
 /* LOGOUT */
@@ -152,35 +138,42 @@ function logout(){
 /* CREATE TICKET */
 function generateTicket(){
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  let user = JSON.parse(localStorage.getItem("currentUser"));
 
-  let ticket = "T-" + Math.floor(Math.random()*999999);
+  if(!c_name.value || !issue_desc.value){
+    alert("Fill required fields");
+    return;
+  }
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
-  tickets.push({
-    id: ticket,
-    userId: currentUser.userId,
+  let ticket = {
+    id: "T-" + Math.floor(Math.random()*999999),
+    userId: user.userId || "ADMIN",
     name: c_name.value,
     company: c_company.value,
     issue: issue_desc.value,
     status: "Open",
     createdAt: new Date().toLocaleString()
-  });
+  };
 
+  tickets.push(ticket);
   localStorage.setItem("tickets", JSON.stringify(tickets));
 
-  ticket_no.innerText = "Ticket No: " + ticket;
+  ticket_no.innerText = "Ticket Created: " + ticket.id;
+
+  c_name.value = "";
+  c_company.value = "";
+  issue_desc.value = "";
 
   loadDashboard();
 }
 
-/* CLOSE TICKET (ADMIN ONLY) */
+/* CLOSE TICKET */
 function closeTicket(id){
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-  if(currentUser.role !== "admin") return;
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  if(user.role !== "admin") return;
 
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
@@ -188,7 +181,7 @@ function closeTicket(id){
     if(t.id === id){
       t.status = "Closed";
       t.closedAt = new Date().toLocaleString();
-      t.closedBy = currentUser.email;
+      t.closedBy = user.email;
     }
     return t;
   });
@@ -200,22 +193,19 @@ function closeTicket(id){
 /* DASHBOARD */
 function loadDashboard(){
 
-  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  let user = JSON.parse(localStorage.getItem("currentUser"));
   let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
 
   let html = "";
 
   tickets.forEach(t=>{
 
-    if(currentUser.role !== "admin" && t.userId !== currentUser.userId){
-      return;
-    }
+    if(user.role !== "admin" && t.userId !== user.userId) return;
 
     html += `
       <div class="ticket">
-
-        <b>Ticket:</b> ${t.id}<br>
-        <b>User ID:</b> ${t.userId}<br>
+        <b>ID:</b> ${t.id}<br>
+        <b>User:</b> ${t.userId}<br>
         <b>Name:</b> ${t.name}<br>
         <b>Company:</b> ${t.company}<br>
         <b>Issue:</b> ${t.issue}<br>
@@ -227,10 +217,10 @@ function loadDashboard(){
           <b>Closed At:</b> ${t.closedAt}<br>
         ` : ""}
 
-        ${currentUser.role === "admin" && t.status === "Open" ? `
-          <button onclick="closeTicket('${t.id}')" style="background:#22c55e;margin-top:5px;">
-            Close Ticket
-          </button>
+        ${user.role === "admin" && t.status === "Open" ? `
+          <button onclick="closeTicket('${t.id}')"
+          style="background:green;margin-top:5px;">
+          Close Ticket</button>
         ` : ""}
 
       </div>
@@ -245,14 +235,14 @@ function loadDashboard(){
 
 <body>
 
-<h2 style="color:#0077aa;">Bytenex Customer Portal</h2>
+<h2>Bytenex Portal (Fixed)</h2>
 
 <!-- LOGIN -->
 <div id="login_box" class="container">
-  <input id="user_email" placeholder="USER ID / Admin Email">
+  <input id="user_email" placeholder="Email">
   <input id="user_pass" type="password" placeholder="Password">
   <button onclick="login()">Login</button>
-  <span class="link" onclick="showRegister()">Create Account</span>
+  <p onclick="showRegister()" style="color:blue;cursor:pointer;">Create Account</p>
 </div>
 
 <!-- REGISTER -->
@@ -260,19 +250,19 @@ function loadDashboard(){
   <input id="r_name" placeholder="Name">
   <input id="r_email" placeholder="Email">
   <input id="r_pass" type="password" placeholder="Password">
-  <button onclick="register()">Create Account</button>
+  <button onclick="register()">Register</button>
 </div>
 
 <!-- PORTAL -->
 <div id="portal" class="container" style="display:none;">
 
-<h3>🛠 Register Complaint</h3>
+<h3>Raise Complaint</h3>
 
 <input id="c_name" placeholder="Name">
 <input id="c_company" placeholder="Company">
 <textarea id="issue_desc" placeholder="Issue"></textarea>
 
-<button onclick="generateTicket()">Submit Complaint</button>
+<button onclick="generateTicket()">Submit</button>
 
 <div id="ticket_no"></div>
 
@@ -281,11 +271,11 @@ function loadDashboard(){
 <h3>Tickets</h3>
 <div id="ticket_list"></div>
 
-<button onclick="logout()" style="background:#ff4d4d;margin-top:10px;">Logout</button>
+<button onclick="logout()" style="background:red;margin-top:10px;">
+Logout
+</button>
 
 </div>
-
-<div class="footer">© 2026 Bytenex Innovation</div>
 
 </body>
 </html>
