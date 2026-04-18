@@ -49,7 +49,7 @@ button{
 
 /* ================= ADMIN ================= */
 const ADMIN_EMAIL = "info@bytenexinnovation.in";
-const ADMIN_PASS  = "Asktoyash@1997";
+const ADMIN_PASS = "Asktoyash@1997";
 
 /* ================= USER ID ================= */
 function generateUserId(){
@@ -64,7 +64,6 @@ function generatePassword(){
 
 /* ================= REGISTER ================= */
 function register(){
-
   if(!r_name.value || !r_company.value || !r_site.value || !r_email.value || !r_phone.value || !r_pass.value || !r_cpass.value){
     alert("Fill all fields");
     return;
@@ -93,17 +92,14 @@ function register(){
   localStorage.setItem(uid, JSON.stringify(user));
 
   alert("USER CREATED\nID: " + uid + "\nPASSWORD: " + pass);
-
   showLogin();
 }
 
 /* ================= LOGIN ================= */
 function login(){
-
   let id = login_id.value;
   let pass = login_pass.value;
 
-  /* ADMIN */
   if(id === ADMIN_EMAIL && pass === ADMIN_PASS){
     localStorage.setItem("currentUser", JSON.stringify({role:"admin",email:id}));
     showPortal();
@@ -111,7 +107,6 @@ function login(){
     return;
   }
 
-  /* CUSTOMER */
   let user = JSON.parse(localStorage.getItem(id));
 
   if(user && user.password === pass){
@@ -125,7 +120,6 @@ function login(){
 
 /* ================= FORGOT PASSWORD ================= */
 function forgotPassword(){
-
   let email = fp_email.value;
   let company = fp_company.value;
 
@@ -145,36 +139,11 @@ function forgotPassword(){
   alert("No matching account found");
 }
 
-/* ================= OPEN MAIL (MANUAL) ================= */
-function openMail(t){
-
-  let body =
-`BYTENEX TICKET
-
-Ticket ID: ${t.id}
-User ID: ${t.userId}
-Name: ${t.name}
-Company: ${t.company}
-Site: ${t.site}
-PO: ${t.po}
-Service: ${t.service}
-Category: ${t.category}
-Issue: ${t.issue}
-Created: ${t.created}`;
-
-  window.location.href =
-    "mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in"
-    + "?subject=" + encodeURIComponent("Ticket " + t.id)
-    + "&body=" + encodeURIComponent(body);
-}
-
 /* ================= CREATE TICKET ================= */
 function createTicket(){
-
   let user = JSON.parse(localStorage.getItem("currentUser"));
   if(!user) return alert("Login required");
 
-  /* ISSUE VALIDATION ADDED */
   if(!issue.value){
     alert("Issue description required");
     return;
@@ -199,76 +168,15 @@ function createTicket(){
   localStorage.setItem("tickets", JSON.stringify(tickets));
 
   ticket_no.innerHTML = "Ticket Created: " + ticket.id;
-
   openMail(ticket);
   loadDashboard();
-}
-
-/* ================= CLOSE TICKET (ADMIN) ================= */
-function closeTicket(id){
-
-  let admin = JSON.parse(localStorage.getItem("currentUser"));
-  if(admin.role !== "admin") return;
-
-  let rca = prompt("Enter RCA:");
-  let remark = prompt("Closing Remark:");
-
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-
-  tickets = tickets.map(t=>{
-    if(t.id === id){
-      t.status = "Closed";
-      t.rca = rca;
-      t.remark = remark;
-      t.closedBy = admin.email;
-      t.closedAt = new Date().toLocaleString();
-    }
-    return t;
-  });
-
-  localStorage.setItem("tickets", JSON.stringify(tickets));
-  loadDashboard();
-}
-
-/* ================= DASHBOARD ================= */
-function loadDashboard(){
-
-  let user = JSON.parse(localStorage.getItem("currentUser"));
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-
-  let html = "";
-
-  tickets.forEach(t=>{
-
-    if(user.role !== "admin" && t.userId !== user.userId) return;
-
-    html += `
-    <div class="ticket">
-      <b>${t.id}</b><br>
-      ${t.name} | ${t.company}<br>
-      ${t.site}<br>
-      ${t.issue}<br>
-      Status: ${t.status}<br>
-
-      ${t.status === "Closed" ? `
-        RCA: ${t.rca}<br>
-        Remark: ${t.remark}<br>
-      ` : ""}
-
-      ${user.role === "admin" && t.status === "Open" ? `
-        <button onclick="closeTicket('${t.id}')">Close Ticket</button>
-      ` : ""}
-    </div>
-    `;
-  });
-
-  ticket_list.innerHTML = html;
 }
 
 /* ================= UI ================= */
 function showLogin(){
   login_box.style.display="block";
   register_box.style.display="none";
+  portal.style.display="none";
 }
 
 function showRegister(){
@@ -296,18 +204,20 @@ function logout(){
 
 <!-- LOGIN -->
 <div id="login_box" class="box">
+
   <input id="login_id" placeholder="User ID / Admin Email">
   <input id="login_pass" type="password" placeholder="Password">
   <button onclick="login()">Login</button>
 
-  <p onclick="showRegister()" style="color:blue;cursor:pointer;">Create Account</p>
-
-  <!-- FORGOT PASSWORD ADDED -->
+  <!-- ✅ FORGOT PASSWORD ADDED HERE -->
   <hr>
+
   <h4>Forgot Password</h4>
   <input id="fp_email" placeholder="Email">
   <input id="fp_company" placeholder="Company Name">
   <button onclick="forgotPassword()">Reset Password</button>
+
+  <p onclick="showRegister()" style="color:blue;cursor:pointer;">Create Account</p>
 </div>
 
 <!-- REGISTER -->
@@ -317,55 +227,49 @@ function logout(){
   <input id="r_site" placeholder="Site Location">
   <input id="r_email" placeholder="Email">
   <input id="r_phone" placeholder="Phone">
-
   <select id="r_type">
     <option>AMC</option>
     <option>NON AMC</option>
   </select>
-
   <input id="r_pass" type="password" placeholder="Password">
   <input id="r_cpass" type="password" placeholder="Confirm Password">
-
   <button onclick="register()">Create User</button>
 </div>
 
 <!-- PORTAL -->
 <div id="portal" class="box" style="display:none;">
+  <h3>Create Ticket</h3>
 
-<h3>Create Ticket</h3>
+  <input id="site" placeholder="Site Location">
+  <input id="po" placeholder="PO Number">
 
-<input id="site" placeholder="Site Location">
-<input id="po" placeholder="PO Number">
+  <select id="service">
+    <option>AMC</option>
+    <option>NON AMC</option>
+    <option>OTHER</option>
+  </select>
 
-<select id="service">
-  <option>AMC</option>
-  <option>NON AMC</option>
-  <option>OTHER</option>
-</select>
+  <select id="category">
+    <option>Repair</option>
+    <option>Installation</option>
+    <option>Replacement</option>
+    <option>Other</option>
+  </select>
 
-<select id="category">
-  <option>Repair</option>
-  <option>Installation</option>
-  <option>Replacement</option>
-  <option>Other</option>
-</select>
+  <textarea id="issue" placeholder="Issue Description"></textarea>
 
-<textarea id="issue" placeholder="Issue Description"></textarea>
+  <button onclick="createTicket()">Submit Ticket</button>
 
-<button onclick="createTicket()">Submit Ticket</button>
+  <div id="ticket_no"></div>
 
-<div id="ticket_no"></div>
+  <hr>
+  <h3>Tickets</h3>
+  <div id="ticket_list"></div>
 
-<hr>
-
-<h3>Tickets</h3>
-<div id="ticket_list"></div>
-
-<button onclick="logout()" style="background:red">Logout</button>
-
+  <button onclick="logout()" style="background:red">Logout</button>
 </div>
 
-<!-- COPYRIGHT ADDED -->
+<!-- ✅ COPYRIGHT ADDED -->
 <div style="margin-top:20px;font-size:12px;color:#777;">
 © 2026 BYTENEX INNOVATION. All Rights Reserved. Unauthorized use strictly prohibited.
 </div>
