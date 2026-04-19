@@ -5,66 +5,16 @@
 <title>Bytenex Customer Portal</title>
 
 <style>
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #eef2f7;
-}
-
-.header {
-  background: #0d6efd;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.container {
-  width: 400px;
-  margin: 30px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-input, select, textarea {
-  width: 100%;
-  margin: 8px 0;
-  padding: 10px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background: #0d6efd;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.link {
-  color: #0d6efd;
-  cursor: pointer;
-  margin-top: 5px;
-}
-
-.dashboard {
-  display: none;
-  padding: 20px;
-}
-
-.ticket {
-  background: white;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-}
-
-footer {
-  text-align: center;
-  margin-top: 20px;
-}
+body {font-family: Arial; margin:0; background:#eef2f7;}
+.header {background:#0d6efd;color:white;text-align:center;padding:15px;font-size:22px;}
+.container {width:400px;margin:30px auto;background:white;padding:20px;border-radius:10px;}
+input, select, textarea {width:100%;margin:8px 0;padding:10px;}
+button {width:100%;padding:10px;background:#0d6efd;color:white;border:none;cursor:pointer;}
+.link {color:#0d6efd;cursor:pointer;}
+.dashboard {display:none;padding:20px;}
+.ticket {background:white;padding:10px;margin:10px 0;border-radius:8px;}
+.topbar {display:flex;justify-content:space-between;align-items:center;}
+.logout {background:red;padding:5px 10px;cursor:pointer;}
 </style>
 
 </head>
@@ -78,7 +28,6 @@ footer {
 <h3>Login</h3>
 <input id="loginId" placeholder="User ID / Admin Email">
 <input id="loginPass" type="password" placeholder="Password">
-
 <button onclick="login()">Login</button>
 
 <div class="link" onclick="showCreate()">Create Account</div>
@@ -88,7 +37,6 @@ footer {
 <!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
 <h3>Create Account</h3>
-
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
 <input id="org" placeholder="Organisation">
@@ -96,26 +44,30 @@ footer {
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
 <input id="cpass" type="password" placeholder="Confirm Password">
-
 <button onclick="createAccount()">Create Account</button>
 </div>
 
 <!-- FORGOT -->
 <div class="container" id="forgotPage" style="display:none">
 <h3>Reset Password</h3>
-
 <input id="femail" placeholder="Email">
 <input id="forg" placeholder="Organisation">
-
-<button onclick="resetPass()">Reset Password</button>
+<button onclick="resetPass()">Reset</button>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-<h2>Dashboard</h2>
 
-<h3>Your Tickets</h3>
+<div class="topbar">
+<h2>Dashboard</h2>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<h3>Tickets</h3>
 <div id="ticketList"></div>
+
+<!-- CUSTOMER ONLY -->
+<div id="ticketForm">
 
 <h3>New Service Request</h3>
 
@@ -142,108 +94,112 @@ footer {
 <textarea id="desc" placeholder="Minimum 10 lines description"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
+
 </div>
 
-<footer>© Bytenex Innovation</footer>
+</div>
+
+<footer style="text-align:center">© Bytenex Innovation</footer>
 
 <script>
-let currentUser = null;
+let currentUser=null;
+let role="customer";
 
 // LOGIN
 function login(){
-  let id = loginId.value;
-  let pass = loginPass.value;
+  let id=loginId.value;
+  let pass=loginPass.value;
 
   if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-    currentUser="admin";
+    role="admin"; currentUser="admin";
   }
   else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-    currentUser="engineer";
+    role="engineer"; currentUser="engineer";
   }
   else{
-    let users = JSON.parse(localStorage.getItem("users")||"[]");
-    let u = users.find(x=>x.userid===id && x.pass===pass);
-
-    if(!u){
-      alert("Invalid login");
-      return;
-    }
-    currentUser = u.userid;
+    let users=JSON.parse(localStorage.getItem("users")||"[]");
+    let u=users.find(x=>x.userid===id && x.pass===pass);
+    if(!u){ alert("Invalid login"); return; }
+    currentUser=u.userid;
+    role="customer";
   }
 
   loginPage.style.display="none";
   dashboard.style.display="block";
+
+  // hide form for admin/engineer
+  if(role!=="customer"){
+    document.getElementById("ticketForm").style.display="none";
+  }
+
   loadTickets();
+}
+
+// LOGOUT
+function logout(){
+  location.reload();
 }
 
 // CREATE ACCOUNT
 function createAccount(){
-
-  if(!name.value || !phone.value || !org.value || !location.value || !email.value || !pass.value || !cpass.value){
-    alert("All fields required");
-    return;
+  if(!name.value||!phone.value||!org.value||!location.value||!email.value||!pass.value||!cpass.value){
+    alert("All fields required"); return;
   }
 
-  if(pass.value !== cpass.value){
-    alert("Password not match");
-    return;
+  if(pass.value!==cpass.value){
+    alert("Password mismatch"); return;
   }
 
-  let uid = "BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
 
-  let users = JSON.parse(localStorage.getItem("users")||"[]");
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
 
   users.push({
-    name: name.value,
-    phone: phone.value,
-    org: org.value,
-    location: location.value,
-    email: email.value,
-    pass: pass.value,
-    userid: uid
+    name:name.value,
+    phone:phone.value,
+    org:org.value,
+    location:location.value,
+    email:email.value,
+    pass:pass.value,
+    userid:uid
   });
 
   localStorage.setItem("users",JSON.stringify(users));
-
-  alert("Account Created! Your User ID: "+uid);
+  alert("User ID: "+uid);
   location.reload();
 }
 
 // RESET
 function resetPass(){
-  let users = JSON.parse(localStorage.getItem("users")||"[]");
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+  let u=users.find(x=>x.email===femail.value && x.org===forg.value);
 
-  let u = users.find(x=>x.email===femail.value && x.org===forg.value);
+  if(!u){ alert("Mismatch"); return; }
 
-  if(!u){
-    alert("Email & Organisation mismatch");
-    return;
-  }
-
-  let newPass = Math.random().toString(36).slice(-8);
-  u.pass = newPass;
+  let newPass=Math.random().toString(36).slice(-8);
+  u.pass=newPass;
 
   localStorage.setItem("users",JSON.stringify(users));
-
   alert("New Password: "+newPass);
 }
 
-// TICKET
+// SUBMIT
 function submitTicket(){
-
-  if(desc.value.split("\n").length < 10){
-    alert("Minimum 10 lines required");
-    return;
+  if(desc.value.split("\n").length<10){
+    alert("Minimum 10 lines required"); return;
   }
 
-  let tickets = JSON.parse(localStorage.getItem("tickets")||"[]");
+  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
-  let ticketNo = "BYT/"+pono.value+"/"+Math.floor(Math.random()*900000000);
+  let ticketNo="BYT/"+pono.value+"/"+Math.floor(Math.random()*900000000);
 
   tickets.push({
-    user: currentUser,
-    ticket: ticketNo,
-    status: "Open"
+    user:currentUser,
+    ticket:ticketNo,
+    name:reqName.value,
+    pono:pono.value,
+    status:"Open",
+    desc:desc.value
   });
 
   localStorage.setItem("tickets",JSON.stringify(tickets));
@@ -254,25 +210,25 @@ function submitTicket(){
 
 // LOAD
 function loadTickets(){
-  let tickets = JSON.parse(localStorage.getItem("tickets")||"[]");
+  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
   ticketList.innerHTML="";
 
   tickets.forEach(t=>{
-    if(currentUser==="admin" || t.user===currentUser){
-      ticketList.innerHTML += `<div class="ticket">${t.ticket} - ${t.status}</div>`;
+    if(role==="admin" || role==="engineer" || t.user===currentUser){
+      ticketList.innerHTML+=`
+      <div class="ticket">
+      <b>${t.ticket}</b><br>
+      Name: ${t.name}<br>
+      PO: ${t.pono}<br>
+      Status: ${t.status}
+      </div>`;
     }
   });
 }
 
 // NAV
-function showCreate(){
-  loginPage.style.display="none";
-  createPage.style.display="block";
-}
-function showForgot(){
-  loginPage.style.display="none";
-  forgotPage.style.display="block";
-}
+function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
+function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
 </script>
 
 </body>
