@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
@@ -102,13 +103,27 @@ button{
   align-items:center;
 }
 
-.logout{
+/* ICON LOGOUT */
+.logout-icon{
   background:#dc3545;
   border:none;
-  padding:6px 12px;
+  width:32px;
+  height:32px;
+  border-radius:50%;
   color:white;
-  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:14px;
 }
+
+footer{
+  text-align:center;
+  color:#555;
+  margin-top:20px;
+}
+
 </style>
 </head>
 
@@ -119,16 +134,22 @@ button{
 
 <!-- LOGIN -->
 <div class="container" id="loginPage">
+
 <h3>Login</h3>
 
 <input id="loginId" placeholder="User ID / Email">
 <input id="loginPass" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
+
+<div onclick="showCreate()" style="text-align:center;color:#0d6efd;cursor:pointer;margin-top:10px;">Create Account</div>
+<div onclick="showForgot()" style="text-align:center;color:#0d6efd;cursor:pointer;">Forgot Password</div>
+
 </div>
 
 <!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
+
 <h3>Create Account</h3>
 
 <input id="name" placeholder="Name">
@@ -140,6 +161,19 @@ button{
 <input id="cpass" type="password" placeholder="Confirm Password">
 
 <button onclick="createAccount()">Create Account</button>
+
+</div>
+
+<!-- FORGOT -->
+<div class="container" id="forgotPage" style="display:none">
+
+<h3>Reset Password</h3>
+
+<input id="femail" placeholder="Email">
+<input id="forg" placeholder="Organisation">
+
+<button onclick="resetPass()">Reset Password</button>
+
 </div>
 
 <!-- DASHBOARD -->
@@ -147,7 +181,11 @@ button{
 
 <div class="topbar">
 <h2>Dashboard</h2>
-<button class="logout" onclick="logout()">Logout</button>
+
+<button class="logout-icon" onclick="logout()">
+<i class="fa fa-right-from-bracket"></i>
+</button>
+
 </div>
 
 <div id="customerDetails"></div>
@@ -155,14 +193,29 @@ button{
 <h3>Tickets</h3>
 <div id="ticketList"></div>
 
-<!-- TICKET FORM -->
+<!-- FORM -->
 <div id="ticketForm">
 
 <h3>New Service Request</h3>
 
 <input id="reqName" placeholder="Requester Name">
 <input id="pono" placeholder="PO No">
+
+<select id="scat">
+
+<option>Installation & Commissioning</option>
+<option>Preventive Maintenance (AMC/NAMC)</option>
+<option>Breakdown / Emergency Support</option>
+<option>Technical Support (Software/Configuration)</option>
+<option>Hardware Replacement / Repair</option>
+<option>Network / Connectivity Issue</option>
+<option>Periodic Service</option>
+<option>Other</option>
+
+</select>
+
 <input id="issueLoc" placeholder="Location">
+
 <textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
@@ -171,9 +224,7 @@ button{
 
 </div>
 
-<footer style="text-align:center;color:#555;margin-top:20px;">
-© Bytenex Innovation
-</footer>
+<footer>© Bytenex Innovation</footer>
 
 <script>
 
@@ -190,29 +241,14 @@ let users=JSON.parse(localStorage.getItem("users")||"[]");
 
 localStorage.removeItem("currentUserData");
 
-/* ADMIN */
 if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-  role="admin";
-  currentUser="admin";
-  localStorage.setItem("currentUserData",JSON.stringify({
-    name:"Info Admin",
-    org:"Bytenex Innovation",
-    location:"Head Office"
-  }));
+  role="admin"; currentUser="admin";
 }
 
-/* ENGINEER */
 else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-  role="admin";
-  currentUser="engineer";
-  localStorage.setItem("currentUserData",JSON.stringify({
-    name:"Engineer Team",
-    org:"Bytenex Engineering",
-    location:"Service Division"
-  }));
+  role="admin"; currentUser="engineer";
 }
 
-/* CUSTOMER */
 else{
   let u=users.find(x=>x.userid===id && x.pass===pass);
   if(!u){alert("Invalid login");return;}
@@ -228,7 +264,7 @@ loadCustomerDetails();
 loadTickets();
 }
 
-/* CREATE ACCOUNT FIXED */
+/* CREATE ACCOUNT */
 function createAccount(){
 
 let n=name.value.trim();
@@ -261,7 +297,7 @@ createPage.style.display="none";
 loginPage.style.display="block";
 }
 
-/* CUSTOMER DETAILS */
+/* CUSTOMER */
 function loadCustomerDetails(){
 
 let u=JSON.parse(localStorage.getItem("currentUserData"));
@@ -275,7 +311,7 @@ ${u.location}
 </div>`;
 }
 
-/* SUBMIT TICKET + MAIL */
+/* TICKETS */
 function submitTicket(){
 
 let d=desc.value.trim();
@@ -294,20 +330,19 @@ let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
 
 tickets.push({
-  user:currentUser,
-  ticket:ticketNo,
-  name:req,
-  pono:po,
-  location:loc,
-  status:"Open",
-  desc:d
+user:currentUser,
+ticket:ticketNo,
+name:req,
+pono:po,
+location:loc,
+status:"Open",
+desc:d
 });
 
 localStorage.setItem("tickets",JSON.stringify(tickets));
 
 alert("Ticket Created: "+ticketNo);
 
-/* MAIL (MANUAL OPEN) */
 let subject="New Service Request - "+po;
 let body=`Ticket: ${ticketNo}\nName: ${req}\nPO: ${po}\nLocation: ${loc}\n\n${d}`;
 
@@ -325,7 +360,7 @@ ticketList.innerHTML="";
 
 tickets.forEach(t=>{
 
-if(role==="admin" || t.user===currentUser){
+if(role==="admin"||t.user===currentUser){
 
 ticketList.innerHTML+=`
 <div class="ticket">
@@ -336,16 +371,38 @@ ${t.status}<br>
 ${t.desc}
 </div>`;
 }
+
 });
 }
 
-/* LOGOUT FIXED */
-function logout(){
-localStorage.removeItem("currentUserData");
-currentUser=null;
-role="customer";
-location.reload();
+/* RESET PASSWORD */
+function resetPass(){
+
+let email=femail.value.trim();
+let org=forg.value.trim();
+
+let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+let u=users.find(x=>x.email===email && x.org===org);
+
+if(!u){alert("Not found");return;}
+
+let newPass=Math.random().toString(36).slice(-8);
+
+u.pass=newPass;
+
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("New Password: "+newPass);
+
+forgotPage.style.display="none";
+loginPage.style.display="block";
 }
+
+/* NAV */
+function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
+function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
+function logout(){localStorage.removeItem("currentUserData");location.reload();}
 
 </script>
 
