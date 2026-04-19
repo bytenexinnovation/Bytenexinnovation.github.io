@@ -179,19 +179,27 @@ function createAccount(){
 
   alert("Account Created!\nYour User ID: "+uid);
 
-  // redirect to login
   document.getElementById("createPage").style.display="none";
   document.getElementById("loginPage").style.display="block";
 }
 
-// RESET PASSWORD
+// RESET PASSWORD (FULL FIXED)
 function resetPass(){
 
-  let email=document.getElementById("femail").value;
-  let org=document.getElementById("forg").value;
+  let email=document.getElementById("femail").value.trim();
+  let org=document.getElementById("forg").value.trim();
+
+  if(!email || !org){
+    alert("Please enter Email and Organisation");
+    return;
+  }
 
   let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let u=users.find(x=>x.email===email && x.org===org);
+
+  let u=users.find(x =>
+    x.email.toLowerCase()===email.toLowerCase() &&
+    x.org.toLowerCase()===org.toLowerCase()
+  );
 
   if(!u){
     alert("Email & Organisation mismatch");
@@ -203,7 +211,10 @@ function resetPass(){
 
   localStorage.setItem("users",JSON.stringify(users));
 
-  alert("New Password: "+newPass);
+  alert("Your New Password: "+newPass);
+
+  document.getElementById("forgotPage").style.display="none";
+  document.getElementById("loginPage").style.display="block";
 }
 
 // SUBMIT TICKET + MAIL
@@ -241,10 +252,9 @@ function submitTicket(){
 
   loadTickets();
 
-  // MAIL REDIRECT
-  let subject = "New Service Request - " + pono;
+  let subject="New Service Request - "+pono;
 
-  let body =
+  let body=
 `Ticket No: ${ticketNo}
 Requester: ${reqName}
 PO No: ${pono}
@@ -253,9 +263,9 @@ Location: ${location}
 Issue Description:
 ${desc}`;
 
-  let mailtoLink = `mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  let mailtoLink=`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-  window.location.href = mailtoLink;
+  window.location.href=mailtoLink;
 }
 
 // LOAD TICKETS
