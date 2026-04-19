@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
@@ -14,7 +15,7 @@ body{
   position:relative;
 }
 
-/* LIGHT TECH BACKGROUND ICONS */
+/* BACKGROUND ICONS */
 body::before{
   content:"\f085 \f1eb \f0ad \f233 \f108 \f7c0 \f0e8";
   font-family:"Font Awesome 6 Free";
@@ -49,7 +50,7 @@ body::before{
   margin-top:-10px;
 }
 
-/* CARD */
+/* CONTAINER */
 .container{
   width:400px;
   max-width:90%;
@@ -93,7 +94,7 @@ button{
   cursor:pointer;
 }
 
-/* LINK */
+/* LINKS */
 .link{text-align:center;color:#0d6efd;cursor:pointer;}
 
 /* DASHBOARD */
@@ -104,18 +105,11 @@ button{
   z-index:1;
 }
 
+/* TOPBAR */
 .topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
-}
-
-.logout{
-  background:#dc3545;
-  border:none;
-  padding:6px 12px;
-  color:white;
-  border-radius:6px;
 }
 
 /* CARD */
@@ -136,11 +130,49 @@ button{
   box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
+/* FOOTER */
 footer{
   text-align:center;
   color:#555;
   margin-top:20px;
 }
+
+/* MODAL */
+#profileModal{
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.4);
+  z-index:999;
+}
+
+.modal-box{
+  background:white;
+  width:350px;
+  max-width:90%;
+  margin:120px auto;
+  padding:20px;
+  border-radius:12px;
+}
+
+.small-btn{
+  background:#28a745;
+  width:auto;
+  padding:6px 10px;
+  font-size:12px;
+  border-radius:6px;
+}
+
+/* LOGOUT ICON */
+.logout-btn{
+  background:#28a745;
+  width:auto;
+  padding:6px 10px;
+  font-size:12px;
+  border-radius:6px;
+}
+
 </style>
 </head>
 
@@ -151,27 +183,24 @@ footer{
 
 <!-- LOGIN -->
 <div class="container" id="loginPage">
+
 <h3><i class="fa fa-lock"></i> Login</h3>
 
-<div class="input-group">
-<i class="fa fa-user"></i>
 <input id="loginId" placeholder="User ID / Email">
-</div>
-
-<div class="input-group">
-<i class="fa fa-key"></i>
 <input id="loginPass" type="password" placeholder="Password">
-</div>
 
 <button onclick="login()">Login</button>
 
 <div class="link" onclick="showCreate()">Create Account</div>
 <div class="link" onclick="showForgot()">Forgot Password</div>
+
 </div>
 
 <!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
+
 <h3>Create Account</h3>
+
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
 <input id="org" placeholder="Organisation">
@@ -179,23 +208,40 @@ footer{
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
 <input id="cpass" type="password" placeholder="Confirm Password">
+
 <button onclick="createAccount()">Create Account</button>
+
 </div>
 
 <!-- FORGOT -->
 <div class="container" id="forgotPage" style="display:none">
+
 <h3>Reset Password</h3>
+
 <input id="femail" placeholder="Email">
 <input id="forg" placeholder="Organisation">
+
 <button onclick="resetPass()">Reset Password</button>
+
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
 
 <div class="topbar">
+
 <h2>Dashboard</h2>
-<button class="logout" onclick="logout()">Logout</button>
+
+<div>
+<button class="small-btn" onclick="editProfile()">
+<i class="fa fa-user-pen"></i> Edit
+</button>
+
+<button class="logout-btn" onclick="logout()">
+<i class="fa fa-right-from-bracket"></i>
+</button>
+</div>
+
 </div>
 
 <div id="customerDetails"></div>
@@ -238,15 +284,33 @@ footer{
 
 <footer>© Bytenex Innovation</footer>
 
+<!-- MODAL -->
+<div id="profileModal">
+<div class="modal-box">
+
+<h3>Edit Profile</h3>
+
+<input id="editName">
+<input id="editOrg">
+<input id="editLoc">
+
+<button onclick="saveProfile()">Save</button>
+<button onclick="closeModal()" style="background:#dc3545;margin-top:10px;">Cancel</button>
+
+</div>
+</div>
+
 <script>
 
+/* LOGIN */
 let currentUser=null;
 let role="customer";
 
-/* LOGIN */
 function login(){
-  let id=loginId.value;
-  let pass=loginPass.value;
+
+  let id=document.getElementById("loginId").value;
+  let pass=document.getElementById("loginPass").value;
+
   let users=JSON.parse(localStorage.getItem("users")||"[]");
 
   if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
@@ -266,16 +330,46 @@ function login(){
   loginPage.style.display="none";
   dashboard.style.display="block";
 
-  if(role!=="customer"){
-    ticketForm.style.display="none";
-  } else {
-    loadCustomerDetails();
-  }
+  if(role!=="customer") ticketForm.style.display="none";
 
+  loadCustomerDetails();
   loadTickets();
 }
 
-/* CUSTOMER DETAILS */
+/* CREATE ACCOUNT FIXED */
+function createAccount(){
+
+  let n=document.getElementById("name").value;
+  let p=document.getElementById("phone").value;
+  let o=document.getElementById("org").value;
+  let l=document.getElementById("location").value;
+  let e=document.getElementById("email").value;
+  let pw=document.getElementById("pass").value;
+  let cp=document.getElementById("cpass").value;
+
+  if(!n||!p||!o||!l||!e||!pw||!cp){
+    alert("All fields required");return;
+  }
+
+  if(pw!==cp){
+    alert("Password mismatch");return;
+  }
+
+  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+  users.push({name:n,phone:p,org:o,location:l,email:e,pass:pw,userid:uid});
+
+  localStorage.setItem("users",JSON.stringify(users));
+
+  alert("Account Created!\nUser ID: "+uid);
+
+  createPage.style.display="none";
+  loginPage.style.display="block";
+}
+
+/* PROFILE */
 function loadCustomerDetails(){
   let u=JSON.parse(localStorage.getItem("currentUserData"));
   if(!u) return;
@@ -288,132 +382,80 @@ function loadCustomerDetails(){
   </div>`;
 }
 
+/* EDIT PROFILE */
+function editProfile(){
+
+  let u=JSON.parse(localStorage.getItem("currentUserData"));
+
+  editName.value=u.name;
+  editOrg.value=u.org;
+  editLoc.value=u.location;
+
+  profileModal.style.display="block";
+}
+
+function saveProfile(){
+
+  let u=JSON.parse(localStorage.getItem("currentUserData"));
+
+  u.name=editName.value;
+  u.org=editOrg.value;
+  u.location=editLoc.value;
+
+  localStorage.setItem("currentUserData",JSON.stringify(u));
+
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+  let i=users.findIndex(x=>x.userid===u.userid);
+
+  if(i!==-1){
+    users[i]=u;
+    localStorage.setItem("users",JSON.stringify(users));
+  }
+
+  profileModal.style.display="none";
+  loadCustomerDetails();
+
+  alert("Updated");
+}
+
+function closeModal(){
+  profileModal.style.display="none";
+}
+
 /* LOGOUT */
 function logout(){location.reload();}
 
-/* CREATE */
-function createAccount(){
-  let name=name.value.trim();
-  let phone=phone.value.trim();
-  let org=org.value.trim();
-  let location=location.value.trim();
-  let email=email.value.trim();
-  let pass=pass.value;
-  let cpass=cpass.value;
-
-  if(!name||!phone||!org||!location||!email||!pass||!cpass){
-    alert("All fields required");return;
-  }
-
-  if(pass!==cpass){alert("Password mismatch");return;}
-
-  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  users.push({name,phone,org,location,email,pass,userid:uid});
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("User ID: "+uid);
-  createPage.style.display="none";
-  loginPage.style.display="block";
-}
-
-/* RESET PASSWORD */
-function resetPass(){
-  let email=femail.value.trim();
-  let org=forg.value.trim();
-
-  if(!email||!org){alert("Enter details");return;}
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let u=users.find(x=>x.email.toLowerCase()===email.toLowerCase() && x.org.toLowerCase()===org.toLowerCase());
-
-  if(!u){alert("Mismatch");return;}
-
-  let newPass=Math.random().toString(36).slice(-8);
-  u.pass=newPass;
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("New Password: "+newPass);
-  forgotPage.style.display="none";
-  loginPage.style.display="block";
-}
-
-/* SUBMIT TICKET */
-function submitTicket(){
-  let d=desc.value;
-
-  let lines=d.trim().split(/\n+/).filter(l=>l.trim()!=="");
-  if(lines.length<2){alert("Minimum 2 lines required");return;}
-
-  let req=reqName.value;
-  let po=pono.value;
-  let loc=issueLoc.value;
-
-  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
-
-  let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
-
-  tickets.push({user:currentUser,ticket:ticketNo,name:req,pono:po,location:loc,status:"Open",desc:d});
-  localStorage.setItem("tickets",JSON.stringify(tickets));
-
-  alert("Ticket Created: "+ticketNo);
-
-  loadTickets();
-
-  reqName.value="";
-  pono.value="";
-  issueLoc.value="";
-  desc.value="";
-  stype.selectedIndex=0;
-  scat.selectedIndex=0;
-
-  let subject="New Service Request - "+po;
-  let body=`Ticket No: ${ticketNo}\nRequester: ${req}\nPO No: ${po}\nLocation: ${loc}\n\n${d}`;
-
-  window.location.href=`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
-/* LOAD TICKETS */
+/* TICKETS */
 function loadTickets(){
-  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+  let t=JSON.parse(localStorage.getItem("tickets")||"[]");
+
   ticketList.innerHTML="";
 
-  tickets.forEach((t,i)=>{
-    if(role==="admin"||role==="engineer"||t.user===currentUser){
+  t.forEach((x,i)=>{
 
-      let btn="";
-      if(role==="admin" && t.status==="Open"){
-        btn=`<button onclick="closeTicket(${i})" style="margin-top:8px;background:#dc3545;">Close Ticket</button>`;
-      }
+    let btn="";
 
-      ticketList.innerHTML+=`
-      <div class="ticket">
-      <b>${t.ticket}</b><br>
-      Name: ${t.name}<br>
-      PO: ${t.pono}<br>
-      Status: ${t.status}<br>
-      Description: ${t.desc}<br>
-      ${btn}
-      </div>`;
+    if(role==="admin" && x.status==="Open"){
+      btn=`<button onclick="closeTicket(${i})" style="background:#dc3545;margin-top:8px;">Close</button>`;
     }
+
+    ticketList.innerHTML+=`
+    <div class="ticket">
+    <b>${x.ticket}</b><br>
+    ${x.name}<br>
+    ${x.pono}<br>
+    ${x.status}<br>
+    ${x.desc}<br>
+    ${btn}
+    </div>`;
   });
 }
 
-/* CLOSE TICKET */
 function closeTicket(i){
-  let r=prompt("Closing Remarks");
-  let rca=prompt("RCA");
-  if(!r||!rca){alert("Required");return;}
-
-  let tickets=JSON.parse(localStorage.getItem("tickets"));
-  tickets[i].status="Closed";
-  tickets[i].remarks=r;
-  tickets[i].rca=rca;
-  tickets[i].closedBy="Admin";
-  tickets[i].closedDate=new Date().toLocaleDateString();
-
-  localStorage.setItem("tickets",JSON.stringify(tickets));
+  let t=JSON.parse(localStorage.getItem("tickets"));
+  t[i].status="Closed";
+  localStorage.setItem("tickets",JSON.stringify(t));
   loadTickets();
 }
 
