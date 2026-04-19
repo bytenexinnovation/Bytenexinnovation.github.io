@@ -14,7 +14,6 @@ body{
   position:relative;
 }
 
-/* LIGHT TECH BACKGROUND ICONS */
 body::before{
   content:"\f085 \f1eb \f0ad \f233 \f108 \f7c0 \f0e8";
   font-family:"Font Awesome 6 Free";
@@ -33,7 +32,6 @@ body::before{
   pointer-events:none;
 }
 
-/* HEADER */
 .header{
   text-align:center;
   padding:20px;
@@ -49,7 +47,6 @@ body::before{
   margin-top:-10px;
 }
 
-/* CARD */
 .container{
   width:400px;
   max-width:90%;
@@ -58,31 +55,17 @@ body::before{
   padding:25px;
   border-radius:15px;
   box-shadow:0 5px 20px rgba(0,0,0,0.1);
-  position:relative;
-  z-index:1;
-}
-
-/* INPUT */
-.input-group{position:relative;}
-
-.input-group i{
-  position:absolute;
-  top:50%;
-  left:12px;
-  transform:translateY(-50%);
-  color:#888;
 }
 
 input,select,textarea{
   width:100%;
-  padding:12px 12px 12px 38px;
+  padding:12px;
   margin:10px 0;
   border-radius:8px;
   border:1px solid #ccc;
   box-sizing:border-box;
 }
 
-/* BUTTON */
 button{
   width:100%;
   padding:12px;
@@ -93,15 +76,25 @@ button{
   cursor:pointer;
 }
 
-/* LINK */
-.link{text-align:center;color:#0d6efd;cursor:pointer;}
-
-/* DASHBOARD */
 .dashboard{
   display:none;
   padding:20px;
-  position:relative;
-  z-index:1;
+}
+
+.card{
+  background:white;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.ticket{
+  background:white;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
 .topbar{
@@ -116,24 +109,6 @@ button{
   padding:6px 12px;
   color:white;
   border-radius:6px;
-}
-
-/* CARD */
-.card{
-  background:white;
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:10px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-/* TICKET */
-.ticket{
-  background:white;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
 footer{
@@ -151,27 +126,21 @@ footer{
 
 <!-- LOGIN -->
 <div class="container" id="loginPage">
-<h3><i class="fa fa-lock"></i> Login</h3>
+<h3>Login</h3>
 
-<div class="input-group">
-<i class="fa fa-user"></i>
 <input id="loginId" placeholder="User ID / Email">
-</div>
-
-<div class="input-group">
-<i class="fa fa-key"></i>
 <input id="loginPass" type="password" placeholder="Password">
-</div>
 
 <button onclick="login()">Login</button>
 
-<div class="link" onclick="showCreate()">Create Account</div>
-<div class="link" onclick="showForgot()">Forgot Password</div>
+<div onclick="showCreate()" style="text-align:center;color:#0d6efd;cursor:pointer;">Create Account</div>
+<div onclick="showForgot()" style="text-align:center;color:#0d6efd;cursor:pointer;">Forgot Password</div>
 </div>
 
 <!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
 <h3>Create Account</h3>
+
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
 <input id="org" placeholder="Organisation">
@@ -179,14 +148,17 @@ footer{
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
 <input id="cpass" type="password" placeholder="Confirm Password">
+
 <button onclick="createAccount()">Create Account</button>
 </div>
 
 <!-- FORGOT -->
 <div class="container" id="forgotPage" style="display:none">
 <h3>Reset Password</h3>
+
 <input id="femail" placeholder="Email">
 <input id="forg" placeholder="Organisation">
+
 <button onclick="resetPass()">Reset Password</button>
 </div>
 
@@ -203,35 +175,16 @@ footer{
 <h3>Tickets</h3>
 <div id="ticketList"></div>
 
-<!-- FORM -->
+<!-- ONLY CUSTOMER FORM -->
 <div id="ticketForm">
-
 <h3>New Service Request</h3>
 
 <input id="reqName" placeholder="Requester Name">
 <input id="pono" placeholder="PO No">
-
-<select id="stype">
-<option>AMC</option>
-<option>NAMC</option>
-<option>New Order</option>
-<option>Other</option>
-</select>
-
-<select id="scat">
-<option>Installation</option>
-<option>R&M</option>
-<option>Periodic Service</option>
-<option>Replacement</option>
-<option>Other</option>
-</select>
-
 <input id="issueLoc" placeholder="Location">
-
 <textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
-
 </div>
 
 </div>
@@ -245,181 +198,184 @@ let role="customer";
 
 /* LOGIN */
 function login(){
-  let id=loginId.value;
-  let pass=loginPass.value;
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
 
-  if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-    role="admin"; currentUser="admin";
-  }
-  else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-    role="engineer"; currentUser="engineer";
-  }
-  else{
-    let u=users.find(x=>x.userid===id && x.pass===pass);
-    if(!u){alert("Invalid login");return;}
-    currentUser=u.userid;
-    role="customer";
-    localStorage.setItem("currentUserData",JSON.stringify(u));
-  }
+let id=document.getElementById("loginId").value;
+let pass=document.getElementById("loginPass").value;
 
-  loginPage.style.display="none";
-  dashboard.style.display="block";
+let users=JSON.parse(localStorage.getItem("users")||"[]");
 
-  if(role!=="customer"){
-    ticketForm.style.display="none";
-  } else {
-    loadCustomerDetails();
-  }
+localStorage.removeItem("currentUserData");
 
-  loadTickets();
+if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
+  role="admin"; currentUser="admin";
+}
+else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
+  role="engineer"; currentUser="engineer";
+}
+else{
+  let u=users.find(x=>x.userid===id && x.pass===pass);
+  if(!u){alert("Invalid login");return;}
+  currentUser=u.userid;
+  role="customer";
+  localStorage.setItem("currentUserData",JSON.stringify(u));
+}
+
+loginPage.style.display="none";
+dashboard.style.display="block";
+
+/* ROLE FIX */
+document.getElementById("ticketForm").style.display = (role==="customer") ? "block" : "none";
+
+loadCustomerDetails();
+loadTickets();
+}
+
+/* CREATE ACCOUNT FIXED */
+function createAccount(){
+
+let n=document.getElementById("name").value.trim();
+let p=document.getElementById("phone").value.trim();
+let o=document.getElementById("org").value.trim();
+let l=document.getElementById("location").value.trim();
+let e=document.getElementById("email").value.trim();
+let pw=document.getElementById("pass").value;
+let cp=document.getElementById("cpass").value;
+
+if(!n||!p||!o||!l||!e||!pw||!cp){
+  alert("All fields required");
+  return;
+}
+
+if(pw!==cp){
+  alert("Password mismatch");
+  return;
+}
+
+let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+
+let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+users.push({name:n,phone:p,org:o,location:l,email:e,pass:pw,userid:uid});
+
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("Account Created!\nUser ID: "+uid);
+
+createPage.style.display="none";
+loginPage.style.display="block";
 }
 
 /* CUSTOMER DETAILS */
 function loadCustomerDetails(){
-  let u=JSON.parse(localStorage.getItem("currentUserData"));
-  if(!u) return;
+let u=JSON.parse(localStorage.getItem("currentUserData"));
+if(!u) return;
 
-  customerDetails.innerHTML=`
-  <div class="card">
-  <b>Welcome, ${u.name}</b><br>
-  Organisation: ${u.org}<br>
-  Location: ${u.location}
-  </div>`;
-}
-
-/* LOGOUT */
-function logout(){location.reload();}
-
-/* CREATE */
-function createAccount(){
-  let name=name.value.trim();
-  let phone=phone.value.trim();
-  let org=org.value.trim();
-  let location=location.value.trim();
-  let email=email.value.trim();
-  let pass=pass.value;
-  let cpass=cpass.value;
-
-  if(!name||!phone||!org||!location||!email||!pass||!cpass){
-    alert("All fields required");return;
-  }
-
-  if(pass!==cpass){alert("Password mismatch");return;}
-
-  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  users.push({name,phone,org,location,email,pass,userid:uid});
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("User ID: "+uid);
-  createPage.style.display="none";
-  loginPage.style.display="block";
-}
-
-/* RESET PASSWORD */
-function resetPass(){
-  let email=femail.value.trim();
-  let org=forg.value.trim();
-
-  if(!email||!org){alert("Enter details");return;}
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let u=users.find(x=>x.email.toLowerCase()===email.toLowerCase() && x.org.toLowerCase()===org.toLowerCase());
-
-  if(!u){alert("Mismatch");return;}
-
-  let newPass=Math.random().toString(36).slice(-8);
-  u.pass=newPass;
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("New Password: "+newPass);
-  forgotPage.style.display="none";
-  loginPage.style.display="block";
+customerDetails.innerHTML=`
+<div class="card">
+<b>Welcome, ${u.name}</b><br>
+${u.org}<br>
+${u.location}
+</div>`;
 }
 
 /* SUBMIT TICKET */
 function submitTicket(){
-  let d=desc.value;
 
-  let lines=d.trim().split(/\n+/).filter(l=>l.trim()!=="");
-  if(lines.length<2){alert("Minimum 2 lines required");return;}
+let d=document.getElementById("desc").value.trim();
 
-  let req=reqName.value;
-  let po=pono.value;
-  let loc=issueLoc.value;
+if(d.split(/\n+/).length<2){
+alert("Minimum 2 lines required");
+return;
+}
 
-  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+let po=document.getElementById("pono").value;
+let req=document.getElementById("reqName").value;
+let loc=document.getElementById("issueLoc").value;
 
-  let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
+let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
-  tickets.push({user:currentUser,ticket:ticketNo,name:req,pono:po,location:loc,status:"Open",desc:d});
-  localStorage.setItem("tickets",JSON.stringify(tickets));
+let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
 
-  alert("Ticket Created: "+ticketNo);
+tickets.push({
+user:currentUser,
+ticket:ticketNo,
+name:req,
+pono:po,
+location:loc,
+status:"Open",
+desc:d
+});
 
-  loadTickets();
+localStorage.setItem("tickets",JSON.stringify(tickets));
 
-  reqName.value="";
-  pono.value="";
-  issueLoc.value="";
-  desc.value="";
-  stype.selectedIndex=0;
-  scat.selectedIndex=0;
+alert("Ticket Created: "+ticketNo);
 
-  let subject="New Service Request - "+po;
-  let body=`Ticket No: ${ticketNo}\nRequester: ${req}\nPO No: ${po}\nLocation: ${loc}\n\n${d}`;
-
-  window.location.href=`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+loadTickets();
 }
 
 /* LOAD TICKETS */
 function loadTickets(){
-  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
-  ticketList.innerHTML="";
 
-  tickets.forEach((t,i)=>{
-    if(role==="admin"||role==="engineer"||t.user===currentUser){
+let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+ticketList.innerHTML="";
 
-      let btn="";
-      if(role==="admin" && t.status==="Open"){
-        btn=`<button onclick="closeTicket(${i})" style="margin-top:8px;background:#dc3545;">Close Ticket</button>`;
-      }
+tickets.forEach((t,i)=>{
 
-      ticketList.innerHTML+=`
-      <div class="ticket">
-      <b>${t.ticket}</b><br>
-      Name: ${t.name}<br>
-      PO: ${t.pono}<br>
-      Status: ${t.status}<br>
-      Description: ${t.desc}<br>
-      ${btn}
-      </div>`;
-    }
-  });
+if(role==="customer" && t.user===currentUser){
+ticketList.innerHTML+=`
+<div class="ticket">
+<b>${t.ticket}</b><br>
+${t.name}<br>
+${t.pono}<br>
+${t.status}<br>
+${t.desc}
+</div>`;
 }
 
-/* CLOSE TICKET */
+if(role==="admin" || role==="engineer"){
+
+let btn="";
+if(role==="admin" && t.status==="Open"){
+btn=`<button onclick="closeTicket(${i})" style="margin-top:8px;background:red;">Close Ticket</button>`;
+}
+
+ticketList.innerHTML+=`
+<div class="ticket">
+<b>${t.ticket}</b><br>
+${t.name}<br>
+${t.pono}<br>
+${t.status}<br>
+${t.desc}
+${btn}
+</div>`;
+}
+
+});
+}
+
+/* CLOSE */
 function closeTicket(i){
-  let r=prompt("Closing Remarks");
-  let rca=prompt("RCA");
-  if(!r||!rca){alert("Required");return;}
 
-  let tickets=JSON.parse(localStorage.getItem("tickets"));
-  tickets[i].status="Closed";
-  tickets[i].remarks=r;
-  tickets[i].rca=rca;
-  tickets[i].closedBy="Admin";
-  tickets[i].closedDate=new Date().toLocaleDateString();
+let r=prompt("Closing Remarks");
+let rca=prompt("RCA");
 
-  localStorage.setItem("tickets",JSON.stringify(tickets));
-  loadTickets();
+if(!r||!rca){alert("Required");return;}
+
+let tickets=JSON.parse(localStorage.getItem("tickets"));
+
+tickets[i].status="Closed";
+tickets[i].remarks=r;
+tickets[i].rca=rca;
+
+localStorage.setItem("tickets",JSON.stringify(tickets));
+
+loadTickets();
 }
 
 /* NAV */
 function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
 function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
+function logout(){location.reload();}
 
 </script>
 
