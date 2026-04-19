@@ -1,293 +1,414 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bytenex Customer Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Base Styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; color: #333; }
-        
-        .container { max-width: 500px; margin: 50px auto; padding: 20px; }
-        .card { background: white; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); padding: 30px; }
-        
-        .logo { text-align: center; margin-bottom: 20px; }
-        .logo h1 { color: #2563eb; font-size: 26px; margin-top: 10px; }
-        .logo i { font-size: 50px; color: #3b82f6; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bytenex Customer Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
 
-        .slogan { 
-            background: linear-gradient(135deg, #10b981, #059669); 
-            color: white; padding: 15px; border-radius: 12px; 
-            margin-bottom: 25px; text-align: center; font-size: 14px; font-weight: 500;
-        }
+.container { max-width: 500px; margin: 50px auto; padding: 20px; }
+.login-card, .form-card { background: white; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); padding: 30px; }
 
-        /* Form Styles */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-weight: 500; color: #4b5563; }
-        input, select, textarea { 
-            width: 100%; padding: 12px; border: 2px solid #e5e7eb; 
-            border-radius: 10px; font-size: 16px; transition: 0.3s;
-        }
-        input:focus { outline: none; border-color: #2563eb; }
+.logo { text-align: center; margin-bottom: 20px; }
+.logo h1 { color: #2563eb; font-size: 28px; margin-bottom: 10px; }
+.logo i { font-size: 50px; color: #3b82f6; }
 
-        .btn { 
-            width: 100%; padding: 14px; background: #2563eb; color: white; 
-            border: none; border-radius: 10px; font-size: 16px; font-weight: 600; 
-            cursor: pointer; transition: 0.3s; margin-top: 10px;
-        }
-        .btn:hover { background: #1d4ed8; transform: translateY(-2px); }
-        .btn-secondary { background: #6b7280; }
+.slogan { 
+background: linear-gradient(135deg, #10b981, #059669); 
+color: white; 
+padding: 15px 25px; 
+border-radius: 12px; 
+margin-bottom: 25px; 
+text-align: center; 
+box-shadow: 0 8px 25px rgba(16,185,129,0.3);
+font-size: 16px;
+font-weight: 500;
+}
+.slogan i { font-size: 24px; margin-right: 10px; }
 
-        /* Dashboard Styles */
-        .dashboard { max-width: 1100px; margin: 30px auto; padding: 20px; }
-        .header { 
-            background: white; padding: 20px; border-radius: 15px; 
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px;
-        }
-        .logout-btn { background: #ef4444; color: white; padding: 8px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; color: #374151; font-weight: 500; }
+input, select, textarea { width: 100%; padding: 12px 15px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px; transition: all 0.3s; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
 
-        .grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37,99,235,0.3); }
+.btn:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
 
-        .panel { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .status-tag { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .open { background: #fef3c7; color: #92400e; }
-        .closed { background: #d1fae5; color: #065f46; }
+.links { text-align: center; margin-top: 20px; }
+.links a { color: #2563eb; text-decoration: none; font-weight: 500; }
 
-        .hidden { display: none !important; }
-        .alert { position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 10px; color: white; z-index: 9999; }
-        .alert-error { background: #ef4444; }
-        .alert-success { background: #10b981; }
-        footer { text-align: center; padding: 40px 0; color: #6b7280; font-size: 14px; }
-    </style>
+.dashboard { max-width: 1000px; margin: 20px auto; padding: 20px; }
+.header { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+.header h2 { color: #1f2937; }
+.logout-btn { background: #ef4444; padding: 10px 20px; border-radius: 8px; color: white; text-decoration: none; }
+
+.tickets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-top: 20px; }
+.ticket-card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+.ticket-id { font-size: 24px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
+.status-open { color: #f59e0b; font-weight: bold; }
+.status-closed { color: #10b981; font-weight: bold; }
+
+.close-form { margin-top: 15px; }
+.close-form input, .close-form textarea { margin-bottom: 10px; }
+.close-form .btn { width: auto; padding: 8px 16px; font-size: 14px; }
+
+.alert { position: fixed; top: 20px; right: 20px; padding: 15px 20px; border-radius: 10px; color: white; font-weight: 500; z-index: 1000; transform: translateX(400px); transition: all 0.3s; }
+.alert-success { background: #10b981; }
+.alert-error { background: #ef4444; }
+.alert.show { transform: translateX(0); }
+
+.hidden { display: none; }
+footer { text-align: center; margin-top: 40px; color: #6b7280; font-size: 14px; }
+</style>
 </head>
 <body>
+<div id="loginPage" class="container">
+<div class="login-card">
+<div class="logo">
+<i class="fas fa-cogs"></i>
+<h1>Bytenex Customer Portal</h1>
+</div>
 
-    <div id="loginPage" class="container">
-        <div class="card">
-            <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-                <h1>Bytenex Portal</h1>
-            </div>
-            <div class="slogan">
-                <i class="fas fa-headset"></i> Engineer Support - 24x7 Available
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>User ID / Email</label>
-                    <input type="text" id="loginId" required placeholder="Enter ID or Email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPass" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn">Login to Dashboard</button>
-            </form>
-            <div style="text-align:center; margin-top:20px; font-size: 14px;">
-                <a href="javascript:void(0)" onclick="switchPage('createPage')" style="color:#2563eb; text-decoration:none;">Create Account</a>
-            </div>
-        </div>
-    </div>
+<div class="slogan">
+<i class="fas fa-headset"></i>
+Engineer Support - 24x7 Available | Fast Resolution Guaranteed!
+</div>
 
-    <div id="createPage" class="container hidden">
-        <div class="card">
-            <h2>New Registration</h2>
-            <p style="color:#6b7280; margin-bottom:10px;">Join Bytenex Innovation Support</p>
-            <form id="createForm">
-                <div class="form-group"><label>Full Name</label><input type="text" id="cName" required></div>
-                <div class="form-group"><label>Email Address</label><input type="email" id="cEmail" required></div>
-                <div class="form-group"><label>Phone Number</label><input type="tel" id="cPhone" required maxlength="10" placeholder="10-digit number"></div>
-                <div class="form-group"><label>Organisation</label><input type="text" id="cOrg" required></div>
-                <div class="form-group"><label>Site Address</label><input type="text" id="cSite" required></div>
-                <div class="form-group"><label>Set Password</label><input type="password" id="cPass" required></div>
-                <button type="submit" class="btn">Register & Generate ID</button>
-                <button type="button" onclick="switchPage('loginPage')" class="btn btn-secondary">Back to Login</button>
-            </form>
-        </div>
-    </div>
+<form id="loginForm">
+<div class="form-group">
+<label><i class="fas fa-user"></i> User ID / Email</label>
+<input type="text" id="loginId" required placeholder="Enter BYTI-XXXX-2026 or Email">
+</div>
+<div class="form-group">
+<label><i class="fas fa-lock"></i> Password</label>
+<input type="password" id="loginPass" required>
+</div>
+<button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+</form>
+<div class="links">
+<a href="#" onclick="showPage('create')"><i class="fas fa-user-plus"></i> Create Account</a> | 
+<a href="#" onclick="showPage('forget')"><i class="fas fa-key"></i> Forget Password</a>
+</div>
+</div>
+</div>
 
-    <div id="customerDash" class="dashboard hidden">
-        <div class="header">
-            <div>
-                <h2 id="welcomeText">Welcome</h2>
-                <p id="siteText" style="color:#6b7280; font-size:14px;"></p>
-            </div>
-            <a href="javascript:void(0)" class="logout-btn" onclick="logout()">Logout</a>
-        </div>
-        
-        <div class="grid">
-            <div class="panel">
-                <h3>Raise New Ticket</h3><br>
-                <form id="ticketForm">
-                    <div class="form-group">
-                        <label>PO/WO Number</label>
-                        <input type="text" id="poNo" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Issue Description</label>
-                        <textarea id="issueDesc" rows="4" placeholder="Describe your technical issue..." required></textarea>
-                        <small id="countText">0 words</small>
-                    </div>
-                    <button type="submit" id="submitBtn" class="btn" disabled>Submit Request</button>
-                </form>
-            </div>
-            
-            <div class="panel">
-                <h3>My Recent Tickets</h3><br>
-                <div id="ticketList">
-                    <p style="color:#9ca3af;">No tickets raised yet.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="createPage" class="container hidden">
+<div class="form-card">
+<div class="logo">
+<i class="fas fa-user-plus"></i>
+<h1>Create Account</h1>
+</div>
+<form id="createForm">
+<div class="form-group"><label>Customer Name</label><input type="text" id="cName" required></div>
+<div class="form-group"><label>Organisation Name</label><input type="text" id="cOrg" required></div>
+<div class="form-group"><label>Phone (10 Digits)</label><input type="tel" id="cPhone" required maxlength="10"></div>
+<div class="form-group"><label>Email</label><input type="email" id="cEmail" required></div>
+<div class="form-group"><label>Site Address</label><textarea id="cSite" required></textarea></div>
+<div class="form-group">
+<label>Customer Type</label>
+<select id="cType" required>
+<option value="">Select</option>
+<option value="AMC">AMC</option>
+<option value="Non-AMC">Non AMC</option>
+</select>
+</div>
+<div class="form-group"><label>Password</label><input type="password" id="cPass" required></div>
+<div class="form-group"><label>Confirm Password</label><input type="password" id="cConfirm" required></div>
+<button type="submit" class="btn"><i class="fas fa-save"></i> Create Account</button>
+<button type="button" class="btn" onclick="showPage('login')" style="background: #6b7280; margin-top: 10px;"><i class="fas fa-arrow-left"></i> Back</button>
+</form>
+</div>
+</div>
 
-    <div id="alertBox" class="alert hidden"></div>
-    <footer>© 2026 Bytenex Innovation. Fast Resolution Guaranteed.</footer>
+<div id="forgetPage" class="container hidden">
+<div class="form-card">
+<div class="logo">
+<i class="fas fa-key"></i>
+<h1>Forget Password</h1>
+</div>
+<form id="forgetForm">
+<div class="form-group"><label>Email</label><input type="email" id="fEmail" required></div>
+<div class="form-group"><label>Organisation Name</label><input type="text" id="fOrg" required></div>
+<button type="submit" class="btn"><i class="fas fa-sync-alt"></i> Reset Password</button>
+<button type="button" class="btn" onclick="showPage('login')" style="background: #6b7280; margin-top: 10px;"><i class="fas fa-arrow-left"></i> Back</button>
+</form>
+</div>
+</div>
 
-    <script>
-        // --- DATA & STATE ---
-        let currentUser = null;
-        const storageKey = 'bytenex_users';
-        const ticketKey = 'bytenex_tickets';
+<div id="customerDash" class="dashboard hidden">
+<div class="header">
+<div>
+<h2><i class="fas fa-user"></i> Welcome <span id="userName"></span></h2>
+<p>Live Date: <span id="liveDate"></span> | Site: <span id="userSite"></span></p>
+</div>
+<a href="#" class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
 
-        // Admin Master Account (Hamesha Active)
-        const masterUsers = [
-            {userId: "ADMIN-2026-INFO", name: "Admin", email: "info@bytenexinnovation.in", password: "Asktoyash@1997", site: "Mumbai HQ"}
-        ];
+<div class="tickets-grid">
+<div class="ticket-card">
+<h3><i class="fas fa-plus-circle"></i> Raise New Ticket</h3>
+<form id="ticketForm">
+<div class="form-group"><label>Requester Name</label><input type="text" id="reqName" required></div>
+<div class="form-group"><label>PO/WO No</label><input type="text" id="poNo" required></div>
+<div class="form-group">
+<label>Service Type</label>
+<select id="serviceType" required onchange="toggleOtherService()">
+<option value="">Select</option>
+<option value="AMC">AMC</option>
+<option value="Non-AMC">Non-AMC</option>
+<option value="DLP">DLP</option>
+<option value="Other">Other</option>
+</select>
+<input type="text" id="otherService" class="hidden" placeholder="Other service details">
+</div>
+<div class="form-group">
+<label>Service Category</label>
+<select id="serviceCat" required onchange="toggleOtherCat()">
+<option value="">Select</option>
+<option value="Repair">Repair</option>
+<option value="Periodic Maintenance">Periodic Maintenance</option>
+<option value="Installation">Installation</option>
+<option value="Other">Other</option>
+</select>
+<input type="text" id="otherCat" class="hidden" placeholder="Other category details">
+</div>
+<div class="form-group"><label>Issue Location</label><input type="text" id="issueLoc" required></div>
+<div class="form-group"><label>Issue Description (Min 10 words)</label><textarea id="issueDesc" required oninput="checkWordCount()" rows="4"></textarea>
+<small id="wordCount" style="color: #6b7280;">0 words</small></div>
+<button type="submit" class="btn" id="ticketBtn" disabled><i class="fas fa-paper-plane"></i> Submit & Send Email</button>
+</form>
+<div id="newTicketNo" class="ticket-id hidden"></div>
+</div>
 
-        // --- NAVIGATION ---
-        function switchPage(pageId) {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('createPage').classList.add('hidden');
-            document.getElementById('customerDash').classList.add('hidden');
-            document.getElementById(pageId).classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
+<div class="ticket-card">
+<h3><i class="fas fa-ticket"></i> My Tickets</h3>
+<div id="customerTickets"></div>
+</div>
+</div>
+</div>
 
-        function showAlert(msg, type) {
-            const box = document.getElementById('alertBox');
-            box.textContent = msg;
-            box.className = `alert alert-${type}`;
-            box.classList.remove('hidden');
-            setTimeout(() => box.classList.add('hidden'), 4000);
-        }
+<div id="adminDash" class="dashboard hidden">
+<div class="header">
+<h2><i class="fas fa-cogs"></i> Admin Dashboard - All Tickets</h2>
+<a href="#" class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+<div class="tickets-grid" id="adminTickets"></div>
+</div>
 
-        // --- AUTH LOGIC (Updated with Email+Phone ID) ---
-        document.getElementById('createForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('cEmail').value;
-            const phone = document.getElementById('cPhone').value;
+<div id="alert" class="alert hidden"></div>
+<footer>© 2026 Bytenex Innovation. All rights reserved.</footer>
 
-            // ID Generation: BYTI- (Last 4 digits of Phone) + (First 3 letters of Email) - 2026
-            const phonePart = phone.slice(-4);
-            const emailPart = email.substring(0, 3).toUpperCase();
-            const generatedID = `BYTI-${phonePart}${emailPart}-2026`;
-            
-            const newUser = {
-                userId: generatedID,
-                name: document.getElementById('cName').value,
-                email: email,
-                phone: phone,
-                org: document.getElementById('cOrg').value,
-                site: document.getElementById('cSite').value,
-                password: document.getElementById('cPass').value
-            };
+<script>
+let currentUser = null;
+let allTickets = JSON.parse(localStorage.getItem('bytenexTickets')) || [];
+const admins = ['info@bytenexinnovation.in', 'engineers@bytenexinnovation.in'];
+const adminPass = { 
+'info@bytenexinnovation.in': 'Asktoyash@1997', 
+'engineers@bytenexinnovation.in': 'BytAdmin123' 
+};
 
-            const users = JSON.parse(localStorage.getItem(storageKey)) || [];
-            users.push(newUser);
-            localStorage.setItem(storageKey, JSON.stringify(users));
+function showPage(page) {
+document.querySelectorAll('.container, .dashboard').forEach(el => el.classList.add('hidden'));
+document.getElementById(page + 'Page').classList.remove('hidden');
+}
 
-            if(confirm(`Account Created Successfully!\n\nYour Unique ID: ${generatedID}\n\nPlease save this ID for future login.`)) {
-                document.getElementById('loginId').value = generatedID;
-                this.reset();
-                switchPage('loginPage');
-            }
-        });
+function showAlert(message, type = 'success') {
+const alert = document.getElementById('alert');
+alert.textContent = message;
+alert.className = `alert alert-${type} show`;
+setTimeout(() => alert.classList.remove('show'), 5000);
+}
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const idInput = document.getElementById('loginId').value.trim();
-            const passInput = document.getElementById('loginPass').value;
-            
-            const localUsers = JSON.parse(localStorage.getItem(storageKey)) || [];
-            const allUsers = [...masterUsers, ...localUsers];
+// LOGIN
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+e.preventDefault();
+const id = document.getElementById('loginId').value.trim();
+const pass = document.getElementById('loginPass').value;
 
-            const user = allUsers.find(u => (u.userId === idInput || u.email === idInput) && u.password === passInput);
+if (admins.includes(id) && adminPass[id] === pass) {
+currentUser = { type: 'admin', id, name: id };
+updateAdminTickets();
+document.getElementById('adminDash').classList.remove('hidden');
+return;
+}
 
-            if(user) {
-                currentUser = user;
-                loadDashboard();
-                switchPage('customerDash');
-                showAlert("✅ Login Successful!", "success");
-            } else {
-                showAlert("❌ Login Failed! Check ID/Password", "error");
-            }
-        });
+const users = JSON.parse(localStorage.getItem('bytenexUsers')) || [];
+const user = users.find(u => u.userId === id || u.email === id);
+if (user && user.password === pass) {
+currentUser = user;
+showCustomerDash();
+} else {
+showAlert('❌ Invalid credentials!', 'error');
+}
+});
 
-        function loadDashboard() {
-            document.getElementById('welcomeText').textContent = `Hello, ${currentUser.name}`;
-            document.getElementById('siteText').textContent = `Customer ID: ${currentUser.userId} | Site: ${currentUser.site}`;
-            renderTickets();
-        }
+// ✅ UPDATED CREATE ACCOUNT (EMAIL + PHONE ID GENERATION)
+document.getElementById('createForm').addEventListener('submit', (e) => {
+e.preventDefault();
+if (document.getElementById('cPass').value !== document.getElementById('cConfirm').value) {
+showAlert('❌ Passwords do not match!', 'error');
+return;
+}
 
-        function logout() {
-            currentUser = null;
-            switchPage('loginPage');
-        }
+const email = document.getElementById('cEmail').value;
+const phone = document.getElementById('cPhone').value;
 
-        // --- TICKET LOGIC ---
-        document.getElementById('issueDesc').addEventListener('input', function() {
-            const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-            document.getElementById('countText').textContent = `${words} words`;
-            document.getElementById('submitBtn').disabled = words < 10;
-        });
+// --- ID GENERATION LOGIC ---
+const phonePart = phone.slice(-4); // Last 4 digits
+const emailPart = email.substring(0, 3).toUpperCase(); // First 3 letters of email
+const userId = `BYTI-${phonePart}${emailPart}-2026`;
 
-        document.getElementById('ticketForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const tickets = JSON.parse(localStorage.getItem(ticketKey)) || [];
-            const newTicket = {
-                id: 'TKT-' + Date.now(),
-                userId: currentUser.userId,
-                po: document.getElementById('poNo').value,
-                desc: document.getElementById('issueDesc').value,
-                status: 'Open',
-                date: new Date().toLocaleDateString()
-            };
+const user = {
+userId, name: document.getElementById('cName').value,
+org: document.getElementById('cOrg').value, phone: phone,
+email: email, site: document.getElementById('cSite').value,
+type: document.getElementById('cType').value, password: document.getElementById('cPass').value
+};
 
-            tickets.unshift(newTicket);
-            localStorage.setItem(ticketKey, JSON.stringify(tickets));
-            this.reset();
-            document.getElementById('countText').textContent = "0 words";
-            document.getElementById('submitBtn').disabled = true;
-            renderTickets();
-            showAlert("✅ Ticket Raised Successfully!", "success");
-        });
+const users = JSON.parse(localStorage.getItem('bytenexUsers')) || [];
+users.push(user);
+localStorage.setItem('bytenexUsers', JSON.stringify(users));
 
-        function renderTickets() {
-            const tickets = JSON.parse(localStorage.getItem(ticketKey)) || [];
-            const myTickets = tickets.filter(t => t.userId === currentUser.userId);
-            const list = document.getElementById('ticketList');
+showAlert(`✅ Account created! User ID: ${userId}`);
+setTimeout(() => {
+if (confirm(`Your Unique User ID: ${userId}\nPlease save it for future logins.`)) {
+document.getElementById('loginId').value = userId;
+showPage('login');
+}
+}, 1500);
+});
 
-            if(myTickets.length === 0) {
-                list.innerHTML = '<p style="color:#9ca3af;">No tickets raised yet.</p>';
-                return;
-            }
+// FORGET PASSWORD
+document.getElementById('forgetForm').addEventListener('submit', (e) => {
+e.preventDefault();
+const email = document.getElementById('fEmail').value;
+const org = document.getElementById('fOrg').value;
+const users = JSON.parse(localStorage.getItem('bytenexUsers')) || [];
+const user = users.find(u => u.email === email && u.org === org);
+if (user) {
+const newPass = Math.random().toString(36).slice(-8).toUpperCase();
+user.password = newPass;
+localStorage.setItem('bytenexUsers', JSON.stringify(users));
+showAlert(`✅ New Password: ${newPass}`);
+} else {
+showAlert('❌ No account found!', 'error');
+}
+});
 
-            list.innerHTML = myTickets.map(t => `
-                <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <strong>${t.id}</strong>
-                        <span class="status-tag ${t.status.toLowerCase()}">${t.status}</span>
-                    </div>
-                    <p style="font-size:14px; color:#4b5563;">PO: ${t.po}</p>
-                    <p style="font-size:13px; color:#9ca3af;">Date: ${t.date}</p>
-                </div>
-            `).join('');
-        }
-    </script>
+// TICKET SUBMIT
+document.getElementById('ticketForm').addEventListener('submit', (e) => {
+e.preventDefault();
+const ticketNo = 'BI/' + document.getElementById('poNo').value + '/' + Math.floor(999999 * Math.random());
+
+const ticket = {
+id: ticketNo, userId: currentUser.userId, userName: document.getElementById('reqName').value,
+poNo: document.getElementById('poNo').value,
+serviceType: document.getElementById('serviceType').value + (document.getElementById('otherService').value ? ' - ' + document.getElementById('otherService').value : ''),
+serviceCat: document.getElementById('serviceCat').value + (document.getElementById('otherCat').value ? ' - ' + document.getElementById('otherCat').value : ''),
+location: document.getElementById('issueLoc').value, description: document.getElementById('issueDesc').value,
+status: 'Open', date: new Date().toLocaleDateString(), site: currentUser.site
+};
+
+allTickets.unshift(ticket);
+localStorage.setItem('bytenexTickets', JSON.stringify(allTickets));
+
+document.getElementById('newTicketNo').textContent = `Ticket Created: ${ticketNo}`;
+document.getElementById('newTicketNo').classList.remove('hidden');
+
+const subject = `New Service Request - ${currentUser.site}`;
+const body = `Ticket No: ${ticketNo}%0D%0A%0D%0ASite: ${currentUser.site}%0D%0ALocation: ${ticket.location}%0D%0A%0D%0ADescription:%0D%0A${ticket.description.replace(/\n/g, '%0D%0A')}%0D%0A%0D%0AService Type: ${ticket.serviceType}%0D%0AService Category: ${ticket.serviceCat}%0D%0APO/WO No: ${ticket.poNo}`;
+
+window.open(`mailto:info@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
+setTimeout(() => {
+window.open(`mailto:engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
+}, 500);
+
+showAlert(`✅ Ticket ${ticketNo} created!`);
+setTimeout(() => {
+document.getElementById('ticketForm').reset();
+document.getElementById('ticketBtn').disabled = true;
+document.getElementById('newTicketNo').classList.add('hidden');
+}, 4000);
+
+updateCustomerTickets();
+});
+
+function checkWordCount() {
+const val = document.getElementById('issueDesc').value.trim();
+const words = val ? val.split(/\s+/).length : 0;
+document.getElementById('wordCount').textContent = words + ' words';
+document.getElementById('ticketBtn').disabled = words < 10;
+}
+
+function toggleOtherService() {
+document.getElementById('otherService').classList.toggle('hidden', document.getElementById('serviceType').value !== 'Other');
+}
+
+function toggleOtherCat() {
+document.getElementById('otherCat').classList.toggle('hidden', document.getElementById('serviceCat').value !== 'Other');
+}
+
+function showCustomerDash() {
+document.getElementById('userName').textContent = currentUser.name;
+document.getElementById('userSite').textContent = currentUser.site;
+document.getElementById('liveDate').textContent = new Date().toLocaleDateString();
+document.getElementById('customerDash').classList.remove('hidden');
+updateCustomerTickets();
+}
+
+function updateCustomerTickets() {
+const userTickets = allTickets.filter(t => t.userId === currentUser.userId);
+document.getElementById('customerTickets').innerHTML = 
+userTickets.map(t => `
+<div class="ticket-id ${t.status === 'Closed' ? 'status-closed' : 'status-open'}">${t.id} - ${t.status}</div>
+<p><strong>Date:</strong> ${t.date}</p>
+<p>${t.description}</p>
+<hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+`).join('') || '<p>No tickets found</p>';
+}
+
+function updateAdminTickets() {
+document.getElementById('adminTickets').innerHTML = allTickets.map(t => `
+<div class="ticket-card">
+<div class="ticket-id ${t.status === 'Closed' ? 'status-closed' : 'status-open'}">${t.id}</div>
+<p><strong>Site:</strong> ${t.site}</p>
+<p><strong>Description:</strong> ${t.description}</p>
+<p><strong>Status:</strong> ${t.status} | <strong>Date:</strong> ${t.date}</p>
+${t.status === 'Open' ? `
+<form class="close-form" onsubmit="closeTicket('${t.id}', this); return false;">
+<input type="text" placeholder="Closing Remark" required>
+<textarea placeholder="RCA (Root Cause Analysis)" required></textarea>
+<button type="submit" class="btn"><i class="fas fa-check"></i> Close Ticket</button>
+</form>
+` : ''}
+</div>
+`).join('');
+}
+
+function closeTicket(ticketId, form) {
+const remark = form.querySelector('input').value;
+const rca = form.querySelector('textarea').value;
+const ticket = allTickets.find(t => t.id === ticketId);
+if (ticket) {
+ticket.status = 'Closed';
+ticket.closeDate = new Date().toLocaleDateString();
+ticket.closingRemark = remark;
+ticket.rca = rca;
+localStorage.setItem('bytenexTickets', JSON.stringify(allTickets));
+showAlert('✅ Ticket closed successfully!');
+updateAdminTickets();
+}
+}
+
+function logout() {
+currentUser = null;
+document.querySelectorAll('.dashboard').forEach(el => el.classList.add('hidden'));
+showPage('login');
+}
+</script>
 </body>
 </html>
