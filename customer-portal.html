@@ -5,16 +5,17 @@
 <title>Bytenex Customer Portal</title>
 
 <style>
-body {font-family: Arial; margin:0; background:#eef2f7;}
-.header {background:#0d6efd;color:white;text-align:center;padding:15px;font-size:22px;}
+body {font-family: Arial;margin:0;background:#eef2f7;}
+.header {background:#0d6efd;color:white;text-align:center;padding:15px;font-size:22px;font-weight:bold;}
 .container {width:400px;margin:30px auto;background:white;padding:20px;border-radius:10px;}
 input, select, textarea {width:100%;margin:8px 0;padding:10px;}
 button {width:100%;padding:10px;background:#0d6efd;color:white;border:none;cursor:pointer;}
-.link {color:#0d6efd;cursor:pointer;}
+.link {color:#0d6efd;cursor:pointer;margin-top:5px;}
 .dashboard {display:none;padding:20px;}
 .ticket {background:white;padding:10px;margin:10px 0;border-radius:8px;}
 .topbar {display:flex;justify-content:space-between;align-items:center;}
-.logout {background:red;padding:5px 10px;cursor:pointer;}
+.logout {background:red;padding:5px 10px;cursor:pointer;border:none;color:white;}
+footer {text-align:center;margin-top:20px;}
 </style>
 
 </head>
@@ -29,12 +30,11 @@ button {width:100%;padding:10px;background:#0d6efd;color:white;border:none;curso
 <input id="loginId" placeholder="User ID / Admin Email">
 <input id="loginPass" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
-
 <div class="link" onclick="showCreate()">Create Account</div>
 <div class="link" onclick="showForgot()">Forgot Password</div>
 </div>
 
-<!-- CREATE -->
+<!-- CREATE ACCOUNT -->
 <div class="container" id="createPage" style="display:none">
 <h3>Create Account</h3>
 <input id="name" placeholder="Name">
@@ -52,7 +52,7 @@ button {width:100%;padding:10px;background:#0d6efd;color:white;border:none;curso
 <h3>Reset Password</h3>
 <input id="femail" placeholder="Email">
 <input id="forg" placeholder="Organisation">
-<button onclick="resetPass()">Reset</button>
+<button onclick="resetPass()">Reset Password</button>
 </div>
 
 <!-- DASHBOARD -->
@@ -99,16 +99,17 @@ button {width:100%;padding:10px;background:#0d6efd;color:white;border:none;curso
 
 </div>
 
-<footer style="text-align:center">© Bytenex Innovation</footer>
+<footer>© Bytenex Innovation</footer>
 
 <script>
+
 let currentUser=null;
 let role="customer";
 
 // LOGIN
 function login(){
-  let id=loginId.value;
-  let pass=loginPass.value;
+  let id=document.getElementById("loginId").value;
+  let pass=document.getElementById("loginPass").value;
 
   if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
     role="admin"; currentUser="admin";
@@ -124,10 +125,9 @@ function login(){
     role="customer";
   }
 
-  loginPage.style.display="none";
-  dashboard.style.display="block";
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("dashboard").style.display="block";
 
-  // hide form for admin/engineer
   if(role!=="customer"){
     document.getElementById("ticketForm").style.display="none";
   }
@@ -142,12 +142,23 @@ function logout(){
 
 // CREATE ACCOUNT
 function createAccount(){
-  if(!name.value||!phone.value||!org.value||!location.value||!email.value||!pass.value||!cpass.value){
-    alert("All fields required"); return;
+
+  let name=document.getElementById("name").value.trim();
+  let phone=document.getElementById("phone").value.trim();
+  let org=document.getElementById("org").value.trim();
+  let location=document.getElementById("location").value.trim();
+  let email=document.getElementById("email").value.trim();
+  let pass=document.getElementById("pass").value;
+  let cpass=document.getElementById("cpass").value;
+
+  if(!name || !phone || !org || !location || !email || !pass || !cpass){
+    alert("All fields required");
+    return;
   }
 
-  if(pass.value!==cpass.value){
-    alert("Password mismatch"); return;
+  if(pass !== cpass){
+    alert("Password mismatch");
+    return;
   }
 
   let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
@@ -155,51 +166,67 @@ function createAccount(){
   let users=JSON.parse(localStorage.getItem("users")||"[]");
 
   users.push({
-    name:name.value,
-    phone:phone.value,
-    org:org.value,
-    location:location.value,
-    email:email.value,
-    pass:pass.value,
+    name:name,
+    phone:phone,
+    org:org,
+    location:location,
+    email:email,
+    pass:pass,
     userid:uid
   });
 
   localStorage.setItem("users",JSON.stringify(users));
-  alert("User ID: "+uid);
+
+  alert("Account Created!\nYour User ID: "+uid);
   location.reload();
 }
 
-// RESET
+// RESET PASSWORD
 function resetPass(){
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let u=users.find(x=>x.email===femail.value && x.org===forg.value);
 
-  if(!u){ alert("Mismatch"); return; }
+  let email=document.getElementById("femail").value;
+  let org=document.getElementById("forg").value;
+
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+  let u=users.find(x=>x.email===email && x.org===org);
+
+  if(!u){
+    alert("Email & Organisation mismatch");
+    return;
+  }
 
   let newPass=Math.random().toString(36).slice(-8);
   u.pass=newPass;
 
   localStorage.setItem("users",JSON.stringify(users));
+
   alert("New Password: "+newPass);
 }
 
-// SUBMIT
+// SUBMIT TICKET
 function submitTicket(){
-  if(desc.value.split("\n").length<10){
-    alert("Minimum 10 lines required"); return;
+
+  let desc=document.getElementById("desc").value;
+
+  if(desc.split("\n").length<10){
+    alert("Minimum 10 lines required");
+    return;
   }
+
+  let reqName=document.getElementById("reqName").value;
+  let pono=document.getElementById("pono").value;
 
   let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
-  let ticketNo="BYT/"+pono.value+"/"+Math.floor(Math.random()*900000000);
+  let ticketNo="BYT/"+pono+"/"+Math.floor(Math.random()*900000000);
 
   tickets.push({
     user:currentUser,
     ticket:ticketNo,
-    name:reqName.value,
-    pono:pono.value,
+    name:reqName,
+    pono:pono,
     status:"Open",
-    desc:desc.value
+    desc:desc
   });
 
   localStorage.setItem("tickets",JSON.stringify(tickets));
@@ -208,27 +235,74 @@ function submitTicket(){
   loadTickets();
 }
 
-// LOAD
+// LOAD TICKETS
 function loadTickets(){
   let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
-  ticketList.innerHTML="";
+  let div=document.getElementById("ticketList");
+  div.innerHTML="";
 
-  tickets.forEach(t=>{
+  tickets.forEach((t,index)=>{
+
     if(role==="admin" || role==="engineer" || t.user===currentUser){
-      ticketList.innerHTML+=`
+
+      let closeBtn="";
+
+      if(role==="admin" && t.status==="Open"){
+        closeBtn=`<button onclick="closeTicket(${index})">Close</button>`;
+      }
+
+      div.innerHTML+=`
       <div class="ticket">
       <b>${t.ticket}</b><br>
       Name: ${t.name}<br>
       PO: ${t.pono}<br>
-      Status: ${t.status}
+      Status: ${t.status}<br>
+      ${t.remarks ? "Remarks: "+t.remarks+"<br>" : ""}
+      ${t.rca ? "RCA: "+t.rca+"<br>" : ""}
+      ${t.closedDate ? "Closed On: "+t.closedDate+"<br>" : ""}
+      ${t.closedBy ? "Closed By: "+t.closedBy+"<br>" : ""}
+      ${closeBtn}
       </div>`;
     }
   });
 }
 
-// NAV
-function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
-function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
+// CLOSE TICKET
+function closeTicket(index){
+
+  let remarks=prompt("Enter Closing Remarks:");
+  let rca=prompt("Enter RCA:");
+  let date=new Date().toLocaleDateString();
+
+  if(!remarks || !rca){
+    alert("All details required");
+    return;
+  }
+
+  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+
+  tickets[index].status="Closed";
+  tickets[index].remarks=remarks;
+  tickets[index].rca=rca;
+  tickets[index].closedDate=date;
+  tickets[index].closedBy="Admin";
+
+  localStorage.setItem("tickets",JSON.stringify(tickets));
+
+  loadTickets();
+}
+
+// NAVIGATION
+function showCreate(){
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("createPage").style.display="block";
+}
+
+function showForgot(){
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("forgotPage").style.display="block";
+}
+
 </script>
 
 </body>
