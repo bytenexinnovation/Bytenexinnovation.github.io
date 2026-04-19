@@ -9,14 +9,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
 
-/* ✅ FIXED Z-INDEX */
-.container { 
-  max-width: 500px; 
-  margin: 50px auto; 
-  padding: 20px;
-  position: relative;
-  z-index: 10;
-}
+.container { max-width: 500px; margin: 50px auto; padding: 20px; }
 .login-card, .form-card { background: white; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); padding: 30px; }
 
 .logo { text-align: center; margin-bottom: 20px; }
@@ -48,14 +41,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb
 .links { text-align: center; margin-top: 20px; }
 .links a { color: #2563eb; text-decoration: none; font-weight: 500; }
 
-/* ✅ DASHBOARD Z-INDEX HIGH */
-.dashboard { 
-  max-width: 1000px; 
-  margin: 20px auto; 
-  padding: 20px;
-  position: relative;
-  z-index: 100;
-}
+.dashboard { max-width: 1000px; margin: 20px auto; padding: 20px; }
 .header { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
 .header h2 { color: #1f2937; }
 .logout-btn { background: #ef4444; padding: 10px 20px; border-radius: 8px; color: white; text-decoration: none; }
@@ -75,8 +61,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb
 .alert-error { background: #ef4444; }
 .alert.show { transform: translateX(0); }
 
-/* ✅ FORCE HIDE */
-.hidden { display: none !important; }
+.hidden { display: none; }
 footer { text-align: center; margin-top: 40px; color: #6b7280; font-size: 14px; }
 </style>
 </head>
@@ -89,6 +74,7 @@ footer { text-align: center; margin-top: 40px; color: #6b7280; font-size: 14px; 
 <h1>Bytenex Customer Portal</h1>
 </div>
 
+<!-- ✅ ENGINEER SUPPORT SLOGAN -->
 <div class="slogan">
 <i class="fas fa-headset"></i>
 Engineer Support - 24x7 Available | Fast Resolution Guaranteed!
@@ -244,14 +230,11 @@ alert.className = `alert alert-${type} show`;
 setTimeout(() => alert.classList.remove('show'), 5000);
 }
 
-// ✅ PERFECT LOGIN FUNCTION
+// LOGIN
 document.getElementById('loginForm').addEventListener('submit', (e) => {
 e.preventDefault();
 const id = document.getElementById('loginId').value;
 const pass = document.getElementById('loginPass').value;
-
-// ✅ HIDE ALL PAGES FIRST
-document.querySelectorAll('.container, .dashboard').forEach(el => el.classList.add('hidden'));
 
 if (admins.includes(id) && adminPass[id] === pass) {
 currentUser = { type: 'admin', id, name: id };
@@ -269,19 +252,6 @@ showCustomerDash();
 showAlert('❌ Invalid credentials!', 'error');
 }
 });
-
-// ✅ PERFECT DASHBOARD FUNCTION
-function showCustomerDash() {
-document.getElementById('userName').textContent = currentUser.name;
-document.getElementById('userSite').textContent = currentUser.site;
-document.getElementById('liveDate').textContent = new Date().toLocaleDateString();
-// ✅ CLEAR LOGIN FORM
-document.getElementById('loginId').value = '';
-document.getElementById('loginPass').value = '';
-// ✅ SHOW DASHBOARD ONLY
-document.getElementById('customerDash').classList.remove('hidden');
-updateCustomerTickets();
-}
 
 // CREATE ACCOUNT
 document.getElementById('createForm').addEventListener('submit', (e) => {
@@ -302,8 +272,7 @@ users.push(user);
 localStorage.setItem('bytenexUsers', JSON.stringify(users));
 showAlert(`✅ Account created! User ID: ${userId}`);
 setTimeout(() => {
-if (confirm(`Your User ID: ${userId}
-Press OK to login`)) {
+if (confirm(`Your User ID: ${userId}\nPress OK to login`)) {
 document.getElementById('loginId').value = userId;
 showPage('login');
 }
@@ -327,7 +296,7 @@ showAlert('❌ No account found!', 'error');
 }
 });
 
-// TICKET FORM
+// ✅ UPDATED TICKET SUBMIT WITH EMAIL REDIRECT
 document.getElementById('ticketForm').addEventListener('submit', (e) => {
 e.preventDefault();
 const ticketNo = 'BI/' + document.getElementById('poNo').value + '/' + Math.floor(9999999 * Math.random());
@@ -347,17 +316,21 @@ localStorage.setItem('bytenexTickets', JSON.stringify(allTickets));
 document.getElementById('newTicketNo').textContent = `Ticket Created: ${ticketNo}`;
 document.getElementById('newTicketNo').classList.remove('hidden');
 
+// ✅ MANUAL EMAIL REDIRECT TO BOTH ADMINS
 const subject = `New Service Request - ${currentUser.site}`;
-const body = `Ticket No: ${ticketNo}%0D%0A%0D%0ASite: ${currentUser.site}%0D%0ALocation: ${ticket.location}%0D%0A%0D%0ADescription:%0D%0A${ticket.description.replace(/
-/g, '%0D%0A')}%0D%0A%0D%0AService Type: ${ticket.serviceType}%0D%0AService Category: ${ticket.serviceCat}%0D%0APO/WO No: ${ticket.poNo}`;
+const body = `Ticket No: ${ticketNo}%0D%0A%0D%0ASite: ${currentUser.site}%0D%0ALocation: ${ticket.location}%0D%0A%0D%0ADescription:%0D%0A${ticket.description.replace(/\n/g, '%0D%0A')}%0D%0A%0D%0AService Type: ${ticket.serviceType}%0D%0AService Category: ${ticket.serviceCat}%0D%0APO/WO No: ${ticket.poNo}`;
 
+// Email 1: info@
 window.open(`mailto:info@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
+
+// Email 2: engineers@ (delay to avoid popup blocker)
 setTimeout(() => {
 window.open(`mailto:engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
 }, 500);
 
 showAlert(`✅ Ticket ${ticketNo} created! 📧 Email pages opened for both admins.`);
 
+// Auto reset form
 setTimeout(() => {
 document.getElementById('ticketForm').reset();
 document.getElementById('ticketBtn').disabled = true;
@@ -368,7 +341,7 @@ updateCustomerTickets();
 });
 
 function checkWordCount() {
-const words = document.getElementById('issueDesc').value.trim().split(/s+/).length;
+const words = document.getElementById('issueDesc').value.trim().split(/\s+/).length;
 document.getElementById('wordCount').textContent = words + ' words';
 document.getElementById('ticketBtn').disabled = words < 10;
 }
@@ -379,6 +352,14 @@ document.getElementById('otherService').classList.toggle('hidden', document.getE
 
 function toggleOtherCat() {
 document.getElementById('otherCat').classList.toggle('hidden', document.getElementById('serviceCat').value !== 'Other');
+}
+
+function showCustomerDash() {
+document.getElementById('userName').textContent = currentUser.name;
+document.getElementById('userSite').textContent = currentUser.site;
+document.getElementById('liveDate').textContent = new Date().toLocaleDateString();
+document.getElementById('customerDash').classList.remove('hidden');
+updateCustomerTickets();
 }
 
 function updateCustomerTickets() {
