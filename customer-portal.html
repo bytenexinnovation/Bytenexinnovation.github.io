@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
@@ -15,9 +14,9 @@ body{
   position:relative;
 }
 
-/* SUBTLE TECH BACKGROUND */
+/* LIGHT TECH BACKGROUND ICONS */
 body::before{
-  content:"\f085 \f1eb \f0ad \f2db \f233 \f108 \f7c0 \f0e8";
+  content:"\f085 \f1eb \f0ad \f233 \f108 \f7c0 \f0e8";
   font-family:"Font Awesome 6 Free";
   font-weight:900;
   position:fixed;
@@ -50,7 +49,7 @@ body::before{
   margin-top:-10px;
 }
 
-/* CONTAINER */
+/* CARD */
 .container{
   width:400px;
   max-width:90%;
@@ -94,11 +93,16 @@ button{
   cursor:pointer;
 }
 
-/* LINKS */
+/* LINK */
 .link{text-align:center;color:#0d6efd;cursor:pointer;}
 
 /* DASHBOARD */
-.dashboard{display:none;padding:20px;position:relative;z-index:1;}
+.dashboard{
+  display:none;
+  padding:20px;
+  position:relative;
+  z-index:1;
+}
 
 .topbar{
   display:flex;
@@ -137,7 +141,6 @@ footer{
   color:#555;
   margin-top:20px;
 }
-
 </style>
 </head>
 
@@ -237,8 +240,6 @@ footer{
 
 <script>
 
-/* ===== YOUR ORIGINAL JS (UNCHANGED LOGIC) ===== */
-
 let currentUser=null;
 let role="customer";
 
@@ -317,7 +318,7 @@ function createAccount(){
   loginPage.style.display="block";
 }
 
-/* RESET */
+/* RESET PASSWORD */
 function resetPass(){
   let email=femail.value.trim();
   let org=forg.value.trim();
@@ -338,7 +339,7 @@ function resetPass(){
   loginPage.style.display="block";
 }
 
-/* SUBMIT */
+/* SUBMIT TICKET */
 function submitTicket(){
   let d=desc.value;
 
@@ -356,7 +357,8 @@ function submitTicket(){
   tickets.push({user:currentUser,ticket:ticketNo,name:req,pono:po,location:loc,status:"Open",desc:d});
   localStorage.setItem("tickets",JSON.stringify(tickets));
 
-  alert("Ticket: "+ticketNo);
+  alert("Ticket Created: "+ticketNo);
+
   loadTickets();
 
   reqName.value="";
@@ -372,13 +374,19 @@ function submitTicket(){
   window.location.href=`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-/* LOAD */
+/* LOAD TICKETS */
 function loadTickets(){
   let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
   ticketList.innerHTML="";
 
   tickets.forEach((t,i)=>{
     if(role==="admin"||role==="engineer"||t.user===currentUser){
+
+      let btn="";
+      if(role==="admin" && t.status==="Open"){
+        btn=`<button onclick="closeTicket(${i})" style="margin-top:8px;background:#dc3545;">Close Ticket</button>`;
+      }
+
       ticketList.innerHTML+=`
       <div class="ticket">
       <b>${t.ticket}</b><br>
@@ -386,9 +394,27 @@ function loadTickets(){
       PO: ${t.pono}<br>
       Status: ${t.status}<br>
       Description: ${t.desc}<br>
+      ${btn}
       </div>`;
     }
   });
+}
+
+/* CLOSE TICKET */
+function closeTicket(i){
+  let r=prompt("Closing Remarks");
+  let rca=prompt("RCA");
+  if(!r||!rca){alert("Required");return;}
+
+  let tickets=JSON.parse(localStorage.getItem("tickets"));
+  tickets[i].status="Closed";
+  tickets[i].remarks=r;
+  tickets[i].rca=rca;
+  tickets[i].closedBy="Admin";
+  tickets[i].closedDate=new Date().toLocaleDateString();
+
+  localStorage.setItem("tickets",JSON.stringify(tickets));
+  loadTickets();
 }
 
 /* NAV */
