@@ -2,277 +2,260 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BYTENEX CUSTOMER PORTAL</title>
+<title>Bytenex Customer Portal</title>
 
 <style>
-body{
-  font-family:Arial;
-  background:#f4f6f8;
-  text-align:center;
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f4f6f9;
 }
 
-.box{
-  width:800px;
-  margin:auto;
-  background:#fff;
-  padding:20px;
-  border-radius:10px;
-  margin-top:10px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+.container {
+  width: 400px;
+  margin: 50px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-input,textarea,select{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
+input, select, textarea {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
 }
 
-button{
-  width:100%;
-  padding:10px;
-  background:#0077aa;
-  color:#fff;
-  border:none;
-  cursor:pointer;
+button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-.ticket{
-  text-align:left;
-  background:#f9f9f9;
-  padding:10px;
-  margin:10px 0;
-  border-radius:8px;
+.dashboard {
+  display: none;
+  padding: 20px;
+}
+
+.ticket {
+  background: white;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
 
-<script>
-
-/* ================= ADMIN ================= */
-const ADMIN_EMAIL = "info@bytenexinnovation.in";
-const ADMIN_PASS = "Asktoyash@1997";
-
-/* ================= USER ID ================= */
-function generateUserId(){
-  return "BYTNIVN" + Math.floor(10 + Math.random()*9999999) + "A";
-}
-
-/* ================= PASSWORD ================= */
-function generatePassword(){
-  let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return chars[Math.floor(Math.random()*26)] + "!u7(" + Math.floor(100 + Math.random()*900);
-}
-
-/* ================= REGISTER ================= */
-function register(){
-  if(!r_name.value || !r_company.value || !r_site.value || !r_email.value || !r_phone.value || !r_pass.value || !r_cpass.value){
-    alert("Fill all fields");
-    return;
-  }
-
-  if(r_pass.value !== r_cpass.value){
-    alert("Password mismatch");
-    return;
-  }
-
-  let uid = generateUserId();
-  let pass = generatePassword();
-
-  let user = {
-    userId: uid,
-    name: r_name.value,
-    company: r_company.value,
-    site: r_site.value,
-    email: r_email.value,
-    phone: r_phone.value,
-    type: r_type.value,
-    password: pass,
-    role: "customer"
-  };
-
-  localStorage.setItem(uid, JSON.stringify(user));
-
-  alert("USER CREATED\nID: " + uid + "\nPASSWORD: " + pass);
-  showLogin();
-}
-
-/* ================= LOGIN ================= */
-function login(){
-  let id = login_id.value;
-  let pass = login_pass.value;
-
-  if(id === ADMIN_EMAIL && pass === ADMIN_PASS){
-    localStorage.setItem("currentUser", JSON.stringify({role:"admin",email:id}));
-    showPortal();
-    loadDashboard();
-    return;
-  }
-
-  let user = JSON.parse(localStorage.getItem(id));
-
-  if(user && user.password === pass){
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    showPortal();
-    loadDashboard();
-  } else {
-    alert("Invalid Login");
-  }
-}
-
-/* ================= FORGOT PASSWORD ================= */
-function forgotPassword(){
-  let email = fp_email.value;
-  let company = fp_company.value;
-
-  for(let i=0;i<localStorage.length;i++){
-    let key = localStorage.key(i);
-    let u = JSON.parse(localStorage.getItem(key));
-
-    if(u && u.email === email && u.company === company){
-      let np = generatePassword();
-      u.password = np;
-      localStorage.setItem(u.userId, JSON.stringify(u));
-      alert("NEW PASSWORD GENERATED:\n" + np);
-      return;
-    }
-  }
-
-  alert("No matching account found");
-}
-
-/* ================= CREATE TICKET ================= */
-function createTicket(){
-  let user = JSON.parse(localStorage.getItem("currentUser"));
-  if(!user) return alert("Login required");
-
-  if(!issue.value){
-    alert("Issue description required");
-    return;
-  }
-
-  let ticket = {
-    id: "AMC-" + Math.floor(1 + Math.random()*999999999999999),
-    userId: user.userId,
-    name: user.name,
-    company: user.company,
-    site: user.site,
-    po: po.value,
-    service: service.value,
-    category: category.value,
-    issue: issue.value,
-    status: "Open",
-    created: new Date().toLocaleString()
-  };
-
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-  tickets.push(ticket);
-  localStorage.setItem("tickets", JSON.stringify(tickets));
-
-  ticket_no.innerHTML = "Ticket Created: " + ticket.id;
-  openMail(ticket);
-  loadDashboard();
-}
-
-/* ================= UI ================= */
-function showLogin(){
-  login_box.style.display="block";
-  register_box.style.display="none";
-  portal.style.display="none";
-}
-
-function showRegister(){
-  login_box.style.display="none";
-  register_box.style.display="block";
-}
-
-function showPortal(){
-  login_box.style.display="none";
-  register_box.style.display="none";
-  portal.style.display="block";
-}
-
-function logout(){
-  localStorage.removeItem("currentUser");
-  location.reload();
-}
-
-</script>
 </head>
 
 <body>
 
-<h2>BYTENEX CUSTOMER PORTAL</h2>
-
 <!-- LOGIN -->
-<div id="login_box" class="box">
+<div class="container" id="loginPage">
+<h2>Login</h2>
+<input id="loginId" placeholder="User ID / Admin Email">
+<input id="loginPass" type="password" placeholder="Password">
 
-  <input id="login_id" placeholder="User ID / Admin Email">
-  <input id="login_pass" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
+<button onclick="login()">Login</button>
 
-  <!-- ✅ FORGOT PASSWORD ADDED HERE -->
-  <hr>
-
-  <h4>Forgot Password</h4>
-  <input id="fp_email" placeholder="Email">
-  <input id="fp_company" placeholder="Company Name">
-  <button onclick="forgotPassword()">Reset Password</button>
-
-  <p onclick="showRegister()" style="color:blue;cursor:pointer;">Create Account</p>
+<p onclick="showCreate()">Create Account</p>
+<p onclick="showForgot()">Forgot Password</p>
 </div>
 
-<!-- REGISTER -->
-<div id="register_box" class="box" style="display:none;">
-  <input id="r_name" placeholder="Name">
-  <input id="r_company" placeholder="Company">
-  <input id="r_site" placeholder="Site Location">
-  <input id="r_email" placeholder="Email">
-  <input id="r_phone" placeholder="Phone">
-  <select id="r_type">
-    <option>AMC</option>
-    <option>NON AMC</option>
-  </select>
-  <input id="r_pass" type="password" placeholder="Password">
-  <input id="r_cpass" type="password" placeholder="Confirm Password">
-  <button onclick="register()">Create User</button>
+<!-- CREATE ACCOUNT -->
+<div class="container" id="createPage" style="display:none">
+<h2>Create Account</h2>
+
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
+<input id="org" placeholder="Organisation">
+<input id="location" placeholder="Location">
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
+<input id="cpass" type="password" placeholder="Confirm Password">
+
+<button onclick="createAccount()">Create</button>
 </div>
 
-<!-- PORTAL -->
-<div id="portal" class="box" style="display:none;">
-  <h3>Create Ticket</h3>
+<!-- FORGOT -->
+<div class="container" id="forgotPage" style="display:none">
+<h2>Reset Password</h2>
 
-  <input id="site" placeholder="Site Location">
-  <input id="po" placeholder="PO Number">
+<input id="femail" placeholder="Email">
+<input id="forg" placeholder="Organisation">
 
-  <select id="service">
-    <option>AMC</option>
-    <option>NON AMC</option>
-    <option>OTHER</option>
-  </select>
-
-  <select id="category">
-    <option>Repair</option>
-    <option>Installation</option>
-    <option>Replacement</option>
-    <option>Other</option>
-  </select>
-
-  <textarea id="issue" placeholder="Issue Description"></textarea>
-
-  <button onclick="createTicket()">Submit Ticket</button>
-
-  <div id="ticket_no"></div>
-
-  <hr>
-  <h3>Tickets</h3>
-  <div id="ticket_list"></div>
-
-  <button onclick="logout()" style="background:red">Logout</button>
+<button onclick="resetPass()">Reset</button>
 </div>
 
-<!-- ✅ COPYRIGHT ADDED -->
-<div style="margin-top:20px;font-size:12px;color:#777;">
-© 2026 BYTENEX INNOVATION. All Rights Reserved. Unauthorized use strictly prohibited.
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+<h2>Dashboard</h2>
+
+<h3>Tickets</h3>
+<div id="ticketList"></div>
+
+<h3>New Service Request</h3>
+
+<input id="reqName" placeholder="Requester Name">
+<input id="pono" placeholder="PO No">
+
+<select id="stype" onchange="showOther('stype','stypeOther')">
+<option>AMC</option>
+<option>NAMC</option>
+<option>New Order</option>
+<option>Other</option>
+</select>
+<input id="stypeOther" style="display:none" placeholder="Describe">
+
+<select id="scat" onchange="showOther('scat','scatOther')">
+<option>Installation</option>
+<option>R&M</option>
+<option>Periodic Service</option>
+<option>Replacement</option>
+<option>Other</option>
+</select>
+<input id="scatOther" style="display:none" placeholder="Describe">
+
+<input id="issueLoc" placeholder="Location">
+
+<textarea id="desc" placeholder="Describe issue (min 10 lines)"></textarea>
+
+<button onclick="submitTicket()">Submit</button>
+
 </div>
+
+<footer>© Bytenex Innovation</footer>
+
+<script>
+let currentUser = null;
+
+// LOGIN
+function login() {
+  let id = document.getElementById("loginId").value;
+  let pass = document.getElementById("loginPass").value;
+
+  if(id === "info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
+    currentUser = "admin";
+  }
+  else if(id === "engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
+    currentUser = "engineer";
+  }
+  else {
+    let users = JSON.parse(localStorage.getItem("users")||"[]");
+    let user = users.find(u=>u.userid===id && u.pass===pass);
+    if(!user){
+      alert("Invalid login");
+      return;
+    }
+    currentUser = user.userid;
+  }
+
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+  loadTickets();
+}
+
+// CREATE ACCOUNT
+function createAccount(){
+  let uid = "BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+
+  let users = JSON.parse(localStorage.getItem("users")||"[]");
+
+  users.push({
+    name: name.value,
+    phone: phone.value,
+    org: org.value,
+    location: location.value,
+    email: email.value,
+    pass: pass.value,
+    userid: uid
+  });
+
+  localStorage.setItem("users",JSON.stringify(users));
+  alert("User ID: "+uid);
+  location.reload();
+}
+
+// FORGOT
+function resetPass(){
+  let users = JSON.parse(localStorage.getItem("users")||"[]");
+  let u = users.find(x=>x.email===femail.value && x.org===forg.value);
+
+  if(!u){
+    alert("Mismatch");
+    return;
+  }
+
+  let newPass = Math.random().toString(36).slice(-8);
+  u.pass = newPass;
+  localStorage.setItem("users",JSON.stringify(users));
+
+  alert("New Password: "+newPass);
+}
+
+// SHOW OTHER
+function showOther(sel,field){
+  let val = document.getElementById(sel).value;
+  document.getElementById(field).style.display = val==="Other" ? "block":"none";
+}
+
+// SUBMIT TICKET
+function submitTicket(){
+  let desc = document.getElementById("desc").value;
+
+  if(desc.split("\n").length < 10){
+    alert("Minimum 10 lines required");
+    return;
+  }
+
+  let tickets = JSON.parse(localStorage.getItem("tickets")||"[]");
+
+  let ticketNo = "BYT/"+pono.value+"/"+Math.floor(Math.random()*900000000);
+
+  tickets.push({
+    user: currentUser,
+    ticket: ticketNo,
+    status: "Open",
+    desc: desc
+  });
+
+  localStorage.setItem("tickets",JSON.stringify(tickets));
+
+  alert("Ticket Created: "+ticketNo);
+  loadTickets();
+}
+
+// LOAD TICKETS
+function loadTickets(){
+  let tickets = JSON.parse(localStorage.getItem("tickets")||"[]");
+  let div = document.getElementById("ticketList");
+  div.innerHTML="";
+
+  tickets.forEach(t=>{
+    if(currentUser==="admin" || t.user===currentUser){
+      div.innerHTML += `<div class="ticket">
+      ${t.ticket} - ${t.status}
+      </div>`;
+    }
+  });
+}
+
+// NAVIGATION
+function showCreate(){
+  loginPage.style.display="none";
+  createPage.style.display="block";
+}
+function showForgot(){
+  loginPage.style.display="none";
+  forgotPage.style.display="block";
+}
+</script>
 
 </body>
 </html>
