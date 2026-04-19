@@ -91,7 +91,7 @@ footer {text-align:center;margin-top:20px;}
 
 <input id="issueLoc" placeholder="Location">
 
-<textarea id="desc" placeholder="Minimum 10 lines description"></textarea>
+<textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
 
@@ -178,7 +178,10 @@ function createAccount(){
   localStorage.setItem("users",JSON.stringify(users));
 
   alert("Account Created!\nYour User ID: "+uid);
-  location.reload();
+
+  // redirect to login
+  document.getElementById("createPage").style.display="none";
+  document.getElementById("loginPage").style.display="block";
 }
 
 // RESET PASSWORD
@@ -203,36 +206,56 @@ function resetPass(){
   alert("New Password: "+newPass);
 }
 
-// SUBMIT TICKET
+// SUBMIT TICKET + MAIL
 function submitTicket(){
 
   let desc=document.getElementById("desc").value;
 
-  if(desc.split("\n").length<10){
-    alert("Minimum 10 lines required");
+  if(desc.split("\n").length < 2){
+    alert("Minimum 2 lines required");
     return;
   }
 
   let reqName=document.getElementById("reqName").value;
   let pono=document.getElementById("pono").value;
+  let location=document.getElementById("issueLoc").value;
 
   let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
   let ticketNo="BYT/"+pono+"/"+Math.floor(Math.random()*900000000);
 
-  tickets.push({
+  let ticketData={
     user:currentUser,
     ticket:ticketNo,
     name:reqName,
     pono:pono,
+    location:location,
     status:"Open",
     desc:desc
-  });
+  };
 
+  tickets.push(ticketData);
   localStorage.setItem("tickets",JSON.stringify(tickets));
 
   alert("Ticket Created: "+ticketNo);
+
   loadTickets();
+
+  // MAIL REDIRECT
+  let subject = "New Service Request - " + pono;
+
+  let body =
+`Ticket No: ${ticketNo}
+Requester: ${reqName}
+PO No: ${pono}
+Location: ${location}
+
+Issue Description:
+${desc}`;
+
+  let mailtoLink = `mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailtoLink;
 }
 
 // LOAD TICKETS
