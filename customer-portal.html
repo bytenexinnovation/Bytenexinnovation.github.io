@@ -69,10 +69,7 @@ button{
   cursor:pointer;
 }
 
-.dashboard{
-  display:none;
-  padding:20px;
-}
+.dashboard{display:none;padding:20px;}
 
 .card{
   background:white;
@@ -103,12 +100,6 @@ button{
   color:white;
   border-radius:6px;
 }
-
-footer{
-  text-align:center;
-  color:#555;
-  margin-top:20px;
-}
 </style>
 </head>
 
@@ -118,7 +109,6 @@ footer{
 
 <!-- LOGIN -->
 <div class="container" id="loginPage">
-
 <h3>Login</h3>
 
 <input id="loginId" placeholder="User ID / Email">
@@ -128,36 +118,31 @@ footer{
 
 <div onclick="showCreate()" style="text-align:center;color:#0d6efd;cursor:pointer;">Create Account</div>
 <div onclick="showForgot()" style="text-align:center;color:#0d6efd;cursor:pointer;">Forgot Password</div>
-
 </div>
 
 <!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
-
 <h3>Create Account</h3>
 
-<input id="name" placeholder="Name">
-<input id="phone" placeholder="Phone">
-<input id="org" placeholder="Organisation">
-<input id="location" placeholder="Location">
-<input id="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
-<input id="cpass" type="password" placeholder="Confirm Password">
+<input id="name">
+<input id="phone">
+<input id="org">
+<input id="location">
+<input id="email">
+<input id="pass" type="password">
+<input id="cpass" type="password">
 
-<button onclick="createAccount()">Create Account</button>
-
+<button onclick="createAccount()">Create</button>
 </div>
 
 <!-- FORGOT -->
 <div class="container" id="forgotPage" style="display:none">
-
 <h3>Reset Password</h3>
 
-<input id="femail" placeholder="Email">
-<input id="forg" placeholder="Organisation">
+<input id="femail">
+<input id="forg">
 
-<button onclick="resetPass()">Reset Password</button>
-
+<button onclick="resetPass()">Reset</button>
 </div>
 
 <!-- DASHBOARD -->
@@ -181,7 +166,6 @@ footer{
 <input id="reqName" placeholder="Requester Name">
 <input id="pono" placeholder="PO No">
 
-<!-- SERVICE TYPE -->
 <select id="stype">
 <option>AMC</option>
 <option>NAMC</option>
@@ -189,7 +173,6 @@ footer{
 <option>Other</option>
 </select>
 
-<!-- SERVICE CATEGORY -->
 <select id="scat">
 <option>Installation</option>
 <option>R&M</option>
@@ -198,17 +181,14 @@ footer{
 <option>Other</option>
 </select>
 
-<input id="issueLoc" placeholder="Location">
-
-<textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
+<input id="issueLoc">
+<textarea id="desc"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
 
 </div>
 
 </div>
-
-<footer>© Bytenex Innovation</footer>
 
 <script>
 
@@ -226,86 +206,94 @@ let users=JSON.parse(localStorage.getItem("users")||"[]");
 localStorage.removeItem("currentUserData");
 
 if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-  role="admin"; currentUser="admin";
+role="admin"; currentUser="admin";
 }
-else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-  role="engineer"; currentUser="engineer";
+else if(id==="engineers@bytenexinnovation.in"){
+role="engineer"; currentUser="engineer";
 }
 else{
-  let u=users.find(x=>x.userid===id && x.pass===pass);
-  if(!u){alert("Invalid login");return;}
-  currentUser=u.userid;
-  role="customer";
-  localStorage.setItem("currentUserData",JSON.stringify(u));
+let u=users.find(x=>x.userid===id && x.pass===pass);
+if(!u){alert("Invalid login");return;}
+currentUser=u.userid;
+role="customer";
+localStorage.setItem("currentUserData",JSON.stringify(u));
 }
 
 loginPage.style.display="none";
 dashboard.style.display="block";
 
 document.getElementById("ticketForm").style.display =
-(role==="customer") ? "block" : "none";
+(role==="customer")?"block":"none";
 
 loadCustomerDetails();
 loadTickets();
 }
 
-/* CREATE ACCOUNT FIX */
+/* CREATE FIX */
 function createAccount(){
 
-let n=document.getElementById("name").value.trim();
-let p=document.getElementById("phone").value.trim();
-let o=document.getElementById("org").value.trim();
-let l=document.getElementById("location").value.trim();
-let e=document.getElementById("email").value.trim();
-let pw=document.getElementById("pass").value;
-let cp=document.getElementById("cpass").value;
+let n=name.value.trim();
+let p=phone.value.trim();
+let o=org.value.trim();
+let l=location.value.trim();
+let e=email.value.trim();
+let pw=pass.value;
+let cp=cpass.value;
 
 if(!n||!p||!o||!l||!e||!pw||!cp){
-alert("All fields required");
-return;
+alert("All fields required");return;
 }
 
 if(pw!==cp){
-alert("Password mismatch");
-return;
+alert("Password mismatch");return;
 }
 
-let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+let uid="BYT-"+Math.floor(Math.random()*99999);
 
 let users=JSON.parse(localStorage.getItem("users")||"[]");
-
 users.push({name:n,phone:p,org:o,location:l,email:e,pass:pw,userid:uid});
 
 localStorage.setItem("users",JSON.stringify(users));
 
-alert("Account Created!\nUser ID: "+uid);
+alert("Created: "+uid);
 
 createPage.style.display="none";
 loginPage.style.display="block";
 }
 
-/* CUSTOMER DETAILS */
-function loadCustomerDetails(){
-let u=JSON.parse(localStorage.getItem("currentUserData"));
-if(!u) return;
+/* RESET FIX */
+function resetPass(){
 
-customerDetails.innerHTML=`
-<div class="card">
-<b>Welcome, ${u.name}</b><br>
-${u.org}<br>
-${u.location}
-</div>`;
+let email=femail.value.trim();
+let org=forg.value.trim();
+
+let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+let u=users.find(x=>x.email===email && x.org===org);
+
+if(!u){alert("Not found");return;}
+
+let newPass=Math.random().toString(36).slice(-8);
+
+u.pass=newPass;
+
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("New Password: "+newPass);
+
+forgotPage.style.display="none";
+loginPage.style.display="block";
 }
 
-/* 2 LINE FIX + MAIL FIX */
+/* TICKET FIX */
 function submitTicket(){
 
-let d=document.getElementById("desc").value.trim();
+let d=desc.value.trim();
+
 let lines=d.split("\n").filter(x=>x.trim()!=="");
 
 if(lines.length<2){
-alert("Minimum 2 lines required");
-return;
+alert("Minimum 2 lines required");return;
 }
 
 let req=reqName.value;
@@ -316,7 +304,7 @@ let scat=scat.value;
 
 let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
-let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
+let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*999999);
 
 tickets.push({
 user:currentUser,
@@ -332,85 +320,39 @@ desc:d
 
 localStorage.setItem("tickets",JSON.stringify(tickets));
 
-alert("Ticket Created: "+ticketNo);
-
 loadTickets();
 
-/* MAIL REDIRECT FIX */
-let subject="New Service Request - "+po;
-
-let body=
-`Ticket No: ${ticketNo}
-Requester: ${req}
-PO No: ${po}
-Service Type: ${stype}
-Service Category: ${scat}
-Location: ${loc}
+/* MAIL FIX */
+let body=`Ticket:${ticketNo}
+Req:${req}
+PO:${po}
+Type:${stype}
+Cat:${scat}
+Loc:${loc}
 
 ${d}`;
 
 window.location.href=
-`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?body=${encodeURIComponent(body)}`;
 }
 
-/* LOAD TICKETS */
+/* LOAD */
 function loadTickets(){
 
-let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+let t=JSON.parse(localStorage.getItem("tickets")||"[]");
 
 ticketList.innerHTML="";
 
-tickets.forEach((t,i)=>{
-
-if(role==="customer" && t.user===currentUser){
+t.forEach(x=>{
 ticketList.innerHTML+=`
 <div class="ticket">
-<b>${t.ticket}</b><br>
-${t.name}<br>
-${t.pono}<br>
-${t.status}<br>
-${t.desc}
+<b>${x.ticket}</b><br>
+${x.name}<br>
+${x.pono}<br>
+${x.status}<br>
+${x.desc}
 </div>`;
-}
-
-if(role==="admin" || role==="engineer"){
-
-let btn="";
-if(role==="admin" && t.status==="Open"){
-btn=`<button onclick="closeTicket(${i})" style="background:red;margin-top:8px;">Close Ticket</button>`;
-}
-
-ticketList.innerHTML+=`
-<div class="ticket">
-<b>${t.ticket}</b><br>
-${t.name}<br>
-${t.pono}<br>
-${t.status}<br>
-${t.desc}
-${btn}
-</div>`;
-}
-
 });
-}
-
-/* CLOSE */
-function closeTicket(i){
-
-let r=prompt("Closing Remarks");
-let rca=prompt("RCA");
-
-if(!r||!rca){alert("Required");return;}
-
-let tickets=JSON.parse(localStorage.getItem("tickets"));
-
-tickets[i].status="Closed";
-tickets[i].remarks=r;
-tickets[i].rca=rca;
-
-localStorage.setItem("tickets",JSON.stringify(tickets));
-
-loadTickets();
 }
 
 /* NAV */
@@ -424,9 +366,7 @@ loginPage.style.display="none";
 forgotPage.style.display="block";
 }
 
-function logout(){
-location.reload();
-}
+function logout(){location.reload();}
 
 </script>
 
