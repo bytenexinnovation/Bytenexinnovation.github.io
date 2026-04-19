@@ -230,14 +230,11 @@ alert.className = `alert alert-${type} show`;
 setTimeout(() => alert.classList.remove('show'), 5000);
 }
 
-// ✅ FIXED LOGIN - SABSE PEHLE SARE PAGES HIDE KARTA HAI
+// LOGIN
 document.getElementById('loginForm').addEventListener('submit', (e) => {
 e.preventDefault();
 const id = document.getElementById('loginId').value;
 const pass = document.getElementById('loginPass').value;
-
-// ✅ SABSE PEHLE SARE PAGES HIDE KAR DO
-document.querySelectorAll('.container, .dashboard').forEach(el => el.classList.add('hidden'));
 
 if (admins.includes(id) && adminPass[id] === pass) {
 currentUser = { type: 'admin', id, name: id };
@@ -255,19 +252,6 @@ showCustomerDash();
 showAlert('❌ Invalid credentials!', 'error');
 }
 });
-
-// ✅ FIXED showCustomerDash - FORM CLEAR BHI KARTA HAI
-function showCustomerDash() {
-document.getElementById('userName').textContent = currentUser.name;
-document.getElementById('userSite').textContent = currentUser.site;
-document.getElementById('liveDate').textContent = new Date().toLocaleDateString();
-// ✅ LOGIN FORM CLEAR
-document.getElementById('loginId').value = '';
-document.getElementById('loginPass').value = '';
-// ✅ DASHBOARD SHOW
-document.getElementById('customerDash').classList.remove('hidden');
-updateCustomerTickets();
-}
 
 // CREATE ACCOUNT
 document.getElementById('createForm').addEventListener('submit', (e) => {
@@ -288,8 +272,7 @@ users.push(user);
 localStorage.setItem('bytenexUsers', JSON.stringify(users));
 showAlert(`✅ Account created! User ID: ${userId}`);
 setTimeout(() => {
-if (confirm(`Your User ID: ${userId}
-Press OK to login`)) {
+if (confirm(`Your User ID: ${userId}\nPress OK to login`)) {
 document.getElementById('loginId').value = userId;
 showPage('login');
 }
@@ -335,8 +318,7 @@ document.getElementById('newTicketNo').classList.remove('hidden');
 
 // ✅ MANUAL EMAIL REDIRECT TO BOTH ADMINS
 const subject = `New Service Request - ${currentUser.site}`;
-const body = `Ticket No: ${ticketNo}%0D%0A%0D%0ASite: ${currentUser.site}%0D%0ALocation: ${ticket.location}%0D%0A%0D%0ADescription:%0D%0A${ticket.description.replace(/
-/g, '%0D%0A')}%0D%0A%0D%0AService Type: ${ticket.serviceType}%0D%0AService Category: ${ticket.serviceCat}%0D%0APO/WO No: ${ticket.poNo}`;
+const body = `Ticket No: ${ticketNo}%0D%0A%0D%0ASite: ${currentUser.site}%0D%0ALocation: ${ticket.location}%0D%0A%0D%0ADescription:%0D%0A${ticket.description.replace(/\n/g, '%0D%0A')}%0D%0A%0D%0AService Type: ${ticket.serviceType}%0D%0AService Category: ${ticket.serviceCat}%0D%0APO/WO No: ${ticket.poNo}`;
 
 // Email 1: info@
 window.open(`mailto:info@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
@@ -359,7 +341,7 @@ updateCustomerTickets();
 });
 
 function checkWordCount() {
-const words = document.getElementById('issueDesc').value.trim().split(/s+/).length;
+const words = document.getElementById('issueDesc').value.trim().split(/\s+/).length;
 document.getElementById('wordCount').textContent = words + ' words';
 document.getElementById('ticketBtn').disabled = words < 10;
 }
@@ -370,6 +352,14 @@ document.getElementById('otherService').classList.toggle('hidden', document.getE
 
 function toggleOtherCat() {
 document.getElementById('otherCat').classList.toggle('hidden', document.getElementById('serviceCat').value !== 'Other');
+}
+
+function showCustomerDash() {
+document.getElementById('userName').textContent = currentUser.name;
+document.getElementById('userSite').textContent = currentUser.site;
+document.getElementById('liveDate').textContent = new Date().toLocaleDateString();
+document.getElementById('customerDash').classList.remove('hidden');
+updateCustomerTickets();
 }
 
 function updateCustomerTickets() {
