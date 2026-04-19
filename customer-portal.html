@@ -8,12 +8,21 @@
 body {
   font-family: Arial;
   margin: 0;
-  background: #f4f6f9;
+  background: #eef2f7;
+}
+
+.header {
+  background: #0d6efd;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .container {
   width: 400px;
-  margin: 50px auto;
+  margin: 30px auto;
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -28,10 +37,16 @@ input, select, textarea {
 button {
   width: 100%;
   padding: 10px;
-  background: #007bff;
+  background: #0d6efd;
   color: white;
   border: none;
   cursor: pointer;
+}
+
+.link {
+  color: #0d6efd;
+  cursor: pointer;
+  margin-top: 5px;
 }
 
 .dashboard {
@@ -56,21 +71,23 @@ footer {
 
 <body>
 
+<div class="header">Bytenex Customer Portal</div>
+
 <!-- LOGIN -->
 <div class="container" id="loginPage">
-<h2>Login</h2>
+<h3>Login</h3>
 <input id="loginId" placeholder="User ID / Admin Email">
 <input id="loginPass" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
 
-<p onclick="showCreate()">Create Account</p>
-<p onclick="showForgot()">Forgot Password</p>
+<div class="link" onclick="showCreate()">Create Account</div>
+<div class="link" onclick="showForgot()">Forgot Password</div>
 </div>
 
-<!-- CREATE ACCOUNT -->
+<!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
-<h2>Create Account</h2>
+<h3>Create Account</h3>
 
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
@@ -80,24 +97,24 @@ footer {
 <input id="pass" type="password" placeholder="Password">
 <input id="cpass" type="password" placeholder="Confirm Password">
 
-<button onclick="createAccount()">Create</button>
+<button onclick="createAccount()">Create Account</button>
 </div>
 
 <!-- FORGOT -->
 <div class="container" id="forgotPage" style="display:none">
-<h2>Reset Password</h2>
+<h3>Reset Password</h3>
 
 <input id="femail" placeholder="Email">
 <input id="forg" placeholder="Organisation">
 
-<button onclick="resetPass()">Reset</button>
+<button onclick="resetPass()">Reset Password</button>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
 <h2>Dashboard</h2>
 
-<h3>Tickets</h3>
+<h3>Your Tickets</h3>
 <div id="ticketList"></div>
 
 <h3>New Service Request</h3>
@@ -105,29 +122,26 @@ footer {
 <input id="reqName" placeholder="Requester Name">
 <input id="pono" placeholder="PO No">
 
-<select id="stype" onchange="showOther('stype','stypeOther')">
+<select id="stype">
 <option>AMC</option>
 <option>NAMC</option>
 <option>New Order</option>
 <option>Other</option>
 </select>
-<input id="stypeOther" style="display:none" placeholder="Describe">
 
-<select id="scat" onchange="showOther('scat','scatOther')">
+<select id="scat">
 <option>Installation</option>
 <option>R&M</option>
 <option>Periodic Service</option>
 <option>Replacement</option>
 <option>Other</option>
 </select>
-<input id="scatOther" style="display:none" placeholder="Describe">
 
 <input id="issueLoc" placeholder="Location">
 
-<textarea id="desc" placeholder="Describe issue (min 10 lines)"></textarea>
+<textarea id="desc" placeholder="Minimum 10 lines description"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
-
 </div>
 
 <footer>© Bytenex Innovation</footer>
@@ -136,33 +150,45 @@ footer {
 let currentUser = null;
 
 // LOGIN
-function login() {
-  let id = document.getElementById("loginId").value;
-  let pass = document.getElementById("loginPass").value;
+function login(){
+  let id = loginId.value;
+  let pass = loginPass.value;
 
-  if(id === "info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-    currentUser = "admin";
+  if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
+    currentUser="admin";
   }
-  else if(id === "engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-    currentUser = "engineer";
+  else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
+    currentUser="engineer";
   }
-  else {
+  else{
     let users = JSON.parse(localStorage.getItem("users")||"[]");
-    let user = users.find(u=>u.userid===id && u.pass===pass);
-    if(!user){
+    let u = users.find(x=>x.userid===id && x.pass===pass);
+
+    if(!u){
       alert("Invalid login");
       return;
     }
-    currentUser = user.userid;
+    currentUser = u.userid;
   }
 
-  document.getElementById("loginPage").style.display="none";
-  document.getElementById("dashboard").style.display="block";
+  loginPage.style.display="none";
+  dashboard.style.display="block";
   loadTickets();
 }
 
 // CREATE ACCOUNT
 function createAccount(){
+
+  if(!name.value || !phone.value || !org.value || !location.value || !email.value || !pass.value || !cpass.value){
+    alert("All fields required");
+    return;
+  }
+
+  if(pass.value !== cpass.value){
+    alert("Password not match");
+    return;
+  }
+
   let uid = "BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
 
   let users = JSON.parse(localStorage.getItem("users")||"[]");
@@ -178,38 +204,34 @@ function createAccount(){
   });
 
   localStorage.setItem("users",JSON.stringify(users));
-  alert("User ID: "+uid);
+
+  alert("Account Created! Your User ID: "+uid);
   location.reload();
 }
 
-// FORGOT
+// RESET
 function resetPass(){
   let users = JSON.parse(localStorage.getItem("users")||"[]");
+
   let u = users.find(x=>x.email===femail.value && x.org===forg.value);
 
   if(!u){
-    alert("Mismatch");
+    alert("Email & Organisation mismatch");
     return;
   }
 
   let newPass = Math.random().toString(36).slice(-8);
   u.pass = newPass;
+
   localStorage.setItem("users",JSON.stringify(users));
 
   alert("New Password: "+newPass);
 }
 
-// SHOW OTHER
-function showOther(sel,field){
-  let val = document.getElementById(sel).value;
-  document.getElementById(field).style.display = val==="Other" ? "block":"none";
-}
-
-// SUBMIT TICKET
+// TICKET
 function submitTicket(){
-  let desc = document.getElementById("desc").value;
 
-  if(desc.split("\n").length < 10){
+  if(desc.value.split("\n").length < 10){
     alert("Minimum 10 lines required");
     return;
   }
@@ -221,8 +243,7 @@ function submitTicket(){
   tickets.push({
     user: currentUser,
     ticket: ticketNo,
-    status: "Open",
-    desc: desc
+    status: "Open"
   });
 
   localStorage.setItem("tickets",JSON.stringify(tickets));
@@ -231,22 +252,19 @@ function submitTicket(){
   loadTickets();
 }
 
-// LOAD TICKETS
+// LOAD
 function loadTickets(){
   let tickets = JSON.parse(localStorage.getItem("tickets")||"[]");
-  let div = document.getElementById("ticketList");
-  div.innerHTML="";
+  ticketList.innerHTML="";
 
   tickets.forEach(t=>{
     if(currentUser==="admin" || t.user===currentUser){
-      div.innerHTML += `<div class="ticket">
-      ${t.ticket} - ${t.status}
-      </div>`;
+      ticketList.innerHTML += `<div class="ticket">${t.ticket} - ${t.status}</div>`;
     }
   });
 }
 
-// NAVIGATION
+// NAV
 function showCreate(){
   loginPage.style.display="none";
   createPage.style.display="block";
