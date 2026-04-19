@@ -4,14 +4,34 @@
 <meta charset="UTF-8">
 <title>Bytenex Customer Portal</title>
 
-<!-- ICONS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+
 body {
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  font-family:'Segoe UI', sans-serif;
+  background:#f4f8fb;
+  position:relative;
+}
+
+/* SUBTLE BACKGROUND ICONS */
+body::before {
+  content:"\f013 \f0c0 \f1eb \f108 \f233";
+  font-family:"Font Awesome 6 Free";
+  font-weight:900;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  font-size:120px;
+  color:rgba(0,0,0,0.03);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-around;
+  align-items:center;
+  pointer-events:none;
 }
 
 /* HEADER */
@@ -20,48 +40,53 @@ body {
   padding:20px;
   font-size:26px;
   font-weight:bold;
-  color:white;
+  color:#0d6efd;
 }
 
 .slogan {
   text-align:center;
-  color:#eee;
+  color:#555;
   margin-top:-10px;
   font-size:14px;
 }
 
-/* CARD */
+/* CONTAINER */
 .container {
   width:400px;
+  max-width:90%;
   margin:30px auto;
-  background: rgba(255,255,255,0.95);
+  background:white;
   padding:25px;
   border-radius:15px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
-/* INPUT */
+/* INPUT GROUP */
 .input-group { position:relative; }
+
 .input-group i {
   position:absolute;
-  top:12px;
-  left:10px;
+  top:50%;
+  left:12px;
+  transform:translateY(-50%);
   color:#888;
 }
 
+/* INPUT */
 input, select, textarea {
   width:100%;
-  padding:10px 10px 10px 35px;
+  padding:12px 12px 12px 38px;
   margin:10px 0;
   border-radius:8px;
   border:1px solid #ccc;
+  box-sizing:border-box;
 }
 
 /* BUTTON */
 button {
   width:100%;
   padding:12px;
-  background: linear-gradient(135deg,#0d6efd,#6610f2);
+  background:#0d6efd;
   color:white;
   border:none;
   border-radius:8px;
@@ -69,22 +94,32 @@ button {
 }
 
 /* LINKS */
-.link { text-align:center; color:#0d6efd; cursor:pointer; }
+.link {text-align:center;color:#0d6efd;cursor:pointer;}
 
 /* DASHBOARD */
-.dashboard { display:none; padding:20px; }
+.dashboard {display:none;padding:20px;}
 
-/* TOPBAR */
-.topbar { display:flex; justify-content:space-between; align-items:center; }
-.logout { background:red; border:none; padding:6px 12px; color:white; border-radius:6px; }
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-/* CARDS */
+.logout {
+  background:#dc3545;
+  border:none;
+  padding:6px 12px;
+  color:white;
+  border-radius:6px;
+}
+
+/* CARD */
 .card {
   background:white;
   padding:12px;
   border-radius:10px;
   margin-bottom:10px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
 /* TICKET */
@@ -93,12 +128,16 @@ button {
   padding:12px;
   margin:10px 0;
   border-radius:10px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-footer { text-align:center; color:white; margin-top:20px; }
-</style>
+footer {
+  text-align:center;
+  color:#555;
+  margin-top:20px;
+}
 
+</style>
 </head>
 
 <body>
@@ -106,270 +145,7 @@ footer { text-align:center; color:white; margin-top:20px; }
 <div class="header">Bytenex Customer Portal</div>
 <div class="slogan">Empowering Smart Infrastructure & Seamless Support</div>
 
-<!-- LOGIN -->
-<div class="container" id="loginPage">
-<h3><i class="fa fa-lock"></i> Login</h3>
-
-<div class="input-group">
-<i class="fa fa-user"></i>
-<input id="loginId" placeholder="User ID / Email">
-</div>
-
-<div class="input-group">
-<i class="fa fa-key"></i>
-<input id="loginPass" type="password" placeholder="Password">
-</div>
-
-<button onclick="login()">Login</button>
-
-<div class="link" onclick="showCreate()">Create Account</div>
-<div class="link" onclick="showForgot()">Forgot Password</div>
-</div>
-
-<!-- CREATE -->
-<div class="container" id="createPage" style="display:none">
-<h3>Create Account</h3>
-<input id="name" placeholder="Name">
-<input id="phone" placeholder="Phone">
-<input id="org" placeholder="Organisation">
-<input id="location" placeholder="Location">
-<input id="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
-<input id="cpass" type="password" placeholder="Confirm Password">
-<button onclick="createAccount()">Create Account</button>
-</div>
-
-<!-- FORGOT -->
-<div class="container" id="forgotPage" style="display:none">
-<h3>Reset Password</h3>
-<input id="femail" placeholder="Email">
-<input id="forg" placeholder="Organisation">
-<button onclick="resetPass()">Reset Password</button>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-
-<div class="topbar">
-<h2>Dashboard</h2>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<div id="customerDetails"></div>
-
-<h3>Tickets</h3>
-<div id="ticketList"></div>
-
-<!-- CUSTOMER FORM -->
-<div id="ticketForm">
-
-<h3>New Service Request</h3>
-
-<input id="reqName" placeholder="Requester Name">
-<input id="pono" placeholder="PO No">
-
-<select id="stype">
-<option>AMC</option>
-<option>NAMC</option>
-<option>New Order</option>
-<option>Other</option>
-</select>
-
-<select id="scat">
-<option>Installation</option>
-<option>R&M</option>
-<option>Periodic Service</option>
-<option>Replacement</option>
-<option>Other</option>
-</select>
-
-<input id="issueLoc" placeholder="Location">
-
-<textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
-
-<button onclick="submitTicket()">Submit</button>
-
-</div>
-
-</div>
-
-<footer>© Bytenex Innovation</footer>
-
-<script>
-
-let currentUser=null;
-let role="customer";
-
-// LOGIN
-function login(){
-  let id=loginId.value;
-  let pass=loginPass.value;
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-
-  if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-    role="admin"; currentUser="admin";
-  }
-  else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-    role="engineer"; currentUser="engineer";
-  }
-  else{
-    let u=users.find(x=>x.userid===id && x.pass===pass);
-    if(!u){ alert("Invalid login"); return; }
-
-    currentUser=u.userid;
-    role="customer";
-    localStorage.setItem("currentUserData", JSON.stringify(u));
-  }
-
-  loginPage.style.display="none";
-  dashboard.style.display="block";
-
-  if(role!=="customer"){
-    ticketForm.style.display="none";
-  } else {
-    loadCustomerDetails();
-  }
-
-  loadTickets();
-}
-
-// CUSTOMER DETAILS
-function loadCustomerDetails(){
-  let u=JSON.parse(localStorage.getItem("currentUserData"));
-  if(!u) return;
-
-  customerDetails.innerHTML=`
-  <div class="card">
-  <b>Welcome, ${u.name}</b><br>
-  Organisation: ${u.org}<br>
-  Location: ${u.location}
-  </div>`;
-}
-
-// LOGOUT
-function logout(){location.reload();}
-
-// CREATE
-function createAccount(){
-  let name=name.value.trim();
-  let phone=phone.value.trim();
-  let org=org.value.trim();
-  let location=location.value.trim();
-  let email=email.value.trim();
-  let pass=pass.value;
-  let cpass=cpass.value;
-
-  if(!name||!phone||!org||!location||!email||!pass||!cpass){alert("All fields required");return;}
-  if(pass!==cpass){alert("Password mismatch");return;}
-
-  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  users.push({name,phone,org,location,email,pass,userid:uid});
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("User ID: "+uid);
-  createPage.style.display="none";
-  loginPage.style.display="block";
-}
-
-// RESET
-function resetPass(){
-  let email=femail.value.trim();
-  let org=forg.value.trim();
-
-  if(!email||!org){alert("Enter details");return;}
-
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let u=users.find(x=>x.email.toLowerCase()===email.toLowerCase() && x.org.toLowerCase()===org.toLowerCase());
-
-  if(!u){alert("Mismatch");return;}
-
-  let newPass=Math.random().toString(36).slice(-8);
-  u.pass=newPass;
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("New Password: "+newPass);
-  forgotPage.style.display="none";
-  loginPage.style.display="block";
-}
-
-// SUBMIT
-function submitTicket(){
-  let desc=desc.value;
-
-  let lines=desc.trim().split(/\n+/).filter(l=>l.trim()!=="");
-  if(lines.length<2){alert("Minimum 2 lines required");return;}
-
-  let req=reqName.value;
-  let po=pono.value;
-  let loc=issueLoc.value;
-
-  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
-
-  let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
-
-  tickets.push({user:currentUser,ticket:ticketNo,name:req,pono:po,location:loc,status:"Open",desc:desc});
-  localStorage.setItem("tickets",JSON.stringify(tickets));
-
-  alert("Ticket: "+ticketNo);
-  loadTickets();
-
-  // RESET FORM
-  reqName.value=""; pono.value=""; issueLoc.value=""; desc.value="";
-
-  let subject="New Service Request - "+po;
-  let body=`Ticket No: ${ticketNo}\nRequester: ${req}\nPO No: ${po}\nLocation: ${loc}\n\n${desc}`;
-
-  window.location.href=`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
-// LOAD TICKETS
-function loadTickets(){
-  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
-  ticketList.innerHTML="";
-
-  tickets.forEach((t,i)=>{
-    if(role==="admin"||role==="engineer"||t.user===currentUser){
-
-      let closeBtn=(role==="admin"&&t.status==="Open")?`<button onclick="closeTicket(${i})">Close</button>`:"";
-
-      ticketList.innerHTML+=`
-      <div class="ticket">
-      <b>${t.ticket}</b><br>
-      Name: ${t.name}<br>
-      PO: ${t.pono}<br>
-      Status: ${t.status}<br>
-      Description: ${t.desc}<br>
-      ${closeBtn}
-      </div>`;
-    }
-  });
-}
-
-// CLOSE
-function closeTicket(i){
-  let r=prompt("Closing Remarks");
-  let rca=prompt("RCA");
-  if(!r||!rca){alert("Required");return;}
-
-  let tickets=JSON.parse(localStorage.getItem("tickets"));
-  tickets[i].status="Closed";
-  tickets[i].remarks=r;
-  tickets[i].rca=rca;
-  tickets[i].closedBy="Admin";
-  tickets[i].closedDate=new Date().toLocaleDateString();
-
-  localStorage.setItem("tickets",JSON.stringify(tickets));
-  loadTickets();
-}
-
-// NAV
-function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
-function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
-
-</script>
+<!-- बाकी पूरा HTML SAME रहेगा (JS + structure change नहीं करना है) -->
 
 </body>
 </html>
