@@ -11,25 +11,6 @@ body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   background:#f4f8fb;
-  position:relative;
-}
-
-body::before{
-  content:"\f085 \f1eb \f0ad \f233 \f108 \f7c0 \f0e8";
-  font-family:"Font Awesome 6 Free";
-  font-weight:900;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  font-size:140px;
-  color:rgba(0,0,0,0.03);
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-around;
-  align-items:center;
-  pointer-events:none;
 }
 
 .header{
@@ -56,7 +37,6 @@ input,select,textarea{
   margin:10px 0;
   border-radius:8px;
   border:1px solid #ccc;
-  box-sizing:border-box;
 }
 
 button{
@@ -74,40 +54,12 @@ button{
   padding:20px;
 }
 
-.card{
-  background:white;
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:10px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
 .ticket{
   background:white;
   padding:12px;
   margin:10px 0;
   border-radius:10px;
   box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.logout{
-  background:#dc3545;
-  border:none;
-  padding:6px 12px;
-  color:white;
-  border-radius:6px;
-}
-
-footer{
-  text-align:center;
-  color:#555;
-  margin-top:20px;
 }
 </style>
 </head>
@@ -118,24 +70,18 @@ footer{
 
 <!-- LOGIN -->
 <div class="container" id="loginPage">
-
 <h3>Login</h3>
-
 <input id="loginId" placeholder="User ID / Email">
 <input id="loginPass" type="password" placeholder="Password">
-
 <button onclick="login()">Login</button>
 
-<div onclick="showCreate()" style="text-align:center;color:#0d6efd;cursor:pointer;">Create Account</div>
-<div onclick="showForgot()" style="text-align:center;color:#0d6efd;cursor:pointer;">Forgot Password</div>
-
+<div onclick="showCreate()" style="cursor:pointer;color:blue;">Create Account</div>
+<div onclick="showForgot()" style="cursor:pointer;color:blue;">Forgot Password</div>
 </div>
 
 <!-- CREATE -->
 <div class="container" id="createPage" style="display:none">
-
 <h3>Create Account</h3>
-
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
 <input id="org" placeholder="Organisation">
@@ -143,190 +89,148 @@ footer{
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
 <input id="cpass" type="password" placeholder="Confirm Password">
-
 <button onclick="createAccount()">Create Account</button>
-
 </div>
 
 <!-- FORGOT -->
 <div class="container" id="forgotPage" style="display:none">
-
 <h3>Reset Password</h3>
-
 <input id="femail" placeholder="Email">
 <input id="forg" placeholder="Organisation">
-
 <button onclick="resetPass()">Reset Password</button>
-
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
 
-<div class="topbar">
 <h2>Dashboard</h2>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
 
-<div id="customerDetails"></div>
-
-<h3>Tickets</h3>
-<div id="ticketList"></div>
-
-<!-- FORM -->
-<div id="ticketForm">
-
-<h3>New Service Request</h3>
-
+<h3>New Ticket</h3>
 <input id="reqName" placeholder="Requester Name">
 <input id="pono" placeholder="PO No">
 
-<!-- SERVICE TYPE -->
 <select id="stype">
 <option>AMC</option>
 <option>NAMC</option>
 <option>New Order</option>
-<option>Other</option>
 </select>
 
-<!-- SERVICE CATEGORY -->
 <select id="scat">
 <option>Installation</option>
 <option>R&M</option>
-<option>Periodic Service</option>
-<option>Replacement</option>
-<option>Other</option>
+<option>Service</option>
 </select>
 
 <input id="issueLoc" placeholder="Location">
-
-<textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
+<textarea id="desc" placeholder="Minimum 2 lines"></textarea>
 
 <button onclick="submitTicket()">Submit</button>
 
-</div>
+<h3>Tickets</h3>
+<div id="ticketList"></div>
+
+<button onclick="logout()">Logout</button>
 
 </div>
-
-<footer>© Bytenex Innovation</footer>
 
 <script>
 
 let currentUser=null;
-let role="customer";
 
 /* LOGIN */
 function login(){
-
-let id=document.getElementById("loginId").value;
-let pass=document.getElementById("loginPass").value;
+let id=loginId.value;
+let pass=loginPass.value;
 
 let users=JSON.parse(localStorage.getItem("users")||"[]");
 
-localStorage.removeItem("currentUserData");
+let u=users.find(x=>x.userid===id && x.pass===pass);
 
-if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-  role="admin"; currentUser="admin";
-}
-else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-  role="engineer"; currentUser="engineer";
-}
-else{
-  let u=users.find(x=>x.userid===id && x.pass===pass);
-  if(!u){alert("Invalid login");return;}
-  currentUser=u.userid;
-  role="customer";
-  localStorage.setItem("currentUserData",JSON.stringify(u));
-}
+if(!u){ alert("Invalid Login"); return; }
+
+currentUser=u;
+localStorage.setItem("currentUserData",JSON.stringify(u));
 
 loginPage.style.display="none";
 dashboard.style.display="block";
 
-document.getElementById("ticketForm").style.display =
-(role==="customer") ? "block" : "none";
-
-loadCustomerDetails();
 loadTickets();
 }
 
-/* CREATE ACCOUNT FIX */
+/* CREATE */
 function createAccount(){
 
-let n=document.getElementById("name").value.trim();
-let p=document.getElementById("phone").value.trim();
-let o=document.getElementById("org").value.trim();
-let l=document.getElementById("location").value.trim();
-let e=document.getElementById("email").value.trim();
-let pw=document.getElementById("pass").value;
-let cp=document.getElementById("cpass").value;
-
-if(!n||!p||!o||!l||!e||!pw||!cp){
-alert("All fields required");
-return;
+if(pass.value!==cpass.value){
+alert("Password mismatch"); return;
 }
 
-if(pw!==cp){
-alert("Password mismatch");
-return;
-}
-
-let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+let uid="BYT-"+Math.floor(Math.random()*99999);
 
 let users=JSON.parse(localStorage.getItem("users")||"[]");
 
-users.push({name:n,phone:p,org:o,location:l,email:e,pass:pw,userid:uid});
+users.push({
+name:name.value,
+phone:phone.value,
+org:org.value,
+location:location.value,
+email:email.value,
+pass:pass.value,
+userid:uid
+});
 
 localStorage.setItem("users",JSON.stringify(users));
 
-alert("Account Created!\nUser ID: "+uid);
+alert("User ID: "+uid);
 
 createPage.style.display="none";
 loginPage.style.display="block";
 }
 
-/* CUSTOMER DETAILS */
-function loadCustomerDetails(){
-let u=JSON.parse(localStorage.getItem("currentUserData"));
-if(!u) return;
+/* RESET PASSWORD */
+function resetPass(){
 
-customerDetails.innerHTML=`
-<div class="card">
-<b>Welcome, ${u.name}</b><br>
-${u.org}<br>
-${u.location}
-</div>`;
+let email=femail.value;
+let orgn=forg.value;
+
+let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+let user=users.find(u=>u.email===email && u.org===orgn);
+
+if(!user){ alert("User not found"); return; }
+
+let newPass=prompt("Enter New Password");
+if(!newPass){ return; }
+
+user.pass=newPass;
+
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("Password Reset Success");
+
+forgotPage.style.display="none";
+loginPage.style.display="block";
 }
 
-/* 2 LINE FIX + MAIL FIX */
+/* SUBMIT TICKET */
 function submitTicket(){
 
-let d=document.getElementById("desc").value.trim();
-let lines=d.split("\n").filter(x=>x.trim()!=="");
+let d=desc.value.trim();
+let lines=d.split("\n").filter(x=>x.trim()!="");
 
 if(lines.length<2){
-alert("Minimum 2 lines required");
-return;
+alert("Minimum 2 lines required"); return;
 }
 
-let req=reqName.value;
-let po=pono.value;
-let loc=issueLoc.value;
-let stype=stype.value;
-let scat=scat.value;
+let company=currentUser.org.replace(/\s+/g,'');
+let series=Math.floor(Math.random()*999999)+1;
+
+let ticketNo=company+"/"+pono.value+"/"+series;
 
 let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
-let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
-
 tickets.push({
-user:currentUser,
 ticket:ticketNo,
-name:req,
-pono:po,
-location:loc,
-stype:stype,
-scat:scat,
-status:"Open",
+name:reqName.value,
 desc:d
 });
 
@@ -336,81 +240,42 @@ alert("Ticket Created: "+ticketNo);
 
 loadTickets();
 
-/* MAIL REDIRECT FIX */
-let subject="New Service Request - "+po;
+/* MAIL */
+let subject="New Service Ticket";
 
 let body=
-`Ticket No: ${ticketNo}
-Requester: ${req}
-PO No: ${po}
-Service Type: ${stype}
-Service Category: ${scat}
-Location: ${loc}
+`New Service Ticket Generated
 
-${d}`;
+Ticket No: ${ticketNo}
+Company: ${company}
+Requester: ${reqName.value}
+PO No: ${pono.value}
+Location: ${issueLoc.value}
+
+Description:
+${d}
+
+Status: Open`;
 
 window.location.href=
 `mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-/* LOAD TICKETS */
+/* LOAD */
 function loadTickets(){
 
 let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
 
 ticketList.innerHTML="";
 
-tickets.forEach((t,i)=>{
-
-if(role==="customer" && t.user===currentUser){
+tickets.forEach(t=>{
 ticketList.innerHTML+=`
 <div class="ticket">
 <b>${t.ticket}</b><br>
 ${t.name}<br>
-${t.pono}<br>
-${t.status}<br>
 ${t.desc}
 </div>`;
-}
-
-if(role==="admin" || role==="engineer"){
-
-let btn="";
-if(role==="admin" && t.status==="Open"){
-btn=`<button onclick="closeTicket(${i})" style="background:red;margin-top:8px;">Close Ticket</button>`;
-}
-
-ticketList.innerHTML+=`
-<div class="ticket">
-<b>${t.ticket}</b><br>
-${t.name}<br>
-${t.pono}<br>
-${t.status}<br>
-${t.desc}
-${btn}
-</div>`;
-}
-
 });
-}
-
-/* CLOSE */
-function closeTicket(i){
-
-let r=prompt("Closing Remarks");
-let rca=prompt("RCA");
-
-if(!r||!rca){alert("Required");return;}
-
-let tickets=JSON.parse(localStorage.getItem("tickets"));
-
-tickets[i].status="Closed";
-tickets[i].remarks=r;
-tickets[i].rca=rca;
-
-localStorage.setItem("tickets",JSON.stringify(tickets));
-
-loadTickets();
 }
 
 /* NAV */
