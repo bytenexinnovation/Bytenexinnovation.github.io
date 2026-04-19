@@ -8,24 +8,24 @@
 
 <style>
 
-body {
+body{
   margin:0;
-  font-family:'Segoe UI', sans-serif;
+  font-family:'Segoe UI',sans-serif;
   background:#f4f8fb;
   position:relative;
 }
 
-/* SUBTLE BACKGROUND ICONS */
-body::before {
-  content:"\f013 \f0c0 \f1eb \f108 \f233";
+/* SUBTLE TECH BACKGROUND */
+body::before{
+  content:"\f085 \f1eb \f0ad \f2db \f233 \f108 \f7c0 \f0e8";
   font-family:"Font Awesome 6 Free";
   font-weight:900;
-  position:absolute;
+  position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
-  font-size:120px;
+  font-size:140px;
   color:rgba(0,0,0,0.03);
   display:flex;
   flex-wrap:wrap;
@@ -35,7 +35,7 @@ body::before {
 }
 
 /* HEADER */
-.header {
+.header{
   text-align:center;
   padding:20px;
   font-size:26px;
@@ -43,15 +43,15 @@ body::before {
   color:#0d6efd;
 }
 
-.slogan {
+.slogan{
   text-align:center;
   color:#555;
-  margin-top:-10px;
   font-size:14px;
+  margin-top:-10px;
 }
 
 /* CONTAINER */
-.container {
+.container{
   width:400px;
   max-width:90%;
   margin:30px auto;
@@ -59,12 +59,14 @@ body::before {
   padding:25px;
   border-radius:15px;
   box-shadow:0 5px 20px rgba(0,0,0,0.1);
+  position:relative;
+  z-index:1;
 }
 
-/* INPUT GROUP */
-.input-group { position:relative; }
+/* INPUT */
+.input-group{position:relative;}
 
-.input-group i {
+.input-group i{
   position:absolute;
   top:50%;
   left:12px;
@@ -72,8 +74,7 @@ body::before {
   color:#888;
 }
 
-/* INPUT */
-input, select, textarea {
+input,select,textarea{
   width:100%;
   padding:12px 12px 12px 38px;
   margin:10px 0;
@@ -83,7 +84,7 @@ input, select, textarea {
 }
 
 /* BUTTON */
-button {
+button{
   width:100%;
   padding:12px;
   background:#0d6efd;
@@ -94,18 +95,18 @@ button {
 }
 
 /* LINKS */
-.link {text-align:center;color:#0d6efd;cursor:pointer;}
+.link{text-align:center;color:#0d6efd;cursor:pointer;}
 
 /* DASHBOARD */
-.dashboard {display:none;padding:20px;}
+.dashboard{display:none;padding:20px;position:relative;z-index:1;}
 
-.topbar {
+.topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-.logout {
+.logout{
   background:#dc3545;
   border:none;
   padding:6px 12px;
@@ -114,7 +115,7 @@ button {
 }
 
 /* CARD */
-.card {
+.card{
   background:white;
   padding:12px;
   border-radius:10px;
@@ -123,7 +124,7 @@ button {
 }
 
 /* TICKET */
-.ticket {
+.ticket{
   background:white;
   padding:12px;
   margin:10px 0;
@@ -131,7 +132,7 @@ button {
   box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-footer {
+footer{
   text-align:center;
   color:#555;
   margin-top:20px;
@@ -145,7 +146,256 @@ footer {
 <div class="header">Bytenex Customer Portal</div>
 <div class="slogan">Empowering Smart Infrastructure & Seamless Support</div>
 
-<!-- बाकी पूरा HTML SAME रहेगा (JS + structure change नहीं करना है) -->
+<!-- LOGIN -->
+<div class="container" id="loginPage">
+<h3><i class="fa fa-lock"></i> Login</h3>
+
+<div class="input-group">
+<i class="fa fa-user"></i>
+<input id="loginId" placeholder="User ID / Email">
+</div>
+
+<div class="input-group">
+<i class="fa fa-key"></i>
+<input id="loginPass" type="password" placeholder="Password">
+</div>
+
+<button onclick="login()">Login</button>
+
+<div class="link" onclick="showCreate()">Create Account</div>
+<div class="link" onclick="showForgot()">Forgot Password</div>
+</div>
+
+<!-- CREATE -->
+<div class="container" id="createPage" style="display:none">
+<h3>Create Account</h3>
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
+<input id="org" placeholder="Organisation">
+<input id="location" placeholder="Location">
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
+<input id="cpass" type="password" placeholder="Confirm Password">
+<button onclick="createAccount()">Create Account</button>
+</div>
+
+<!-- FORGOT -->
+<div class="container" id="forgotPage" style="display:none">
+<h3>Reset Password</h3>
+<input id="femail" placeholder="Email">
+<input id="forg" placeholder="Organisation">
+<button onclick="resetPass()">Reset Password</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+<div class="topbar">
+<h2>Dashboard</h2>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<div id="customerDetails"></div>
+
+<h3>Tickets</h3>
+<div id="ticketList"></div>
+
+<!-- FORM -->
+<div id="ticketForm">
+
+<h3>New Service Request</h3>
+
+<input id="reqName" placeholder="Requester Name">
+<input id="pono" placeholder="PO No">
+
+<select id="stype">
+<option>AMC</option>
+<option>NAMC</option>
+<option>New Order</option>
+<option>Other</option>
+</select>
+
+<select id="scat">
+<option>Installation</option>
+<option>R&M</option>
+<option>Periodic Service</option>
+<option>Replacement</option>
+<option>Other</option>
+</select>
+
+<input id="issueLoc" placeholder="Location">
+
+<textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
+
+<button onclick="submitTicket()">Submit</button>
+
+</div>
+
+</div>
+
+<footer>© Bytenex Innovation</footer>
+
+<script>
+
+/* ===== YOUR ORIGINAL JS (UNCHANGED LOGIC) ===== */
+
+let currentUser=null;
+let role="customer";
+
+/* LOGIN */
+function login(){
+  let id=loginId.value;
+  let pass=loginPass.value;
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+
+  if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
+    role="admin"; currentUser="admin";
+  }
+  else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
+    role="engineer"; currentUser="engineer";
+  }
+  else{
+    let u=users.find(x=>x.userid===id && x.pass===pass);
+    if(!u){alert("Invalid login");return;}
+    currentUser=u.userid;
+    role="customer";
+    localStorage.setItem("currentUserData",JSON.stringify(u));
+  }
+
+  loginPage.style.display="none";
+  dashboard.style.display="block";
+
+  if(role!=="customer"){
+    ticketForm.style.display="none";
+  } else {
+    loadCustomerDetails();
+  }
+
+  loadTickets();
+}
+
+/* CUSTOMER DETAILS */
+function loadCustomerDetails(){
+  let u=JSON.parse(localStorage.getItem("currentUserData"));
+  if(!u) return;
+
+  customerDetails.innerHTML=`
+  <div class="card">
+  <b>Welcome, ${u.name}</b><br>
+  Organisation: ${u.org}<br>
+  Location: ${u.location}
+  </div>`;
+}
+
+/* LOGOUT */
+function logout(){location.reload();}
+
+/* CREATE */
+function createAccount(){
+  let name=name.value.trim();
+  let phone=phone.value.trim();
+  let org=org.value.trim();
+  let location=location.value.trim();
+  let email=email.value.trim();
+  let pass=pass.value;
+  let cpass=cpass.value;
+
+  if(!name||!phone||!org||!location||!email||!pass||!cpass){
+    alert("All fields required");return;
+  }
+
+  if(pass!==cpass){alert("Password mismatch");return;}
+
+  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+  users.push({name,phone,org,location,email,pass,userid:uid});
+  localStorage.setItem("users",JSON.stringify(users));
+
+  alert("User ID: "+uid);
+  createPage.style.display="none";
+  loginPage.style.display="block";
+}
+
+/* RESET */
+function resetPass(){
+  let email=femail.value.trim();
+  let org=forg.value.trim();
+
+  if(!email||!org){alert("Enter details");return;}
+
+  let users=JSON.parse(localStorage.getItem("users")||"[]");
+  let u=users.find(x=>x.email.toLowerCase()===email.toLowerCase() && x.org.toLowerCase()===org.toLowerCase());
+
+  if(!u){alert("Mismatch");return;}
+
+  let newPass=Math.random().toString(36).slice(-8);
+  u.pass=newPass;
+  localStorage.setItem("users",JSON.stringify(users));
+
+  alert("New Password: "+newPass);
+  forgotPage.style.display="none";
+  loginPage.style.display="block";
+}
+
+/* SUBMIT */
+function submitTicket(){
+  let d=desc.value;
+
+  let lines=d.trim().split(/\n+/).filter(l=>l.trim()!=="");
+  if(lines.length<2){alert("Minimum 2 lines required");return;}
+
+  let req=reqName.value;
+  let po=pono.value;
+  let loc=issueLoc.value;
+
+  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+
+  let ticketNo="BYT/"+po+"/"+Math.floor(Math.random()*900000000);
+
+  tickets.push({user:currentUser,ticket:ticketNo,name:req,pono:po,location:loc,status:"Open",desc:d});
+  localStorage.setItem("tickets",JSON.stringify(tickets));
+
+  alert("Ticket: "+ticketNo);
+  loadTickets();
+
+  reqName.value="";
+  pono.value="";
+  issueLoc.value="";
+  desc.value="";
+  stype.selectedIndex=0;
+  scat.selectedIndex=0;
+
+  let subject="New Service Request - "+po;
+  let body=`Ticket No: ${ticketNo}\nRequester: ${req}\nPO No: ${po}\nLocation: ${loc}\n\n${d}`;
+
+  window.location.href=`mailto:info@bytenexinnovation.in,engineers@bytenexinnovation.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+/* LOAD */
+function loadTickets(){
+  let tickets=JSON.parse(localStorage.getItem("tickets")||"[]");
+  ticketList.innerHTML="";
+
+  tickets.forEach((t,i)=>{
+    if(role==="admin"||role==="engineer"||t.user===currentUser){
+      ticketList.innerHTML+=`
+      <div class="ticket">
+      <b>${t.ticket}</b><br>
+      Name: ${t.name}<br>
+      PO: ${t.pono}<br>
+      Status: ${t.status}<br>
+      Description: ${t.desc}<br>
+      </div>`;
+    }
+  });
+}
+
+/* NAV */
+function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
+function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
+
+</script>
 
 </body>
 </html>
