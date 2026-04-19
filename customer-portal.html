@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
@@ -15,7 +14,6 @@ body{
   position:relative;
 }
 
-/* BACKGROUND ICONS */
 body::before{
   content:"\f085 \f1eb \f0ad \f233 \f108 \f7c0 \f0e8";
   font-family:"Font Awesome 6 Free";
@@ -34,7 +32,6 @@ body::before{
   pointer-events:none;
 }
 
-/* HEADER */
 .header{
   text-align:center;
   padding:20px;
@@ -50,7 +47,6 @@ body::before{
   margin-top:-10px;
 }
 
-/* CONTAINER */
 .container{
   width:400px;
   max-width:90%;
@@ -63,27 +59,15 @@ body::before{
   z-index:1;
 }
 
-/* INPUT */
-.input-group{position:relative;}
-
-.input-group i{
-  position:absolute;
-  top:50%;
-  left:12px;
-  transform:translateY(-50%);
-  color:#888;
-}
-
 input,select,textarea{
   width:100%;
-  padding:12px 12px 12px 38px;
+  padding:12px;
   margin:10px 0;
   border-radius:8px;
   border:1px solid #ccc;
   box-sizing:border-box;
 }
 
-/* BUTTON */
 button{
   width:100%;
   padding:12px;
@@ -94,25 +78,11 @@ button{
   cursor:pointer;
 }
 
-/* LINKS */
-.link{text-align:center;color:#0d6efd;cursor:pointer;}
-
-/* DASHBOARD */
 .dashboard{
   display:none;
   padding:20px;
-  position:relative;
-  z-index:1;
 }
 
-/* TOPBAR */
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* CARD */
 .card{
   background:white;
   padding:12px;
@@ -121,7 +91,6 @@ button{
   box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* TICKET */
 .ticket{
   background:white;
   padding:12px;
@@ -130,14 +99,22 @@ button{
   box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  color:#555;
-  margin-top:20px;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-/* MODAL */
+.small-btn,.logout-btn{
+  background:#28a745;
+  width:auto;
+  padding:6px 10px;
+  font-size:12px;
+  border-radius:6px;
+  border:none;
+  color:white;
+}
+
 #profileModal{
   display:none;
   position:fixed;
@@ -155,24 +132,6 @@ footer{
   padding:20px;
   border-radius:12px;
 }
-
-.small-btn{
-  background:#28a745;
-  width:auto;
-  padding:6px 10px;
-  font-size:12px;
-  border-radius:6px;
-}
-
-/* LOGOUT ICON */
-.logout-btn{
-  background:#28a745;
-  width:auto;
-  padding:6px 10px;
-  font-size:12px;
-  border-radius:6px;
-}
-
 </style>
 </head>
 
@@ -190,9 +149,6 @@ footer{
 <input id="loginPass" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
-
-<div class="link" onclick="showCreate()">Create Account</div>
-<div class="link" onclick="showForgot()">Forgot Password</div>
 
 </div>
 
@@ -213,33 +169,15 @@ footer{
 
 </div>
 
-<!-- FORGOT -->
-<div class="container" id="forgotPage" style="display:none">
-
-<h3>Reset Password</h3>
-
-<input id="femail" placeholder="Email">
-<input id="forg" placeholder="Organisation">
-
-<button onclick="resetPass()">Reset Password</button>
-
-</div>
-
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
 
 <div class="topbar">
-
 <h2>Dashboard</h2>
 
 <div>
-<button class="small-btn" onclick="editProfile()">
-<i class="fa fa-user-pen"></i> Edit
-</button>
-
-<button class="logout-btn" onclick="logout()">
-<i class="fa fa-right-from-bracket"></i>
-</button>
+<button class="small-btn" onclick="editProfile()">Edit</button>
+<button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 </div>
@@ -249,40 +187,7 @@ footer{
 <h3>Tickets</h3>
 <div id="ticketList"></div>
 
-<!-- FORM -->
-<div id="ticketForm">
-
-<h3>New Service Request</h3>
-
-<input id="reqName" placeholder="Requester Name">
-<input id="pono" placeholder="PO No">
-
-<select id="stype">
-<option>AMC</option>
-<option>NAMC</option>
-<option>New Order</option>
-<option>Other</option>
-</select>
-
-<select id="scat">
-<option>Installation</option>
-<option>R&M</option>
-<option>Periodic Service</option>
-<option>Replacement</option>
-<option>Other</option>
-</select>
-
-<input id="issueLoc" placeholder="Location">
-
-<textarea id="desc" placeholder="Minimum 2 lines description"></textarea>
-
-<button onclick="submitTicket()">Submit</button>
-
 </div>
-
-</div>
-
-<footer>© Bytenex Innovation</footer>
 
 <!-- MODAL -->
 <div id="profileModal">
@@ -295,173 +200,140 @@ footer{
 <input id="editLoc">
 
 <button onclick="saveProfile()">Save</button>
-<button onclick="closeModal()" style="background:#dc3545;margin-top:10px;">Cancel</button>
+<button onclick="closeModal()" style="background:red;color:white;border:none;margin-top:10px;">Cancel</button>
 
 </div>
 </div>
 
 <script>
 
-/* LOGIN */
-let currentUser=null;
 let role="customer";
 
+/* LOGIN FIXED (RIDDHI BUG REMOVED) */
 function login(){
 
-  let id=document.getElementById("loginId").value;
-  let pass=document.getElementById("loginPass").value;
+let id=document.getElementById("loginId").value;
+let pass=document.getElementById("loginPass").value;
 
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
+let users=JSON.parse(localStorage.getItem("users")||"[]");
 
-  if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
-    role="admin"; currentUser="admin";
-  }
-  else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
-    role="engineer"; currentUser="engineer";
-  }
-  else{
-    let u=users.find(x=>x.userid===id && x.pass===pass);
-    if(!u){alert("Invalid login");return;}
-    currentUser=u.userid;
-    role="customer";
-    localStorage.setItem("currentUserData",JSON.stringify(u));
-  }
+/* CLEAR OLD SESSION */
+localStorage.removeItem("currentUserData");
 
-  loginPage.style.display="none";
-  dashboard.style.display="block";
-
-  if(role!=="customer") ticketForm.style.display="none";
-
-  loadCustomerDetails();
-  loadTickets();
+/* INFO ADMIN */
+if(id==="info@bytenexinnovation.in" && pass==="Asktoyash@1997"){
+  role="admin";
+  localStorage.setItem("currentUserData",JSON.stringify({
+    name:"Info Admin",
+    org:"Bytenex Innovation",
+    location:"Head Office"
+  }));
 }
 
-/* CREATE ACCOUNT FIXED */
+/* ENGINEER ADMIN */
+else if(id==="engineers@bytenexinnovation.in" && pass==="ByteAdmin@123"){
+  role="admin";
+  localStorage.setItem("currentUserData",JSON.stringify({
+    name:"Engineer Team",
+    org:"Bytenex Engineering",
+    location:"Service Division"
+  }));
+}
+
+/* CUSTOMER */
+else{
+  let u=users.find(x=>x.userid===id && x.pass===pass);
+  if(!u){alert("Invalid login");return;}
+
+  role="customer";
+  localStorage.setItem("currentUserData",JSON.stringify(u));
+}
+
+/* UI */
+loginPage.style.display="none";
+dashboard.style.display="block";
+
+loadCustomerDetails();
+loadTickets();
+}
+
+/* CREATE */
 function createAccount(){
 
-  let n=document.getElementById("name").value;
-  let p=document.getElementById("phone").value;
-  let o=document.getElementById("org").value;
-  let l=document.getElementById("location").value;
-  let e=document.getElementById("email").value;
-  let pw=document.getElementById("pass").value;
-  let cp=document.getElementById("cpass").value;
+let n=name.value.trim();
+let p=phone.value.trim();
+let o=org.value.trim();
+let l=location.value.trim();
+let e=email.value.trim();
+let pw=pass.value;
+let cp=cpass.value;
 
-  if(!n||!p||!o||!l||!e||!pw||!cp){
-    alert("All fields required");return;
-  }
+if(!n||!p||!o||!l||!e||!pw||!cp){
+  alert("All fields required");return;
+}
 
-  if(pw!==cp){
-    alert("Password mismatch");return;
-  }
+if(pw!==cp){
+  alert("Password mismatch");return;
+}
 
-  let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
+let uid="BYTIN01A-"+Math.floor(Math.random()*9999)+"Z"+Math.floor(Math.random()*99999);
 
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
+let users=JSON.parse(localStorage.getItem("users")||"[]");
 
-  users.push({name:n,phone:p,org:o,location:l,email:e,pass:pw,userid:uid});
+users.push({name:n,phone:p,org:o,location:l,email:e,pass:pw,userid:uid});
 
-  localStorage.setItem("users",JSON.stringify(users));
+localStorage.setItem("users",JSON.stringify(users));
 
-  alert("Account Created!\nUser ID: "+uid);
+alert("User ID: "+uid);
 
-  createPage.style.display="none";
-  loginPage.style.display="block";
+createPage.style.display="none";
+loginPage.style.display="block";
+}
+
+/* DASHBOARD SAFE */
+function loadCustomerDetails(){
+
+let u=JSON.parse(localStorage.getItem("currentUserData"));
+if(!u || !u.name) return;
+
+customerDetails.innerHTML=`
+<div class="card">
+<b>Welcome, ${u.name}</b><br>
+${u.org}<br>
+${u.location}
+</div>`;
 }
 
 /* PROFILE */
-function loadCustomerDetails(){
-  let u=JSON.parse(localStorage.getItem("currentUserData"));
-  if(!u) return;
-
-  customerDetails.innerHTML=`
-  <div class="card">
-  <b>Welcome, ${u.name}</b><br>
-  Organisation: ${u.org}<br>
-  Location: ${u.location}
-  </div>`;
-}
-
-/* EDIT PROFILE */
 function editProfile(){
 
-  let u=JSON.parse(localStorage.getItem("currentUserData"));
+let u=JSON.parse(localStorage.getItem("currentUserData"));
 
-  editName.value=u.name;
-  editOrg.value=u.org;
-  editLoc.value=u.location;
+editName.value=u.name;
+editOrg.value=u.org;
+editLoc.value=u.location;
 
-  profileModal.style.display="block";
+profileModal.style.display="block";
 }
 
 function saveProfile(){
 
-  let u=JSON.parse(localStorage.getItem("currentUserData"));
+let u=JSON.parse(localStorage.getItem("currentUserData"));
 
-  u.name=editName.value;
-  u.org=editOrg.value;
-  u.location=editLoc.value;
+u.name=editName.value;
+u.org=editOrg.value;
+u.location=editLoc.value;
 
-  localStorage.setItem("currentUserData",JSON.stringify(u));
+localStorage.setItem("currentUserData",JSON.stringify(u));
 
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-
-  let i=users.findIndex(x=>x.userid===u.userid);
-
-  if(i!==-1){
-    users[i]=u;
-    localStorage.setItem("users",JSON.stringify(users));
-  }
-
-  profileModal.style.display="none";
-  loadCustomerDetails();
-
-  alert("Updated");
-}
-
-function closeModal(){
-  profileModal.style.display="none";
+profileModal.style.display="none";
+loadCustomerDetails();
 }
 
 /* LOGOUT */
-function logout(){location.reload();}
-
-/* TICKETS */
-function loadTickets(){
-  let t=JSON.parse(localStorage.getItem("tickets")||"[]");
-
-  ticketList.innerHTML="";
-
-  t.forEach((x,i)=>{
-
-    let btn="";
-
-    if(role==="admin" && x.status==="Open"){
-      btn=`<button onclick="closeTicket(${i})" style="background:#dc3545;margin-top:8px;">Close</button>`;
-    }
-
-    ticketList.innerHTML+=`
-    <div class="ticket">
-    <b>${x.ticket}</b><br>
-    ${x.name}<br>
-    ${x.pono}<br>
-    ${x.status}<br>
-    ${x.desc}<br>
-    ${btn}
-    </div>`;
-  });
+function logout(){
+location.reload();
 }
-
-function closeTicket(i){
-  let t=JSON.parse(localStorage.getItem("tickets"));
-  t[i].status="Closed";
-  localStorage.setItem("tickets",JSON.stringify(t));
-  loadTickets();
-}
-
-/* NAV */
-function showCreate(){loginPage.style.display="none";createPage.style.display="block";}
-function showForgot(){loginPage.style.display="none";forgotPage.style.display="block";}
 
 </script>
 
