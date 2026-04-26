@@ -55,7 +55,7 @@ body {
 
 h1 { color: #0077aa; }
 
-/* Department Cards */
+/* Cards */
 .card {
   display: flex;
   align-items: center;
@@ -64,17 +64,39 @@ h1 { color: #0077aa; }
   margin-bottom: 18px;
   border-radius: 12px;
   border: 1px solid #e5e5e5;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to right, #00aaff, #00ffaa);
+  transition: 0.4s;
+}
+
+.card:hover::before {
+  width: 100%;
 }
 
 .icon {
-  font-size: 40px;
+  font-size: 38px;
   margin-right: 18px;
+  transition: transform 0.3s;
+}
+
+.card:hover .icon {
+  transform: rotate(8deg) scale(1.1);
 }
 
 .title {
@@ -84,13 +106,23 @@ h1 { color: #0077aa; }
 }
 
 .desc {
-  margin-top: 5px;
+  margin-top: 6px;
+  font-size: 15px;
 }
 
 .desc a {
   color: #0077aa;
   text-decoration: none;
   font-weight: bold;
+}
+
+/* Flags */
+.flag {
+  font-size: 14px;
+  margin-left: 6px;
+  background: #eef7ff;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 
 /* Footer */
@@ -175,7 +207,10 @@ h1 { color: #0077aa; }
   <div class="card">
     <div class="icon">⚙️</div>
     <div>
-      <div class="title">Project Consultancy (Automation)</div>
+      <div class="title">Project Consultancy</div>
+      <div class="desc">
+        Domestic <span class="flag">🇮🇳</span> & International <span class="flag">🌍</span> Projects
+      </div>
       <div class="desc">📞 <a href="tel:+919998266352">+91 99982 66352</a></div>
       <div class="desc">📧 <a href="mailto:info@bytenexinnovation.in">info@bytenexinnovation.in</a></div>
     </div>
@@ -185,7 +220,10 @@ h1 { color: #0077aa; }
   <div class="card">
     <div class="icon">🎧</div>
     <div>
-      <div class="title">Project Team (Helpdesk)</div>
+      <div class="title">Project Team</div>
+      <div class="desc">
+        Domestic <span class="flag">🇮🇳</span> & International <span class="flag">🌍</span> Project Team
+      </div>
       <div class="desc">📞 <a href="tel:+919725552933">+91 97255 52933</a></div>
       <div class="desc">📧 <a href="mailto:engineers@bytenexinnovation.in">engineers@bytenexinnovation.in</a></div>
     </div>
@@ -196,6 +234,9 @@ h1 { color: #0077aa; }
     <div class="icon">📦</div>
     <div>
       <div class="title">Procurement Department</div>
+      <div class="desc">
+        Vendor & Supply Chain <span class="flag">🌐</span>
+      </div>
       <div class="desc">📞 <a href="tel:+918200031345">+91 82000 31345</a></div>
       <div class="desc">📧 <a href="mailto:procurement@bytenexinnovation.in">procurement@bytenexinnovation.in</a></div>
     </div>
@@ -203,7 +244,7 @@ h1 { color: #0077aa; }
 
 </div>
 
-<!-- SAME CHATBOT (UNCHANGED) -->
+<!-- SAME CHATBOT -->
 <div id="chatBtn" onclick="toggleChat()">💬</div>
 
 <div id="chatBox">
