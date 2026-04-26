@@ -153,22 +153,46 @@ h1 { color: #0077aa; }
 <div class="container">
   <h1>Contact Us</h1>
 
+  <!-- New Project Consultancy -->
   <a href="mailto:info@bytenexinnovation.in" class="card">
-    <div class="icon">📧</div>
+    <div class="icon">📊</div>
     <div>
-      <div class="title">Sales</div>
-      <div class="desc">Get in touch with our sales team.</div>
+      <div class="title">New Project Consultancy</div>
+      <div class="desc">
+        <a href="mailto:info@bytenexinnovation.in">
+          info@bytenexinnovation.in
+        </a>
+      </div>
     </div>
   </a>
 
+  <!-- Purchase Department -->
+  <a href="mailto:procurement@bytenexinnovation.in" class="card">
+    <div class="icon">📦</div>
+    <div>
+      <div class="title">Purchase Department</div>
+      <div class="desc">
+        <a href="mailto:procurement@bytenexinnovation.in">
+          procurement@bytenexinnovation.in
+        </a>
+      </div>
+    </div>
+  </a>
+
+  <!-- Project Team -->
   <a href="mailto:engineers@bytenexinnovation.in" class="card">
-    <div class="icon">🎧</div>
+    <div class="icon">🛠️</div>
     <div>
-      <div class="title">Help and Support</div>
-      <div class="desc">Product support & technical queries.</div>
+      <div class="title">Project Team</div>
+      <div class="desc">
+        <a href="mailto:engineers@bytenexinnovation.in">
+          engineers@bytenexinnovation.in
+        </a>
+      </div>
     </div>
   </a>
 
+  <!-- Call Section -->
   <div class="card">
     <div class="icon">📞</div>
     <div>
@@ -227,31 +251,25 @@ function handleKey(e) {
       reply = "Hello! Welcome to Bytenex Innovation 😊";
     }
     else if (msg.includes("price") || msg.includes("cost")) {
-      reply = "Redirecting to sales...";
+      reply = "Redirecting to consultancy team...";
       window.location.href = "mailto:info@bytenexinnovation.in?subject=Pricing Enquiry";
     }
     else if (msg.includes("product")) {
       reply = "We provide networking, CCTV & IT solutions.";
     }
-    else if (msg.includes("support")) {
-      reply = "Redirecting to support...";
+    else if (msg.includes("support") || msg.includes("issue")) {
+      reply = "Redirecting to project team...";
       window.location.href = "mailto:engineers@bytenexinnovation.in?subject=Support Request";
     }
-    else if (msg.includes("issue") || msg.includes("problem")) {
-      reply = "Opening support mail...";
-      window.location.href = "mailto:engineers@bytenexinnovation.in?subject=Technical Issue";
+    else if (msg.includes("purchase") || msg.includes("vendor")) {
+      reply = "Redirecting to purchase department...";
+      window.location.href = "mailto:procurement@bytenexinnovation.in?subject=Purchase Enquiry";
     }
     else if (msg.includes("call") || msg.includes("phone")) {
       reply = "Call us at +91 82000 31345";
     }
-    else if (msg.includes("service")) {
-      reply = "We offer installation, maintenance & consultancy.";
-    }
-    else if (msg.includes("time")) {
-      reply = "Working hours: 10 AM to 7 PM";
-    }
     else if (msg.includes("email")) {
-      reply = "Sales: info@bytenexinnovation.in | Support: engineers@bytenexinnovation.in";
+      reply = "Consultancy: info@bytenexinnovation.in | Purchase: procurement@bytenexinnovation.in | Project Team: engineers@bytenexinnovation.in";
     }
     else if (msg.includes("thanks")) {
       reply = "You're welcome 😊";
@@ -261,7 +279,7 @@ function handleKey(e) {
     }
 
     if (!found) {
-      reply = "This support is diverted to engineers.";
+      reply = "Your query is forwarded to project team.";
       window.location.href = "mailto:engineers@bytenexinnovation.in?subject=Support Needed&body=" + encodeURIComponent(msg);
     }
 
