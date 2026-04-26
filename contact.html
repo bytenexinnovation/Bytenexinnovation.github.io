@@ -8,10 +8,11 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f5f5f5;
+  background: linear-gradient(to right, #eef3f7, #f9fbfd);
   color: #333;
 }
 
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -49,41 +50,101 @@ body {
   margin-left: 10px;
 }
 
+/* Container */
 .container { padding: 30px 20px; }
 
 h1 { color: #0077aa; }
 
-.dept {
+/* Department Cards */
+.card {
+  display: flex;
+  align-items: center;
   background: #fff;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  transition: 0.3s;
 }
 
-.dept-block { margin-bottom: 25px; }
-
-.dept-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.dept-item {
-  font-size: 16px;
-  margin: 6px 0;
+.icon {
+  font-size: 40px;
+  margin-right: 18px;
 }
 
-.dept-item a {
-  text-decoration: none;
+.title {
+  font-size: 18px;
   color: #0077aa;
-  margin-left: 8px;
+  font-weight: bold;
 }
 
+.desc {
+  margin-top: 5px;
+}
+
+.desc a {
+  color: #0077aa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Footer */
 .footer {
   text-align: center;
   padding: 20px;
   background: #000;
   color: #888;
   margin-top: 40px;
+}
+
+/* Chatbot (UNCHANGED) */
+#chatBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #00aaff;
+  color: #fff;
+  padding: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#chatBox {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 420px;
+  background: #fff;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+#chatHeader {
+  background: #00aaff;
+  color: #fff;
+  padding: 10px;
+}
+
+#chatMessages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+#userInput {
+  border: none;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  width: 100%;
 }
 </style>
 </head>
@@ -110,54 +171,74 @@ h1 { color: #0077aa; }
 <div class="container">
   <h1>Our Departments</h1>
 
-  <div class="dept">
-
-    <!-- Project Consultancy -->
-    <div class="dept-block">
-      <div class="dept-title">Project Consultancy :</div>
-      <div class="dept-item">📞 
-        <a href="tel:+919998266352">+91 99982 66352</a>
-      </div>
-      <div class="dept-item">📧 
-        <a href="mailto:info@bytenexinnovation.in">
-          info@bytenexinnovation.in
-        </a>
-      </div>
+  <!-- Project Consultancy -->
+  <div class="card">
+    <div class="icon">⚙️</div>
+    <div>
+      <div class="title">Project Consultancy (Automation)</div>
+      <div class="desc">📞 <a href="tel:+919998266352">+91 99982 66352</a></div>
+      <div class="desc">📧 <a href="mailto:info@bytenexinnovation.in">info@bytenexinnovation.in</a></div>
     </div>
-
-    <!-- Project Team -->
-    <div class="dept-block">
-      <div class="dept-title">Project Team :</div>
-      <div class="dept-item">📞 
-        <a href="tel:+919725552933">+91 97255 52933</a>
-      </div>
-      <div class="dept-item">📧 
-        <a href="mailto:engineers@bytenexinnovation.in">
-          engineers@bytenexinnovation.in
-        </a>
-      </div>
-    </div>
-
-    <!-- Procurement -->
-    <div class="dept-block">
-      <div class="dept-title">Procurement Department :</div>
-      <div class="dept-item">📞 
-        <a href="tel:+918200031345">+91 82000 31345</a>
-      </div>
-      <div class="dept-item">📧 
-        <a href="mailto:procurement@bytenexinnovation.in">
-          procurement@bytenexinnovation.in
-        </a>
-      </div>
-    </div>
-
   </div>
 
+  <!-- Project Team -->
+  <div class="card">
+    <div class="icon">🎧</div>
+    <div>
+      <div class="title">Project Team (Helpdesk)</div>
+      <div class="desc">📞 <a href="tel:+919725552933">+91 97255 52933</a></div>
+      <div class="desc">📧 <a href="mailto:engineers@bytenexinnovation.in">engineers@bytenexinnovation.in</a></div>
+    </div>
+  </div>
+
+  <!-- Procurement -->
+  <div class="card">
+    <div class="icon">📦</div>
+    <div>
+      <div class="title">Procurement Department</div>
+      <div class="desc">📞 <a href="tel:+918200031345">+91 82000 31345</a></div>
+      <div class="desc">📧 <a href="mailto:procurement@bytenexinnovation.in">procurement@bytenexinnovation.in</a></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SAME CHATBOT (UNCHANGED) -->
+<div id="chatBtn" onclick="toggleChat()">💬</div>
+
+<div id="chatBox">
+  <div id="chatHeader">Bytenex AI Assistant</div>
+  <div id="chatMessages"></div>
+  <input type="text" id="userInput" placeholder="Ask something..." onkeypress="handleKey(event)">
 </div>
 
 <div class="footer">
   © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
+
+<script>
+function toggleChat() {
+  let box = document.getElementById("chatBox");
+  box.style.display = box.style.display === "flex" ? "none" : "flex";
+}
+
+function handleKey(e) {
+  if (e.key === "Enter") {
+    let input = document.getElementById("userInput");
+    let msg = input.value.toLowerCase().trim();
+
+    let chat = document.getElementById("chatMessages");
+    chat.innerHTML += "<div><b>You:</b> " + msg + "</div>";
+
+    let reply = "Thanks! Our team will assist you.";
+
+    chat.innerHTML += "<div><b>AI:</b> " + reply + "</div>";
+
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+  }
+}
+</script>
 
 </body>
 </html>
