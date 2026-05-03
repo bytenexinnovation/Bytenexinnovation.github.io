@@ -5,10 +5,6 @@
 <title>Industrial Automation - Bytenex Innovation</title>
 
 <style>
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -116,7 +112,7 @@ body {
   text-decoration: none;
 }
 
-/* Hover */
+/* Hover Effects */
 .card:hover img {
   transform: scale(1.1);
 }
@@ -131,25 +127,6 @@ body {
   padding: 20px;
   background: #000;
   color: #aaa;
-}
-
-/* Animations */
-.animate {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease;
-}
-
-.animate.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.left { transform: translateX(-50px); }
-.right { transform: translateX(50px); }
-
-.left.show, .right.show {
-  transform: translateX(0);
 }
 </style>
 </head>
@@ -169,7 +146,7 @@ body {
 </div>
 
 <!-- Hero -->
-<div class="hero animate">
+<div class="hero">
   <h1>Industrial Automation</h1>
   <p>Smart Control Panels & Automation Solutions</p>
 </div>
@@ -177,7 +154,7 @@ body {
 <!-- Cards -->
 <div class="grid">
 
-  <div class="card animate left">
+  <div class="card">
     <img src="plc.png">
     <div class="overlay">
       <h3>PLC Panels</h3>
@@ -186,7 +163,7 @@ body {
     </div>
   </div>
 
-  <div class="card animate right">
+  <div class="card">
     <img src="mcc.png">
     <div class="overlay">
       <h3>MCC Panels</h3>
@@ -195,7 +172,7 @@ body {
     </div>
   </div>
 
-  <div class="card animate left">
+  <div class="card">
     <img src="pcc.png">
     <div class="overlay">
       <h3>PCC Panels</h3>
@@ -204,7 +181,7 @@ body {
     </div>
   </div>
 
-  <div class="card animate right">
+  <div class="card">
     <img src="scada.png">
     <div class="overlay">
       <h3>SCADA Systems</h3>
@@ -213,7 +190,7 @@ body {
     </div>
   </div>
 
-  <div class="card animate left">
+  <div class="card">
     <img src="vfd.png">
     <div class="overlay">
       <h3>VFD Panels</h3>
@@ -222,7 +199,7 @@ body {
     </div>
   </div>
 
-  <div class="card animate right">
+  <div class="card">
     <img src="custom.png">
     <div class="overlay">
       <h3>Custom Panels</h3>
@@ -237,22 +214,6 @@ body {
 <div class="footer">
   © 2026 Bytenex Innovation
 </div>
-
-<!-- Scroll Animation -->
-<script>
-const elements = document.querySelectorAll('.animate');
-
-window.addEventListener('scroll', () => {
-  elements.forEach(el => {
-    const position = el.getBoundingClientRect().top;
-    const screenHeight = window.innerHeight;
-
-    if (position < screenHeight - 100) {
-      el.classList.add('show');
-    }
-  });
-});
-</script>
 
 </body>
 </html>
