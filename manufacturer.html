@@ -111,7 +111,7 @@ body {
   padding: 25px;
   border-radius: 10px;
   width: 90%;
-  max-width: 400px;
+  max-width: 500px;
   margin: 100px auto;
   position: relative;
 }
@@ -120,7 +120,7 @@ body {
   position: absolute;
   right: 15px;
   top: 10px;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
 }
 </style>
@@ -223,28 +223,33 @@ function openPopup(type) {
   const text = document.getElementById("popup-text");
 
   if(type === 'plc'){
-    title.innerText = "PLC Panels";
-    text.innerText = "Precision automation panels with modular PLC systems and scalable I/O.";
+    title.innerText = "PLC Panels – Smart Automation Core";
+    text.innerHTML = "Advanced PLC panels with scalable I/O, IIoT integration, and real-time diagnostics for industrial automation.";
   }
+
   if(type === 'mcc'){
-    title.innerText = "MCC Panels";
-    text.innerText = "Motor control panels with overload protection and modular design.";
+    title.innerText = "MCC Panels – Reliable Motor Control";
+    text.innerHTML = "Heavy-duty motor control panels with overload protection, modular design, and high operational reliability.";
   }
+
   if(type === 'pcc'){
-    title.innerText = "PCC Panels";
-    text.innerText = "Reliable power distribution panels with advanced protection systems.";
+    title.innerText = "PCC Panels – Power Distribution Backbone";
+    text.innerHTML = "Safe and efficient power distribution panels with ACB/MCCB protection and monitoring systems.";
   }
+
   if(type === 'scada'){
-    title.innerText = "SCADA Systems";
-    text.innerText = "Real-time monitoring and industrial automation dashboard systems.";
+    title.innerText = "SCADA Systems – Intelligent Monitoring";
+    text.innerHTML = "Real-time monitoring, data logging, alarms, and industrial automation dashboards.";
   }
+
   if(type === 'vfd'){
-    title.innerText = "VFD Panels";
-    text.innerText = "Energy-efficient motor control with speed and torque control.";
+    title.innerText = "VFD Panels – Energy Efficient Drives";
+    text.innerHTML = "Energy-efficient motor control panels with speed control, soft start, and protection systems.";
   }
+
   if(type === 'custom'){
-    title.innerText = "Custom Panels";
-    text.innerText = "Tailor-made automation panels for specific industrial needs.";
+    title.innerText = "Custom Panels – Tailored Engineering Solutions";
+    text.innerHTML = "Fully customized automation panels designed as per specific industrial requirements.";
   }
 
   document.getElementById("popup").style.display = "block";
