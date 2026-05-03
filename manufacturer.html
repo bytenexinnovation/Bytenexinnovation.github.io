@@ -36,7 +36,6 @@ body {
   font-size: 14px;
   margin-left: 10px;
 }
-.nav-btn:hover { background: #0077aa; }
 
 /* Hero */
 .hero {
@@ -46,12 +45,12 @@ body {
   color: #fff;
 }
 
-/* Intro Section */
+/* Intro */
 .intro {
   max-width: 1000px;
   margin: auto;
   padding: 40px 20px;
-  line-height: 1.7;
+  line-height: 1.8;
   color: #444;
 }
 
@@ -81,7 +80,7 @@ body {
   bottom: 0;
   width: 100%;
   padding: 15px;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
   color: #fff;
 }
 
@@ -104,24 +103,24 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
 }
 
 .popup-content {
   background: #fff;
-  padding: 25px;
-  border-radius: 10px;
+  padding: 30px;
+  border-radius: 12px;
   width: 90%;
-  max-width: 700px;
-  margin: 60px auto;
-  max-height: 80vh;
+  max-width: 750px;
+  margin: 50px auto;
+  max-height: 85vh;
   overflow-y: auto;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 .close {
   float: right;
-  font-size: 22px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -159,21 +158,22 @@ body {
   <p>Smart Control Panels & Automation Solutions</p>
 </div>
 
-<!-- Intro -->
+<!-- Detailed Intro -->
 <div class="intro">
   <p>
-    At <strong>Bytenex Innovation</strong>, we specialize in delivering advanced industrial automation solutions 
-    designed to enhance efficiency, reliability, and performance.
+    At <strong>Bytenex Innovation</strong>, we deliver advanced industrial automation solutions designed to improve efficiency, reliability, and performance across various industries.
   </p>
 
   <p>
-    Our strength lies in our dedicated <strong>R&D (Research & Development) team</strong>, 
-    which continuously works on innovation and customized engineering solutions to meet your exact requirements.
+    Our strength lies in our dedicated <strong>Research & Development (R&D) team</strong>, which continuously focuses on innovation, system optimization, and customized engineering solutions. With strong technical expertise and real-world experience, our team ensures that every project requirement is fully understood and executed with precision.
   </p>
 
   <p>
-    We understand that every project is unique. That’s why we develop tailor-made automation systems 
-    that ensure seamless integration, precision control, and long-term scalability.
+    We believe that every industrial process is unique. That is why we develop <strong>tailor-made automation systems</strong> that align perfectly with your operational goals. From design to commissioning, we ensure seamless integration, accuracy, and long-term scalability.
+  </p>
+
+  <p>
+    With our innovation-driven approach, we are fully capable of delivering solutions that not only meet your expectations but exceed them.
   </p>
 </div>
 
@@ -241,7 +241,7 @@ body {
 
 <!-- Footer -->
 <div class="footer">
-  © 2026 Bytenex Innovation. All Rights Reserved.
+© 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
 <script>
@@ -250,28 +250,33 @@ const t=document.getElementById("popup-title");
 const p=document.getElementById("popup-text");
 
 if(type==='plc'){
-t.innerHTML="PLC Panels";
-p.innerHTML="Advanced automation panels with modular design, IIoT integration, real-time monitoring and scalable architecture.";
+t.innerHTML="PLC Panels – Smart Automation Core";
+p.innerHTML="Our PLC panels are designed for precision automation with scalable architecture, real-time monitoring, IIoT integration, and advanced control logic. Ideal for manufacturing and process industries.";
 }
+
 if(type==='mcc'){
-t.innerHTML="MCC Panels";
-p.innerHTML="Reliable motor control panels with protection, safety and efficient power distribution.";
+t.innerHTML="MCC Panels – Motor Control Center";
+p.innerHTML="MCC panels provide centralized motor control with safety, reliability, overload protection, and efficient distribution for industrial operations.";
 }
+
 if(type==='pcc'){
-t.innerHTML="PCC Panels";
-p.innerHTML="Power distribution systems with high safety standards and monitoring capabilities.";
+t.innerHTML="PCC Panels – Power Control Center";
+p.innerHTML="PCC panels ensure safe power distribution with high capacity, protection systems, and real-time monitoring for industrial infrastructure.";
 }
+
 if(type==='scada'){
-t.innerHTML="SCADA Systems";
-p.innerHTML="Smart monitoring systems with real-time data visualization and remote access.";
+t.innerHTML="SCADA Systems – Monitoring & Control";
+p.innerHTML="SCADA systems enable real-time monitoring, data visualization, alarms, and remote operation for smart industrial environments.";
 }
+
 if(type==='vfd'){
-t.innerHTML="VFD Panels";
-p.innerHTML="Energy-efficient motor control panels with speed variation and protection features.";
+t.innerHTML="VFD Panels – Energy Efficient Drives";
+p.innerHTML="VFD panels provide motor speed control, energy savings, smooth operation, and extended equipment life.";
 }
+
 if(type==='custom'){
-t.innerHTML="Custom Panels";
-p.innerHTML="Tailor-made automation panels designed as per your project requirements.";
+t.innerHTML="Custom Panels – Tailor-Made Solutions";
+p.innerHTML="Custom panels are designed based on specific project needs, ensuring flexibility, integration, and high performance.";
 }
 
 document.getElementById("popup").style.display="block";
