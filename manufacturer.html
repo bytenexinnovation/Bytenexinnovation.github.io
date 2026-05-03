@@ -18,6 +18,7 @@ body {
   align-items: center;
   padding: 15px 30px;
   background: #fff;
+  border-bottom: 1px solid #eee;
 }
 
 .brand {
@@ -25,6 +26,17 @@ body {
   font-weight: bold;
   color: #00aaff;
 }
+
+.nav-btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  background: #00aaff;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-left: 10px;
+}
+.nav-btn:hover { background: #0077aa; }
 
 /* Hero */
 .hero {
@@ -34,9 +46,18 @@ body {
   color: #fff;
 }
 
+/* Intro Section */
+.intro {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 20px;
+  line-height: 1.7;
+  color: #444;
+}
+
 /* Grid */
 .grid {
-  padding: 40px 20px;
+  padding: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
@@ -51,7 +72,7 @@ body {
 
 .card img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
 }
 
@@ -93,16 +114,13 @@ body {
   width: 90%;
   max-width: 700px;
   margin: 60px auto;
-  position: relative;
   max-height: 80vh;
   overflow-y: auto;
   line-height: 1.7;
 }
 
 .close {
-  position: absolute;
-  right: 15px;
-  top: 10px;
+  float: right;
   font-size: 22px;
   cursor: pointer;
 }
@@ -125,12 +143,38 @@ body {
     <img src="DOC-20260410-WA0001.jpg" style="height:40px; margin-right:10px;">
     <div class="brand">Bytenex Innovation</div>
   </div>
+
+  <div>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="about.html" class="nav-btn">About</a>
+    <a href="product.html" class="nav-btn">Products</a>
+    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
+  </div>
 </div>
 
 <!-- Hero -->
 <div class="hero">
   <h1>Industrial Automation</h1>
   <p>Smart Control Panels & Automation Solutions</p>
+</div>
+
+<!-- Intro -->
+<div class="intro">
+  <p>
+    At <strong>Bytenex Innovation</strong>, we specialize in delivering advanced industrial automation solutions 
+    designed to enhance efficiency, reliability, and performance.
+  </p>
+
+  <p>
+    Our strength lies in our dedicated <strong>R&D (Research & Development) team</strong>, 
+    which continuously works on innovation and customized engineering solutions to meet your exact requirements.
+  </p>
+
+  <p>
+    We understand that every project is unique. That’s why we develop tailor-made automation systems 
+    that ensure seamless integration, precision control, and long-term scalability.
+  </p>
 </div>
 
 <!-- Cards -->
@@ -200,107 +244,41 @@ body {
   © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
-<!-- FULL DETAILED SCRIPT -->
 <script>
-function openPopup(type) {
-  const t = document.getElementById("popup-title");
-  const p = document.getElementById("popup-text");
+function openPopup(type){
+const t=document.getElementById("popup-title");
+const p=document.getElementById("popup-text");
 
-  if(type==='plc'){
-    t.innerHTML="PLC Panels – Smart Automation Core";
-    p.innerHTML=`Our PLC Panels are engineered for high-performance industrial automation, ensuring precision, flexibility, and reliability.
+if(type==='plc'){
+t.innerHTML="PLC Panels";
+p.innerHTML="Advanced automation panels with modular design, IIoT integration, real-time monitoring and scalable architecture.";
+}
+if(type==='mcc'){
+t.innerHTML="MCC Panels";
+p.innerHTML="Reliable motor control panels with protection, safety and efficient power distribution.";
+}
+if(type==='pcc'){
+t.innerHTML="PCC Panels";
+p.innerHTML="Power distribution systems with high safety standards and monitoring capabilities.";
+}
+if(type==='scada'){
+t.innerHTML="SCADA Systems";
+p.innerHTML="Smart monitoring systems with real-time data visualization and remote access.";
+}
+if(type==='vfd'){
+t.innerHTML="VFD Panels";
+p.innerHTML="Energy-efficient motor control panels with speed variation and protection features.";
+}
+if(type==='custom'){
+t.innerHTML="Custom Panels";
+p.innerHTML="Tailor-made automation panels designed as per your project requirements.";
+}
 
-<br><br><b>Design & Engineering:</b><br>
-• Structured panel layout with proper cable management<br>
-• Integration with HMI for real-time control<br>
-• Modular and expandable architecture<br>
-
-<br><b>Key Features:</b><br>
-• High-speed PLC processing<br>
-• IIoT-ready integration<br>
-• Real-time diagnostics<br>
-• Expandable I/O modules<br>
-
-<br><b>Applications:</b><br>
-Manufacturing, process plants, automation systems.`;
-  }
-
-  if(type==='mcc'){
-    t.innerHTML="MCC Panels – Reliable Motor Control";
-    p.innerHTML=`MCC Panels provide centralized motor control with safety and efficiency.
-
-<br><br><b>Design:</b><br>
-• Multi-compartment panel design<br>
-• Industrial-grade enclosure<br>
-
-<br><b>Features:</b><br>
-• Overload protection<br>
-• Short circuit safety<br>
-• Modular scalability<br>
-
-<br><b>Applications:</b><br>
-HVAC, pumps, conveyors.`;
-  }
-
-  if(type==='pcc'){
-    t.innerHTML="PCC Panels – Power Distribution";
-    p.innerHTML=`PCC Panels ensure safe electrical distribution.
-
-<br><br><b>Design:</b><br>
-• ACB/MCCB protection<br>
-• Busbar system<br>
-
-<br><b>Features:</b><br>
-• High load capacity<br>
-• Monitoring systems<br>
-
-<br><b>Applications:</b><br>
-Industrial plants, buildings.`;
-  }
-
-  if(type==='scada'){
-    t.innerHTML="SCADA Systems";
-    p.innerHTML=`SCADA provides real-time monitoring.
-
-<br><br><b>Features:</b><br>
-• Data visualization<br>
-• Alarm systems<br>
-• Remote access
-
-<br><br><b>Applications:</b><br>
-Automation & smart systems.`;
-  }
-
-  if(type==='vfd'){
-    t.innerHTML="VFD Panels";
-    p.innerHTML=`VFD Panels control motor speed efficiently.
-
-<br><br><b>Features:</b><br>
-• Energy saving<br>
-• Soft start/stop<br>
-• Speed control
-
-<br><br><b>Applications:</b><br>
-Pumps, fans, conveyors.`;
-  }
-
-  if(type==='custom'){
-    t.innerHTML="Custom Panels";
-    p.innerHTML=`Custom-built panels designed as per requirements.
-
-<br><br><b>Features:</b><br>
-• Flexible design<br>
-• Multi-system integration<br>
-
-<br><b>Applications:</b><br>
-Custom industrial projects.`;
-  }
-
-  document.getElementById("popup").style.display="block";
+document.getElementById("popup").style.display="block";
 }
 
 function closePopup(){
-  document.getElementById("popup").style.display="none";
+document.getElementById("popup").style.display="none";
 }
 </script>
 
