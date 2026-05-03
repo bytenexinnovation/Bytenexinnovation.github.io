@@ -5,8 +5,6 @@
 <title>Industrial Automation - Bytenex Innovation</title>
 
 <style>
-html { scroll-behavior: smooth; }
-
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -26,16 +24,6 @@ body {
   font-size: 22px;
   font-weight: bold;
   color: #00aaff;
-}
-
-.nav-btn {
-  text-decoration: none;
-  padding: 8px 18px;
-  background: #00aaff;
-  color: #fff;
-  border-radius: 20px;
-  font-size: 14px;
-  margin-left: 10px;
 }
 
 /* Hero */
@@ -79,20 +67,12 @@ body {
 .btn {
   display: inline-block;
   margin-top: 8px;
-  padding: 5px 12px;
+  padding: 6px 14px;
   background: #00aaff;
   color: #fff;
   border-radius: 20px;
-  font-size: 12px;
   text-decoration: none;
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 15px;
-  background: #000;
-  color: #aaa;
+  font-size: 12px;
 }
 
 /* Popup */
@@ -111,9 +91,12 @@ body {
   padding: 25px;
   border-radius: 10px;
   width: 90%;
-  max-width: 500px;
-  margin: 100px auto;
+  max-width: 700px;
+  margin: 60px auto;
   position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+  line-height: 1.7;
 }
 
 .close {
@@ -122,6 +105,14 @@ body {
   top: 10px;
   font-size: 22px;
   cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 15px;
+  background: #000;
+  color: #aaa;
 }
 </style>
 </head>
@@ -134,14 +125,6 @@ body {
     <img src="DOC-20260410-WA0001.jpg" style="height:40px; margin-right:10px;">
     <div class="brand">Bytenex Innovation</div>
   </div>
-
-  <div>
-    <a href="index.html" class="nav-btn">Home</a>
-    <a href="about.html" class="nav-btn">About</a>
-    <a href="product.html" class="nav-btn">Products</a>
-    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
-    <a href="contact.html" class="nav-btn">Contact</a>
-  </div>
 </div>
 
 <!-- Hero -->
@@ -153,53 +136,53 @@ body {
 <!-- Cards -->
 <div class="grid">
 
-  <div class="card">
-    <img src="plc.png">
-    <div class="overlay">
-      <h3>PLC Panels</h3>
-      <a href="#" class="btn" onclick="openPopup('plc')">View More</a>
-    </div>
-  </div>
+<div class="card">
+<img src="plc.png">
+<div class="overlay">
+<h3>PLC Panels</h3>
+<a href="#" class="btn" onclick="openPopup('plc')">View More</a>
+</div>
+</div>
 
-  <div class="card">
-    <img src="mcc.png">
-    <div class="overlay">
-      <h3>MCC Panels</h3>
-      <a href="#" class="btn" onclick="openPopup('mcc')">View More</a>
-    </div>
-  </div>
+<div class="card">
+<img src="mcc.png">
+<div class="overlay">
+<h3>MCC Panels</h3>
+<a href="#" class="btn" onclick="openPopup('mcc')">View More</a>
+</div>
+</div>
 
-  <div class="card">
-    <img src="pcc.png">
-    <div class="overlay">
-      <h3>PCC Panels</h3>
-      <a href="#" class="btn" onclick="openPopup('pcc')">View More</a>
-    </div>
-  </div>
+<div class="card">
+<img src="pcc.png">
+<div class="overlay">
+<h3>PCC Panels</h3>
+<a href="#" class="btn" onclick="openPopup('pcc')">View More</a>
+</div>
+</div>
 
-  <div class="card">
-    <img src="scada.png">
-    <div class="overlay">
-      <h3>SCADA Systems</h3>
-      <a href="#" class="btn" onclick="openPopup('scada')">View More</a>
-    </div>
-  </div>
+<div class="card">
+<img src="scada.png">
+<div class="overlay">
+<h3>SCADA Systems</h3>
+<a href="#" class="btn" onclick="openPopup('scada')">View More</a>
+</div>
+</div>
 
-  <div class="card">
-    <img src="vfd.png">
-    <div class="overlay">
-      <h3>VFD Panels</h3>
-      <a href="#" class="btn" onclick="openPopup('vfd')">View More</a>
-    </div>
-  </div>
+<div class="card">
+<img src="vfd.png">
+<div class="overlay">
+<h3>VFD Panels</h3>
+<a href="#" class="btn" onclick="openPopup('vfd')">View More</a>
+</div>
+</div>
 
-  <div class="card">
-    <img src="custom.png">
-    <div class="overlay">
-      <h3>Custom Panels</h3>
-      <a href="#" class="btn" onclick="openPopup('custom')">View More</a>
-    </div>
-  </div>
+<div class="card">
+<img src="custom.png">
+<div class="overlay">
+<h3>Custom Panels</h3>
+<a href="#" class="btn" onclick="openPopup('custom')">View More</a>
+</div>
+</div>
 
 </div>
 
@@ -217,46 +200,107 @@ body {
   © 2026 Bytenex Innovation. All Rights Reserved.
 </div>
 
+<!-- FULL DETAILED SCRIPT -->
 <script>
 function openPopup(type) {
-  const title = document.getElementById("popup-title");
-  const text = document.getElementById("popup-text");
+  const t = document.getElementById("popup-title");
+  const p = document.getElementById("popup-text");
 
-  if(type === 'plc'){
-    title.innerText = "PLC Panels – Smart Automation Core";
-    text.innerHTML = "Advanced PLC panels with scalable I/O, IIoT integration, and real-time diagnostics for industrial automation.";
+  if(type==='plc'){
+    t.innerHTML="PLC Panels – Smart Automation Core";
+    p.innerHTML=`Our PLC Panels are engineered for high-performance industrial automation, ensuring precision, flexibility, and reliability.
+
+<br><br><b>Design & Engineering:</b><br>
+• Structured panel layout with proper cable management<br>
+• Integration with HMI for real-time control<br>
+• Modular and expandable architecture<br>
+
+<br><b>Key Features:</b><br>
+• High-speed PLC processing<br>
+• IIoT-ready integration<br>
+• Real-time diagnostics<br>
+• Expandable I/O modules<br>
+
+<br><b>Applications:</b><br>
+Manufacturing, process plants, automation systems.`;
   }
 
-  if(type === 'mcc'){
-    title.innerText = "MCC Panels – Reliable Motor Control";
-    text.innerHTML = "Heavy-duty motor control panels with overload protection, modular design, and high operational reliability.";
+  if(type==='mcc'){
+    t.innerHTML="MCC Panels – Reliable Motor Control";
+    p.innerHTML=`MCC Panels provide centralized motor control with safety and efficiency.
+
+<br><br><b>Design:</b><br>
+• Multi-compartment panel design<br>
+• Industrial-grade enclosure<br>
+
+<br><b>Features:</b><br>
+• Overload protection<br>
+• Short circuit safety<br>
+• Modular scalability<br>
+
+<br><b>Applications:</b><br>
+HVAC, pumps, conveyors.`;
   }
 
-  if(type === 'pcc'){
-    title.innerText = "PCC Panels – Power Distribution Backbone";
-    text.innerHTML = "Safe and efficient power distribution panels with ACB/MCCB protection and monitoring systems.";
+  if(type==='pcc'){
+    t.innerHTML="PCC Panels – Power Distribution";
+    p.innerHTML=`PCC Panels ensure safe electrical distribution.
+
+<br><br><b>Design:</b><br>
+• ACB/MCCB protection<br>
+• Busbar system<br>
+
+<br><b>Features:</b><br>
+• High load capacity<br>
+• Monitoring systems<br>
+
+<br><b>Applications:</b><br>
+Industrial plants, buildings.`;
   }
 
-  if(type === 'scada'){
-    title.innerText = "SCADA Systems – Intelligent Monitoring";
-    text.innerHTML = "Real-time monitoring, data logging, alarms, and industrial automation dashboards.";
+  if(type==='scada'){
+    t.innerHTML="SCADA Systems";
+    p.innerHTML=`SCADA provides real-time monitoring.
+
+<br><br><b>Features:</b><br>
+• Data visualization<br>
+• Alarm systems<br>
+• Remote access
+
+<br><br><b>Applications:</b><br>
+Automation & smart systems.`;
   }
 
-  if(type === 'vfd'){
-    title.innerText = "VFD Panels – Energy Efficient Drives";
-    text.innerHTML = "Energy-efficient motor control panels with speed control, soft start, and protection systems.";
+  if(type==='vfd'){
+    t.innerHTML="VFD Panels";
+    p.innerHTML=`VFD Panels control motor speed efficiently.
+
+<br><br><b>Features:</b><br>
+• Energy saving<br>
+• Soft start/stop<br>
+• Speed control
+
+<br><br><b>Applications:</b><br>
+Pumps, fans, conveyors.`;
   }
 
-  if(type === 'custom'){
-    title.innerText = "Custom Panels – Tailored Engineering Solutions";
-    text.innerHTML = "Fully customized automation panels designed as per specific industrial requirements.";
+  if(type==='custom'){
+    t.innerHTML="Custom Panels";
+    p.innerHTML=`Custom-built panels designed as per requirements.
+
+<br><br><b>Features:</b><br>
+• Flexible design<br>
+• Multi-system integration<br>
+
+<br><b>Applications:</b><br>
+Custom industrial projects.`;
   }
 
-  document.getElementById("popup").style.display = "block";
+  document.getElementById("popup").style.display="block";
 }
 
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
+function closePopup(){
+  document.getElementById("popup").style.display="none";
 }
 </script>
 
