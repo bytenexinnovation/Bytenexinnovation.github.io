@@ -13,7 +13,7 @@
 
 body{
   margin:0;
-  font-family:'Segoe UI',Arial,sans-serif;
+  font-family:'Segoe UI',sans-serif;
   background:#f5f5f5;
   color:#333;
 }
@@ -23,80 +23,42 @@ body{
 ========================= */
 
 .header{
+  background:#0056a6;
+  padding:18px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:12px 20px;
-  background:#fff;
-  border-bottom:1px solid #ddd;
-  animation:fadeDown 0.8s ease;
-  flex-wrap:wrap;
+  color:#fff;
 }
 
-.left{
+.logo-area{
   display:flex;
   align-items:center;
 }
 
-.logo-box{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  overflow:hidden;
-}
-
 .logo{
-  width:100%;
-  height:100%;
+  width:55px;
+  height:55px;
+  border-radius:50%;
   object-fit:cover;
+  margin-right:12px;
 }
 
-.brand{
-  margin-left:10px;
-  font-size:22px;
-  font-weight:bold;
-  color:#00aaff;
+.brand h1{
+  margin:0;
+  font-size:34px;
+  letter-spacing:1px;
 }
 
-.nav-links{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-.nav-btn{
-  text-decoration:none;
-  padding:8px 18px;
-  background:#00aaff;
-  color:#fff;
-  border-radius:20px;
+.brand p{
+  margin:0;
   font-size:14px;
-  margin:5px;
-  transition:0.3s;
+  opacity:0.9;
 }
 
-.nav-btn:hover{
-  background:#0077aa;
-}
-
-/* Order Button */
-
-.order-btn{
-  text-decoration:none;
-  padding:10px 22px;
-  background:linear-gradient(45deg,#ff9800,#ff5722);
-  color:#fff;
-  border-radius:30px;
-  font-size:14px;
-  font-weight:bold;
-  margin:5px;
-  transition:0.3s;
-  box-shadow:0 0 12px rgba(255,87,34,0.5);
-}
-
-.order-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 0 18px rgba(255,87,34,0.8);
+.menu{
+  font-size:34px;
+  cursor:pointer;
 }
 
 /* =========================
@@ -104,191 +66,134 @@ body{
 ========================= */
 
 .hero{
-  text-align:center;
-  padding:90px 20px;
-  background:
-  linear-gradient(to right,#eaf8ff,#f8fdff);
-  animation:fadeUp 1s ease;
+  background:#0056a6;
+  color:#fff;
+  padding:90px 25px;
 }
 
-.typing{
-  font-size:42px;
-  color:#0077aa;
-  white-space:nowrap;
-  overflow:hidden;
-  width:0;
-  margin:auto;
-  animation:typing 3s steps(25,end) forwards;
+.hero h2{
+  font-size:48px;
+  margin-bottom:25px;
 }
 
 .hero p{
-  margin-top:18px;
-  font-size:18px;
-  color:#555;
-  max-width:850px;
-  margin-left:auto;
-  margin-right:auto;
-  line-height:1.8;
+  font-size:21px;
+  line-height:2;
+  max-width:950px;
 }
 
-/* Buttons */
+/* =========================
+   COMPANY OVERVIEW
+========================= */
 
-.btn{
-  display:inline-block;
-  margin:12px;
-  padding:12px 28px;
-  border-radius:30px;
-  text-decoration:none;
-  font-weight:bold;
-  transition:0.3s;
+.overview{
+  background:#f1f1f1;
+  padding:80px 25px;
 }
 
-.call-btn{
-  background:#00aaff;
-  color:#fff;
+.overview-box{
+  max-width:1050px;
+  margin:auto;
+  background:#fff;
+  padding:60px;
+  box-shadow:0 5px 25px rgba(0,0,0,0.08);
 }
 
-.call-btn:hover{
-  background:#0077aa;
+.overview h2{
+  color:#0056a6;
+  font-size:46px;
+  margin-bottom:35px;
 }
 
-.mail-btn{
-  border:2px solid #00aaff;
-  color:#00aaff;
-}
-
-.mail-btn:hover{
-  background:#00aaff;
-  color:#fff;
+.overview p{
+  font-size:24px;
+  line-height:2;
+  color:#444;
 }
 
 /* =========================
    FOUNDER SECTION
 ========================= */
 
-.founder-section{
-  padding:100px 20px;
-  background:
-  linear-gradient(135deg,#eef9ff,#ffffff);
+.founder{
+  padding:80px 25px;
+  background:#fff;
 }
 
-.founder-card{
-  max-width:1000px;
+.founder-box{
+  max-width:1050px;
   margin:auto;
-  background:rgba(255,255,255,0.95);
-  border-radius:30px;
-  overflow:hidden;
-  position:relative;
-  box-shadow:
-  0 15px 45px rgba(0,119,170,0.12);
-  border:1px solid rgba(255,255,255,0.6);
-  backdrop-filter:blur(10px);
-  transition:0.4s;
-}
-
-.founder-card:hover{
-  transform:translateY(-6px);
-  box-shadow:
-  0 20px 60px rgba(0,119,170,0.18);
-}
-
-/* Top Design */
-
-.top-design{
-  height:8px;
-  width:100%;
-  background:
-  linear-gradient(90deg,#00aaff,#0077aa,#00c6ff);
-}
-
-/* Content */
-
-.founder-content{
+  background:#f9f9f9;
   padding:60px;
-  text-align:center;
+  border-left:8px solid #0056a6;
+  box-shadow:0 5px 20px rgba(0,0,0,0.06);
 }
 
-.small-title{
-  color:#00aaff;
-  font-size:13px;
-  letter-spacing:4px;
-  font-weight:700;
-  margin-bottom:18px;
-}
-
-.founder-name{
-  font-size:48px;
-  color:#0077aa;
+.founder h2{
+  font-size:46px;
+  color:#0056a6;
   margin-bottom:10px;
 }
 
-.founder-role{
-  font-size:21px;
-  color:#666;
-  margin-bottom:18px;
-}
-
-.founder-tagline{
-  color:#00aaff;
-  font-size:14px;
-  letter-spacing:3px;
-  font-weight:600;
+.role{
+  font-size:22px;
+  color:#777;
   margin-bottom:35px;
-  text-transform:uppercase;
 }
 
-.founder-text{
-  font-size:17px;
+.founder p{
+  font-size:22px;
   line-height:2;
   color:#444;
-  margin-bottom:24px;
-  text-align:justify;
 }
 
-/* Stats */
+/* =========================
+   CORE TECHNOLOGY
+========================= */
 
-.founder-stats{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  margin-top:40px;
-  flex-wrap:wrap;
+.tech{
+  background:#eef5fb;
+  padding:80px 25px;
 }
 
-.stat-box{
-  background:
-  linear-gradient(135deg,#00aaff,#0077aa);
-  color:#fff;
-  padding:20px 28px;
-  border-radius:20px;
-  min-width:160px;
-  box-shadow:
-  0 10px 25px rgba(0,119,170,0.2);
+.tech-box{
+  max-width:1100px;
+  margin:auto;
+}
+
+.tech h2{
+  color:#0056a6;
+  font-size:44px;
+  margin-bottom:35px;
+}
+
+.tech-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
+
+.tech-card{
+  background:#fff;
+  padding:35px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,0.08);
   transition:0.3s;
 }
 
-.stat-box:hover{
-  transform:translateY(-4px);
+.tech-card:hover{
+  transform:translateY(-5px);
 }
 
-.stat-box h3{
-  margin:0;
-  font-size:30px;
-}
-
-.stat-box span{
-  font-size:13px;
-  opacity:0.9;
-}
-
-/* Signature */
-
-.signature{
-  margin-top:40px;
+.tech-card h3{
+  color:#0056a6;
+  margin-bottom:10px;
   font-size:24px;
-  color:#0077aa;
-  font-style:italic;
-  font-weight:600;
+}
+
+.tech-card p{
+  font-size:17px;
+  line-height:1.8;
 }
 
 /* =========================
@@ -296,71 +201,11 @@ body{
 ========================= */
 
 .footer{
+  background:#111;
+  color:#aaa;
   text-align:center;
-  padding:20px;
-  background:#000;
-  color:#888;
-}
-
-/* =========================
-   CHAT BUTTON
-========================= */
-
-#chatBtn{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#00aaff;
-  color:#fff;
-  padding:14px;
-  border-radius:50%;
-  cursor:pointer;
-  z-index:999;
-  font-size:22px;
-}
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes fadeUp{
-
-  from{
-    opacity:0;
-    transform:translateY(30px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-}
-
-@keyframes fadeDown{
-
-  from{
-    opacity:0;
-    transform:translateY(-30px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-}
-
-@keyframes typing{
-
-  from{
-    width:0;
-  }
-
-  to{
-    width:100%;
-  }
-
+  padding:25px;
+  font-size:15px;
 }
 
 /* =========================
@@ -374,35 +219,32 @@ body{
     gap:15px;
   }
 
-  .typing{
-    font-size:30px;
+  .brand h1{
+    font-size:26px;
   }
 
-  .hero{
-    padding:70px 15px;
-  }
-
-  .founder-content{
-    padding:40px 24px;
-  }
-
-  .founder-name{
+  .hero h2{
     font-size:34px;
   }
 
-  .founder-role{
+  .hero p{
+    font-size:17px;
+  }
+
+  .overview-box,
+  .founder-box{
+    padding:35px 25px;
+  }
+
+  .overview h2,
+  .founder h2,
+  .tech h2{
+    font-size:32px;
+  }
+
+  .overview p,
+  .founder p{
     font-size:18px;
-  }
-
-  .founder-text{
-    font-size:15px;
-    line-height:1.9;
-    text-align:center;
-  }
-
-  .stat-box{
-    min-width:130px;
-    padding:16px 18px;
   }
 
 }
@@ -418,30 +260,19 @@ body{
 
 <div class="header">
 
-  <div class="left">
+  <div class="logo-area">
 
-    <div class="logo-box">
-      <img src="DOC-20260410-WA0001.jpg" class="logo">
-    </div>
+    <img src="DOC-20260410-WA0001.jpg" class="logo">
 
     <div class="brand">
-      Bytenex Innovation
+      <h1>BYTENEX</h1>
+      <p>Industrial Automation & Smart Engineering</p>
     </div>
 
   </div>
 
-  <div class="nav-links">
-
-    <a href="index.html" class="nav-btn">Home</a>
-    <a href="about.html" class="nav-btn">About</a>
-    <a href="product.html" class="nav-btn">Products</a>
-    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
-
-    <a href="buy.html" class="order-btn">New Order</a>
-
-    <a href="customer-portal.html" class="nav-btn">Customer Portal</a>
-    <a href="contact.html" class="nav-btn">Contact</a>
-
+  <div class="menu">
+    ☰
   </div>
 
 </div>
@@ -452,24 +283,42 @@ body{
 
 <div class="hero">
 
-  <h2>Welcome to</h2>
-
-  <h1 class="typing">
-    Bytenex Innovation
-  </h1>
+  <h2>
+    Co-engineering Future Industries
+  </h2>
 
   <p>
-    Advanced Automation (Factory & Industrial Automation) + ELV Solutions 
-    for Smart Industries
+    Bytenex Innovation is an engineering-driven company specializing in 
+    Industrial Automation, Instrumentation, Process Control Systems, 
+    Smart Electrical Infrastructure, and Industrial IoT Solutions. 
+    We deliver intelligent technologies designed to enhance operational efficiency, 
+    centralized monitoring, system reliability, and next-generation industrial transformation 
+    for commercial, healthcare, and industrial environments.
   </p>
 
-  <a href="about.html" class="btn call-btn">
-    Explore More
-  </a>
+</div>
 
-  <a href="contact.html" class="btn mail-btn">
-    Contact Us
-  </a>
+<!-- =========================
+     COMPANY OVERVIEW
+========================= -->
+
+<div class="overview">
+
+  <div class="overview-box">
+
+    <h2>
+      Company Overview
+    </h2>
+
+    <p>
+      Combining advanced automation technologies with engineering excellence, 
+      Bytenex Innovation delivers intelligent control systems, PLC based automation, 
+      SCADA monitoring, industrial instrumentation, ELV integration, and smart infrastructure solutions. 
+      Our approach focuses on process optimization, predictive monitoring, energy efficiency, 
+      operational safety, and scalable industrial engineering for future-ready facilities.
+    </p>
+
+  </div>
 
 </div>
 
@@ -477,83 +326,77 @@ body{
      FOUNDER SECTION
 ========================= -->
 
-<div class="founder-section">
+<div class="founder">
 
-  <div class="founder-card">
+  <div class="founder-box">
 
-    <div class="top-design"></div>
+    <h2>
+      Jaya Y Patel
+    </h2>
 
-    <div class="founder-content">
+    <div class="role">
+      Founder & Managing Director
+    </div>
 
-      <div class="small-title">
-        FOUNDER & LEADERSHIP
+    <p>
+      Under the leadership of <b>Jaya Y Patel</b>, Bytenex Innovation continues to build 
+      intelligent automation ecosystems that bridge engineering, technology, and infrastructure. 
+      With over 8+ years of experience in Commercial and Hospital Market sectors, 
+      she has contributed towards automation-focused infrastructure planning, 
+      process control engineering, industrial monitoring systems, smart ELV integration, 
+      and advanced engineering solutions for mission-critical environments.
+    </p>
+
+    <p>
+      The company vision is centered around delivering reliable, scalable, and future-oriented 
+      automation solutions that support industrial productivity, intelligent operations, 
+      centralized control, and digital transformation through innovative engineering technologies.
+    </p>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     CORE TECHNOLOGY
+========================= -->
+
+<div class="tech">
+
+  <div class="tech-box">
+
+    <h2>
+      Core Technologies
+    </h2>
+
+    <div class="tech-grid">
+
+      <div class="tech-card">
+        <h3>PLC Automation</h3>
+        <p>
+          Intelligent industrial process control systems designed for operational efficiency.
+        </p>
       </div>
 
-      <h2 class="founder-name">
-        Jaya Y Patel
-      </h2>
-
-      <div class="founder-role">
-        Founder & Managing Director
+      <div class="tech-card">
+        <h3>SCADA Systems</h3>
+        <p>
+          Advanced centralized monitoring and supervisory control solutions.
+        </p>
       </div>
 
-      <div class="founder-tagline">
-        Vision • Innovation • Industrial Automation
+      <div class="tech-card">
+        <h3>Industrial IoT</h3>
+        <p>
+          Smart connected infrastructure with real-time analytics and monitoring.
+        </p>
       </div>
 
-      <p class="founder-text">
-        Bytenex Innovation was founded with a vision to transform modern industries 
-        through intelligent automation and advanced engineering solutions. Under the 
-        leadership of <b>Jaya Y Patel</b>, the company focuses on delivering scalable, 
-        future-ready technologies that improve operational efficiency, reliability, 
-        and smart infrastructure management across industries.
-      </p>
-
-      <p class="founder-text">
-        With over <b>8+ years of experience</b> in the Commercial and Hospital Market sector, 
-        she has contributed to Industrial Automation, ELV Systems, Smart Infrastructure, 
-        and advanced facility engineering solutions for modern environments and critical operations.
-      </p>
-
-      <p class="founder-text">
-        Bytenex Innovation specializes in advanced <b>Factory & Industrial Automation</b> 
-        including PLC based control systems, IoT enabled monitoring, intelligent electrical 
-        automation, process optimization, remote system integration, smart surveillance, 
-        and centralized control solutions designed for modern industries and infrastructure projects.
-      </p>
-
-      <p class="founder-text">
-        The company continuously works towards integrating intelligent technologies 
-        that help industries achieve automation-driven productivity, enhanced safety, 
-        energy efficiency, predictive monitoring, and long-term operational excellence 
-        through innovative engineering and smart automation systems.
-      </p>
-
-      <!-- Stats -->
-
-      <div class="founder-stats">
-
-        <div class="stat-box">
-          <h3>8+</h3>
-          <span>Years Experience</span>
-        </div>
-
-        <div class="stat-box">
-          <h3>Industrial</h3>
-          <span>Automation</span>
-        </div>
-
-        <div class="stat-box">
-          <h3>Smart</h3>
-          <span>Infrastructure</span>
-        </div>
-
-      </div>
-
-      <!-- Signature -->
-
-      <div class="signature">
-        — Jaya Y Patel
+      <div class="tech-card">
+        <h3>ELV Integration</h3>
+        <p>
+          Smart surveillance, security, networking, and intelligent building solutions.
+        </p>
       </div>
 
     </div>
@@ -568,14 +411,6 @@ body{
 
 <div class="footer">
   © 2026 Bytenex Innovation. All Rights Reserved.
-</div>
-
-<!-- =========================
-     CHAT BUTTON
-========================= -->
-
-<div id="chatBtn">
-  💬
 </div>
 
 </body>
