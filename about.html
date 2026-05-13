@@ -14,8 +14,10 @@
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
-  background:#f5f5f5;
+  background:
+  linear-gradient(135deg,#edf6ff,#f8fbff);
   color:#333;
+  overflow-x:hidden;
 }
 
 /* =========================
@@ -23,12 +25,18 @@ body{
 ========================= */
 
 .header{
-  background:#0056a6;
-  padding:18px 20px;
+  position:sticky;
+  top:0;
+  z-index:999;
+  background:
+  linear-gradient(90deg,#004b8d,#006ec7);
+  padding:18px 30px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  color:#fff;
+  box-shadow:
+  0 5px 20px rgba(0,0,0,0.15);
+  flex-wrap:wrap;
 }
 
 .logo-area{
@@ -37,76 +45,184 @@ body{
 }
 
 .logo{
-  width:55px;
-  height:55px;
+  width:58px;
+  height:58px;
   border-radius:50%;
   object-fit:cover;
+  border:3px solid rgba(255,255,255,0.3);
+  box-shadow:
+  0 0 20px rgba(255,255,255,0.3);
   margin-right:12px;
 }
 
 .brand h1{
   margin:0;
+  color:#fff;
   font-size:34px;
-  letter-spacing:1px;
+  letter-spacing:2px;
 }
 
 .brand p{
   margin:0;
+  color:#d8ecff;
   font-size:14px;
-  opacity:0.9;
-}
-
-.menu{
-  font-size:34px;
-  cursor:pointer;
+  letter-spacing:1px;
 }
 
 /* =========================
-   HERO
+   NAVIGATION
+========================= */
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.nav-btn{
+  text-decoration:none;
+  padding:11px 20px;
+  background:
+  rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.15);
+  color:#fff;
+  border-radius:35px;
+  font-size:14px;
+  font-weight:600;
+  transition:0.3s;
+  backdrop-filter:blur(8px);
+}
+
+.nav-btn:hover{
+  background:#fff;
+  color:#0056a6;
+  transform:translateY(-3px);
+  box-shadow:
+  0 8px 20px rgba(255,255,255,0.25);
+}
+
+/* Order Button */
+
+.order-btn{
+  text-decoration:none;
+  padding:11px 24px;
+  background:
+  linear-gradient(45deg,#ff9800,#ff5722);
+  color:#fff;
+  border-radius:35px;
+  font-size:14px;
+  font-weight:bold;
+  transition:0.3s;
+  box-shadow:
+  0 0 18px rgba(255,87,34,0.45);
+}
+
+.order-btn:hover{
+  transform:translateY(-4px);
+  box-shadow:
+  0 0 25px rgba(255,87,34,0.7);
+}
+
+/* =========================
+   HERO SECTION
 ========================= */
 
 .hero{
-  background:#0056a6;
+  position:relative;
+  padding:120px 30px;
+  background:
+  linear-gradient(135deg,#0056a6,#0078d7,#00aaff);
   color:#fff;
-  padding:90px 25px;
+  overflow:hidden;
+}
+
+/* Glow */
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:
+  radial-gradient(circle,rgba(255,255,255,0.18),transparent 70%);
+  top:-150px;
+  right:-100px;
+}
+
+/* Grid Effect */
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+  linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size:40px 40px;
+  opacity:0.35;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
 }
 
 .hero h2{
-  font-size:48px;
+  font-size:54px;
   margin-bottom:25px;
+  text-shadow:
+  0 5px 15px rgba(0,0,0,0.2);
 }
 
 .hero p{
-  font-size:21px;
+  max-width:1000px;
+  font-size:22px;
   line-height:2;
-  max-width:950px;
+  color:#eef7ff;
 }
 
 /* =========================
-   COMPANY OVERVIEW
+   OVERVIEW SECTION
 ========================= */
 
 .overview{
-  background:#f1f1f1;
-  padding:80px 25px;
+  padding:90px 25px;
 }
 
 .overview-box{
-  max-width:1050px;
+  max-width:1100px;
   margin:auto;
   background:#fff;
   padding:60px;
-  box-shadow:0 5px 25px rgba(0,0,0,0.08);
+  border-radius:22px;
+  box-shadow:
+  0 10px 30px rgba(0,0,0,0.08);
+  transition:0.4s;
+}
+
+.overview-box:hover{
+  transform:translateY(-6px);
 }
 
 .overview h2{
   color:#0056a6;
   font-size:46px;
-  margin-bottom:35px;
+}
+
+.overview h2::after{
+  content:"";
+  display:block;
+  width:90px;
+  height:4px;
+  background:
+  linear-gradient(90deg,#0056a6,#00aaff);
+  margin-top:12px;
+  border-radius:20px;
 }
 
 .overview p{
-  font-size:24px;
+  font-size:23px;
   line-height:2;
   color:#444;
 }
@@ -116,29 +232,45 @@ body{
 ========================= */
 
 .founder{
-  padding:80px 25px;
-  background:#fff;
+  padding:90px 25px;
 }
 
 .founder-box{
-  max-width:1050px;
+  max-width:1100px;
   margin:auto;
-  background:#f9f9f9;
+  background:#fff;
   padding:60px;
+  border-radius:22px;
   border-left:8px solid #0056a6;
-  box-shadow:0 5px 20px rgba(0,0,0,0.06);
+  box-shadow:
+  0 10px 30px rgba(0,0,0,0.08);
+  transition:0.4s;
+}
+
+.founder-box:hover{
+  transform:translateY(-6px);
 }
 
 .founder h2{
-  font-size:46px;
   color:#0056a6;
-  margin-bottom:10px;
+  font-size:46px;
+}
+
+.founder h2::after{
+  content:"";
+  display:block;
+  width:90px;
+  height:4px;
+  background:
+  linear-gradient(90deg,#0056a6,#00aaff);
+  margin-top:12px;
+  border-radius:20px;
 }
 
 .role{
   font-size:22px;
-  color:#777;
-  margin-bottom:35px;
+  color:#666;
+  margin:18px 0 35px;
 }
 
 .founder p{
@@ -153,11 +285,11 @@ body{
 
 .tech{
   background:#eef5fb;
-  padding:80px 25px;
+  padding:90px 25px;
 }
 
 .tech-box{
-  max-width:1100px;
+  max-width:1150px;
   margin:auto;
 }
 
@@ -167,33 +299,48 @@ body{
   margin-bottom:35px;
 }
 
+.tech h2::after{
+  content:"";
+  display:block;
+  width:90px;
+  height:4px;
+  background:
+  linear-gradient(90deg,#0056a6,#00aaff);
+  margin-top:12px;
+  border-radius:20px;
+}
+
 .tech-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:25px;
 }
 
 .tech-card{
   background:#fff;
-  padding:35px;
+  padding:38px;
+  border-radius:22px;
   text-align:center;
-  box-shadow:0 5px 20px rgba(0,0,0,0.08);
-  transition:0.3s;
+  box-shadow:
+  0 8px 25px rgba(0,0,0,0.06);
+  transition:0.4s;
 }
 
 .tech-card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-6px);
+  box-shadow:
+  0 15px 35px rgba(0,86,166,0.15);
 }
 
 .tech-card h3{
   color:#0056a6;
-  margin-bottom:10px;
   font-size:24px;
 }
 
 .tech-card p{
-  font-size:17px;
+  color:#555;
   line-height:1.8;
+  font-size:17px;
 }
 
 /* =========================
@@ -201,11 +348,13 @@ body{
 ========================= */
 
 .footer{
-  background:#111;
-  color:#aaa;
+  background:
+  linear-gradient(90deg,#111,#1c1c1c);
+  color:#bbb;
   text-align:center;
-  padding:25px;
+  padding:28px;
   font-size:15px;
+  letter-spacing:1px;
 }
 
 /* =========================
@@ -216,19 +365,21 @@ body{
 
   .header{
     flex-direction:column;
-    gap:15px;
+    gap:18px;
+    text-align:center;
   }
 
-  .brand h1{
-    font-size:26px;
+  .hero{
+    padding:90px 20px;
   }
 
   .hero h2{
-    font-size:34px;
+    font-size:36px;
   }
 
   .hero p{
     font-size:17px;
+    line-height:1.9;
   }
 
   .overview-box,
@@ -247,6 +398,10 @@ body{
     font-size:18px;
   }
 
+  .nav-links{
+    justify-content:center;
+  }
+
 }
 
 </style>
@@ -254,9 +409,7 @@ body{
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- HEADER -->
 
 <div class="header">
 
@@ -271,36 +424,46 @@ body{
 
   </div>
 
-  <div class="menu">
-    ☰
+  <div class="nav-links">
+
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="about.html" class="nav-btn">About</a>
+    <a href="product.html" class="nav-btn">Products</a>
+    <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
+
+    <a href="buy.html" class="order-btn">New Order</a>
+
+    <a href="customer-portal.html" class="nav-btn">Customer Portal</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
+
   </div>
 
 </div>
 
-<!-- =========================
-     HERO
-========================= -->
+<!-- HERO -->
 
 <div class="hero">
 
-  <h2>
-    Co-engineering Future Industries
-  </h2>
+  <div class="hero-content">
 
-  <p>
-    Bytenex Innovation is an engineering-driven company specializing in 
-    Industrial Automation, Instrumentation, Process Control Systems, 
-    Smart Electrical Infrastructure, and Industrial IoT Solutions. 
-    We deliver intelligent technologies designed to enhance operational efficiency, 
-    centralized monitoring, system reliability, and next-generation industrial transformation 
-    for commercial, healthcare, and industrial environments.
-  </p>
+    <h2>
+      Co-engineering Future Industries
+    </h2>
+
+    <p>
+      Bytenex Innovation is an engineering-driven company specializing in 
+      Industrial Automation, Instrumentation, Process Control Systems, 
+      Smart Electrical Infrastructure, and Industrial IoT Solutions. 
+      We deliver intelligent technologies designed to enhance operational efficiency, 
+      centralized monitoring, system reliability, and next-generation industrial transformation 
+      for commercial, healthcare, and industrial environments.
+    </p>
+
+  </div>
 
 </div>
 
-<!-- =========================
-     COMPANY OVERVIEW
-========================= -->
+<!-- COMPANY OVERVIEW -->
 
 <div class="overview">
 
@@ -322,9 +485,7 @@ body{
 
 </div>
 
-<!-- =========================
-     FOUNDER SECTION
-========================= -->
+<!-- FOUNDER -->
 
 <div class="founder">
 
@@ -357,9 +518,7 @@ body{
 
 </div>
 
-<!-- =========================
-     CORE TECHNOLOGY
-========================= -->
+<!-- CORE TECHNOLOGY -->
 
 <div class="tech">
 
@@ -405,9 +564,7 @@ body{
 
 </div>
 
-<!-- =========================
-     FOOTER
-========================= -->
+<!-- FOOTER -->
 
 <div class="footer">
   © 2026 Bytenex Innovation. All Rights Reserved.
