@@ -1,546 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bytenex Innovation</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary: #0a84c6;
-      --primary-dark: #06679a;
-      --accent: #ff7a00;
-      --accent-dark: #e26100;
-      --bg: #f4f8fb;
-      --white: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    /* Header */
-    .header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-box {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #dbeafe;
-      box-shadow: 0 4px 10px rgba(10, 132, 198, 0.15);
-    }
-
-    .brand {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--primary);
-      letter-spacing: 0.3px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .nav-btn {
-      padding: 10px 16px;
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      background: #eef7fd;
-      color: var(--primary);
-    }
-
-    .portal-btn {
-      background: #eaf6ff;
-      color: var(--primary);
-      border: 1px solid #cfe8f8;
-    }
-
-    .order-btn {
-      padding: 10px 18px;
-      background: linear-gradient(135deg, var(--accent), #ff5722);
-      color: var(--white);
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 18px rgba(255, 122, 0, 0.25);
-      transition: all 0.3s ease;
-    }
-
-    .order-btn:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, var(--accent-dark), #d94d1f);
-    }
-
-    /* Hero */
-    .hero {
-      background: linear-gradient(135deg, #eaf7ff 0%, #f8fcff 100%);
-      padding: 90px 0;
-    }
-
-    .hero-content {
-      text-align: center;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    .hero-content h2 {
-      color: var(--muted);
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-
-    .hero-content h1 {
-      font-size: 48px;
-      color: var(--primary-dark);
-      margin-bottom: 20px;
-      line-height: 1.2;
-    }
-
-    .hero-content p {
-      font-size: 18px;
-      color: var(--muted);
-      max-width: 760px;
-      margin: 0 auto 30px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 13px 24px;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .call-btn {
-      background: var(--primary);
-      color: var(--white);
-      box-shadow: 0 8px 20px rgba(10, 132, 198, 0.18);
-    }
-
-    .call-btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-
-    .mail-btn {
-      border: 2px solid var(--primary);
-      color: var(--primary);
-      background: var(--white);
-    }
-
-    .mail-btn:hover {
-      background: var(--primary);
-      color: var(--white);
-    }
-
-    /* Sections */
-    .section {
-      padding: 80px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 16px;
-      font-size: 34px;
-      color: var(--primary-dark);
-    }
-
-    .section-subtitle {
-      text-align: center;
-      max-width: 760px;
-      margin: 0 auto 45px;
-      color: var(--muted);
-      font-size: 17px;
-    }
-
-    /* Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 22px;
-    }
-
-    .card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 28px 22px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .card h3 {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: var(--primary);
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    /* CTA */
-    .cta {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-      color: var(--white);
-      text-align: center;
-      padding: 80px 20px;
-    }
-
-    .cta h2 {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 10px;
-      opacity: 0.9;
-    }
-
-    .cta h1 {
-      font-size: 38px;
-      margin-bottom: 24px;
-    }
-
-    .cta .mail-btn {
-      border: 2px solid var(--white);
-      color: var(--white);
-      background: transparent;
-    }
-
-    .cta .mail-btn:hover {
-      background: var(--white);
-      color: var(--primary-dark);
-    }
-
-    /* Footer */
-    .footer {
-      background: #0f172a;
-      color: #cbd5e1;
-      text-align: center;
-      padding: 22px 15px;
-      font-size: 14px;
-    }
-
-    /* Chat */
-    #chatBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(10, 132, 198, 0.28);
-      z-index: 999;
-    }
-
-    #chatBox {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 340px;
-      max-width: calc(100% - 30px);
-      height: 460px;
-      background: #fff;
-      border-radius: 16px;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
-      z-index: 999;
-      border: 1px solid var(--border);
-    }
-
-    #chatHeader {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      padding: 14px 16px;
-      font-weight: 600;
-      font-size: 15px;
-    }
-
-    #chatMessages {
-      flex: 1;
-      padding: 12px;
-      overflow-y: auto;
-      background: #f9fbfd;
-      font-size: 14px;
-    }
-
-    .chat-msg {
-      margin-bottom: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      max-width: 85%;
-      line-height: 1.4;
-    }
-
-    .user-msg {
-      background: #dff3ff;
-      margin-left: auto;
-      text-align: right;
-    }
-
-    .bot-msg {
-      background: #eef2f7;
-      margin-right: auto;
-    }
-
-    #userInput {
-      border: none;
-      border-top: 1px solid var(--border);
-      padding: 14px;
-      width: 100%;
-      font-size: 14px;
-      outline: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        width: 100%;
-      }
-
-      .hero-content h1 {
-        font-size: 34px;
-      }
-
-      .hero-content p {
-        font-size: 16px;
-      }
-
-      .section-title {
-        font-size: 28px;
-      }
-
-      .cta h1 {
-        font-size: 30px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bytenex Innovation | Industrial Automation & ELV Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{background:#f8fafc;color:#1f2937;line-height:1.6}
+.topbar{background:#0f172a;color:#fff;text-align:center;padding:8px;font-size:14px}
+header{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:15px 5%;box-shadow:0 2px 15px rgba(0,0,0,.08);z-index:1000}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo{width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid #06b6d4}
+.brand{font-size:28px;font-weight:700;color:#1e40af}
+nav a{text-decoration:none;color:#334155;margin-left:20px;font-weight:600}
+.hero{min-height:90vh;background:linear-gradient(rgba(15,23,42,.78),rgba(15,23,42,.78)),url('automation-bg.jpg') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:30px}
+.hero h1{font-size:58px;margin-bottom:20px}
+.hero p{max-width:900px;font-size:20px;margin:auto}
+.btn{display:inline-block;margin-top:25px;padding:14px 28px;border-radius:30px;text-decoration:none;font-weight:700}
+.btn1{background:#06b6d4;color:#fff}
+.btn2{border:2px solid #fff;color:#fff;margin-left:10px}
+.section{padding:80px 7%}
+.title{text-align:center;color:#1e40af;font-size:40px;margin-bottom:15px}
+.sub{text-align:center;max-width:900px;margin:0 auto 40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+.card{background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.card i{font-size:34px;color:#1e40af;margin-bottom:15px}
+.stats{background:#eef6ff}
+.stat{text-align:center}
+.stat h2{font-size:42px;color:#1e40af}
+.clients{background:#0f172a;color:#fff}
+.client{background:#1e293b;padding:25px;border-radius:12px;text-align:center;font-weight:700}
+.contact{background:#eef6ff;text-align:center}
+footer{background:#0f172a;color:#fff;text-align:center;padding:40px}
+.whatsapp{position:fixed;right:25px;bottom:25px;background:#25D366;color:#fff;width:60px;height:60px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:30px;text-decoration:none}
+@media(max-width:768px){
+header{flex-direction:column;gap:10px}
+.hero h1{font-size:38px}
+nav{display:flex;flex-wrap:wrap;justify-content:center}
+}
+</style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="container navbar">
-      <div class="brand-wrap">
-        <div class="logo-box">
-          <img src="DOC-20260410-WA0001.jpg" alt="Bytenex Innovation Logo" class="logo">
-        </div>
-        <div class="brand">Bytenex Innovation</div>
-      </div>
+<div class="topbar">
+📞 +91 8200031345 | ✉ info@bytenexinnovation.in | 📍 Sector 25, GIDC, Gandhinagar, Gujarat
+</div>
 
-      <nav class="nav-links">
-        <a href="index.html" class="nav-btn">Home</a>
-        <a href="about.html" class="nav-btn">About</a>
-        <a href="product.html" class="nav-btn">Products</a>
-        <a href="manufacturer.html" class="nav-btn">Manufacturing</a>
-        <a href="buy.html" class="order-btn">New Order</a>
-        <a href="customer-portal.html" class="nav-btn portal-btn">Customer Portal</a>
-        <a href="contact.html" class="nav-btn">Contact</a>
-      </nav>
-    </div>
-  </header>
+<header>
+<div class="logo-wrap">
+<img src="DOC-20260410-WA0001.jpg" class="logo" alt="Bytenex Logo">
+<div class="brand">Bytenex Innovation</div>
+</div>
+<nav>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#products">Products</a>
+<a href="#clients">Clients</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
 
-  <section class="hero">
-    <div class="container hero-content">
-      <h2>Welcome to</h2>
-      <h1>Bytenex Innovation</h1>
-      <p>
-        Advanced Automation, Factory Solutions, and ELV Infrastructure designed for modern smart industries.
-      </p>
+<section class="hero">
+<div>
+<h1>Engineering The Future Of Smart Industries</h1>
+<p>
+Delivering Industrial Automation, Factory Automation, Building Management Systems (BMS),
+ELV Infrastructure, IoT Integration and Advanced Engineering Solutions for Modern Enterprises.
+</p>
+<a href="#contact" class="btn btn1">Request Consultation</a>
+<a href="#services" class="btn btn2">Explore Solutions</a>
+</div>
+</section>
 
-      <div class="hero-buttons">
-        <a href="about.html" class="btn call-btn">Explore More</a>
-        <a href="contact.html" class="btn mail-btn">Contact Us</a>
-      </div>
-    </div>
-  </section>
+<section class="section stats">
+<h2 class="title">Our Achievements</h2>
+<div class="grid">
+<div class="card stat"><h2>150+</h2><p>Projects Executed</p></div>
+<div class="card stat"><h2>50+</h2><p>Satisfied Clients</p></div>
+<div class="card stat"><h2>24/7</h2><p>Support Available</p></div>
+<div class="card stat"><h2>10+</h2><p>Industries Served</p></div>
+</div>
+</section>
 
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">Our Expertise</h2>
-      <p class="section-subtitle">
-        We deliver intelligent, scalable, and reliable automation systems by combining industrial engineering, IoT integration, and ELV infrastructure.
-      </p>
+<section id="about" class="section">
+<h2 class="title">Who We Are</h2>
+<p class="sub">
+Bytenex Innovation is a technology-driven engineering company specializing in Industrial Automation,
+Factory Automation, BMS, ELV Infrastructure and IoT-enabled solutions. We help organizations improve
+efficiency, reliability and sustainability through innovative engineering technologies.
+</p>
+</section>
 
-      <div class="grid">
-        <div class="card">
-          <h3>Industrial Automation</h3>
-          <p>Smart automation systems that improve productivity, control, and operational efficiency.</p>
-        </div>
+<section id="services" class="section">
+<h2 class="title">Our Services</h2>
+<div class="grid">
+<div class="card"><i class="fas fa-industry"></i><h3>Industrial Automation</h3><p>PLC, SCADA, HMI, VFD & Process Control Systems.</p></div>
+<div class="card"><i class="fas fa-microchip"></i><h3>Factory Automation</h3><p>Smart manufacturing and Industry 4.0 solutions.</p></div>
+<div class="card"><i class="fas fa-building"></i><h3>BMS Solutions</h3><p>HVAC, Energy Monitoring & BACnet Integration.</p></div>
+<div class="card"><i class="fas fa-video"></i><h3>ELV Systems</h3><p>CCTV, ACS, FAS & Structured Cabling.</p></div>
+</div>
+</section>
 
-        <div class="card">
-          <h3>Factory Automation</h3>
-          <p>Advanced solutions for streamlining production workflows and minimizing downtime.</p>
-        </div>
+<section id="products" class="section">
+<h2 class="title">Products & Solutions</h2>
+<div class="grid">
+<div class="card"><h3>Bytenex Electromagnetic Flow Meter</h3></div>
+<div class="card"><h3>Industrial Automation Controller</h3></div>
+<div class="card"><h3>Video Management System (VMS)</h3></div>
+<div class="card"><h3>Access Control System (ACS)</h3></div>
+<div class="card"><h3>Fire Alarm System (FAS)</h3></div>
+</div>
+</section>
 
-        <div class="card">
-          <h3>ELV Systems</h3>
-          <p>Reliable extra-low voltage infrastructure for communication, safety, and control.</p>
-        </div>
+<section id="clients" class="section clients">
+<h2 class="title" style="color:#fff">Trusted By</h2>
+<div class="grid">
+<div class="client">GSPC Pipavav Power Co. Ltd.</div>
+<div class="client">TELUS Digital</div>
+<div class="client">JLL</div>
+<div class="client">Google</div>
+</div>
+</section>
 
-        <div class="card">
-          <h3>IoT Integration</h3>
-          <p>Connected devices and real-time monitoring for smarter industrial decision-making.</p>
-        </div>
+<section id="contact" class="section contact">
+<h2 class="title">Contact Us</h2>
+<p><strong>Bytenex Innovation</strong></p>
+<p>📞 +91 8200031345</p>
+<p>💬 WhatsApp: +91 8200031345</p>
+<p>✉ info@bytenexinnovation.in</p>
+<p>📍 Sector 25, GIDC, Gandhinagar, Gujarat</p>
+</section>
 
-        <div class="card">
-          <h3>Security & Surveillance</h3>
-          <p>Integrated safety and monitoring systems to protect facilities and operations.</p>
-        </div>
+<footer>
+<h3>Bytenex Innovation</h3>
+<p>Empowering Industries Through Automation, Innovation & Engineering Excellence.</p>
+<p>© 2026 Bytenex Innovation. All Rights Reserved.</p>
+</footer>
 
-        <div class="card">
-          <h3>Custom Engineering</h3>
-          <p>Tailor-made technical solutions built to meet industry-specific project requirements.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta">
-    <h2>Reach Out to Us</h2>
-    <h1>Your Next Project Starts Here</h1>
-    <a href="contact.html" class="btn mail-btn">Enquire Now</a>
-  </section>
-
-  <footer class="footer">
-    © 2026 Bytenex Innovation. All Rights Reserved.
-  </footer>
-
-  <button id="chatBtn" onclick="toggleChat()">💬</button>
-
-  <div id="chatBox">
-    <div id="chatHeader">Bytenex Support Assistant</div>
-    <div id="chatMessages"></div>
-    <input type="text" id="userInput" placeholder="Type your message and press Enter" onkeypress="handleKey(event)">
-  </div>
-
-  <script>
-    function toggleChat() {
-      const box = document.getElementById("chatBox");
-      box.style.display = box.style.display === "flex" ? "none" : "flex";
-    }
-
-    function addMessage(text, className) {
-      const chat = document.getElementById("chatMessages");
-      const msgDiv = document.createElement("div");
-      msgDiv.className = "chat-msg " + className;
-      msgDiv.textContent = text;
-      chat.appendChild(msgDiv);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function handleKey(e) {
-      if (e.key === "Enter") {
-        const input = document.getElementById("userInput");
-        const msg = input.value.trim().toLowerCase();
-
-        if (!msg) return;
-
-        addMessage(input.value.trim(), "user-msg");
-
-        let reply = "";
-
-        if (msg.includes("hi") || msg.includes("hello")) {
-          reply = "Hello. Welcome to Bytenex Innovation.";
-        } else if (msg.includes("price") || msg.includes("cost") || msg.includes("quotation")) {
-          reply = "For pricing and quotations, please contact our sales team at info@bytenexinnovation.in.";
-        } else if (msg.includes("support") || msg.includes("service")) {
-          reply = "For technical support, please contact engineers@bytenexinnovation.in.";
-        } else if (msg.includes("call") || msg.includes("phone") || msg.includes("number")) {
-          reply = "You can call us at +91 82000 31345.";
-        } else {
-          reply = "Thank you for contacting Bytenex Innovation. Our engineering team will assist you further at engineers@bytenexinnovation.in.";
-        }
-
-        addMessage(reply, "bot-msg");
-        input.value = "";
-      }
-    }
-  </script>
+<a class="whatsapp" href="https://wa.me/918200031345" target="_blank">
+<i class="fab fa-whatsapp"></i>
+</a>
 
 </body>
 </html>
