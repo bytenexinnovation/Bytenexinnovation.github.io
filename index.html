@@ -36,12 +36,19 @@ nav a{text-decoration:none}
 .phone i{color:#1e40af}.email i{color:#16a34a}.location i{color:#dc2626}
 .footer{text-align:center;background:#000;color:#888;padding:20px}
 .whatsapp{position:fixed;right:20px;bottom:20px;background:#25D366;color:#fff;padding:15px;border-radius:50%;text-decoration:none}
+
+.menu-toggle{background:#1e40af;color:#fff;border:none;width:50px;height:50px;border-radius:12px;cursor:pointer;font-size:22px}
+#mobileMenu{display:none;position:absolute;top:90px;right:30px;background:#fff;padding:15px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.15);z-index:999}
+#mobileMenu.show{display:block}
+#mobileMenu a{display:block;margin:8px 0;text-align:center}
+
 </style>
 </head>
 <body>
 <header>
 <div class="logo-wrap"><img src="DOC-20260410-WA0001.jpg" class="logo"><div class="brand">Bytenex Innovation</div></div>
-<nav>
+<button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+<nav id="mobileMenu">
 <a href="index.html" class="nav-btn">Home</a>
 <a href="about.html" class="nav-btn">About</a>
 <a href="product.html" class="nav-btn">Products</a>
@@ -51,6 +58,7 @@ nav a{text-decoration:none}
 <a href="contact.html" class="nav-btn">Contact</a>
 </nav>
 </header>
+<script>function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("show");}</script>
 
 <section class="hero">
 <h1>Engineering The Future Of Smart Industries</h1>
